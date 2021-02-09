@@ -78,8 +78,8 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RefractionDeepIntensity: 0.739
-    - _RefractionShallowIntensity: 0.251
+    - _RefractionDeepIntensity: 0.632
+    - _RefractionShallowIntensity: 0.192
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

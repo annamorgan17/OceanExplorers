@@ -129,8 +129,9 @@
 				float waterDepthDifference = saturate(depthDifference / _DepthMaxDistance);
 
 				//create a colour based on the depth
-				float4 waterColor = lerp(lerp(_DepthGradientShallow, refraction, 1 -_DepthGradientShallow.a), 
-				lerp(_DepthGradientDeep, refraction, 1 - _DepthGradientDeep.a), waterDepthDifference); 
+				float4 waterColor = lerp(
+				lerp(_DepthGradientShallow, refraction, 1 -_RefractionShallowIntensity), 
+				lerp(_DepthGradientDeep, refraction, 1 - _RefractionDeepIntensity), waterDepthDifference); 
 
 				float3 existingNormal = tex2Dproj(_CameraNormalsTexture, i.screenPosition); 
  
