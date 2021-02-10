@@ -17,7 +17,16 @@ public class FlockScript : MonoBehaviour
 
     void Update()
     {
-        InsideArea();
+        Bounds b = new Bounds(fishManager.setPoint, fishManager.swimLimits * 2);
+
+        if (!b.Contains(transform.position))
+        {
+            turning = true;
+        }
+        else
+        {
+            turning = false;
+        }
 
         if (turning)
         {
@@ -31,6 +40,7 @@ public class FlockScript : MonoBehaviour
             {
                 ApplyRules();
             }
+
         }
         transform.Translate(0, 0, Time.deltaTime * speed);
 
@@ -80,18 +90,6 @@ public class FlockScript : MonoBehaviour
 
         }
 
-    }
-
-    private void InsideArea()
-    {
-        if (Vector3.Distance(transform.position, fishManager.setPoint) >= fishManager.swimLimits.magnitude)
-        {
-            turning = true;
-        }
-        else
-        {
-            turning = false;
-        }
     }
 
 }

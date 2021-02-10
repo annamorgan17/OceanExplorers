@@ -17,13 +17,22 @@ public class flockScript : MonoBehaviour
 
     void Update()
     {
-        InsideArea();
+        Bounds b = new Bounds(fishManager.setPoint, fishManager.swimLimits * 2);
+
+        if (!b.Contains(transform.position))
+        {
+            turning = true;
+        }
+        else
+        {
+            turning = false;
+        }
 
         if (turning)
         {
-             Vector3 direction = fishManager.setPoint - transform.position;
-             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), fishManager.rotationSpeed * Time.deltaTime);
-             speed = Random.Range(1, fishManager.maxSpeed);
+            Vector3 direction = fishManager.setPoint - transform.position;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), fishManager.rotationSpeed * Time.deltaTime);
+            speed = Random.Range(1, fishManager.maxSpeed);
         }
         else
         {
@@ -31,6 +40,7 @@ public class flockScript : MonoBehaviour
             {
                 ApplyRules();
             }
+
         }
         transform.Translate(0, 0, Time.deltaTime * speed);
            
@@ -59,7 +69,7 @@ public class flockScript : MonoBehaviour
                     center += fish.transform.position;
                     groupSize++;
 
-                    if (distance < 1)
+                    if (distance < 1.0f)
                     {
                         avoid = avoid + (this.transform.position - fish.transform.position);
                     }
@@ -82,15 +92,4 @@ public class flockScript : MonoBehaviour
 
     }
 
-    private void InsideArea()
-    {
-        if (Vector3.Distance(transform.position, fishManager.setPoint) >= fishManager.swimLimits.magnitude)
-        {
-            turning = true;
-        }
-        else
-        {
-            turning = false;
-        }
-    }
 }
