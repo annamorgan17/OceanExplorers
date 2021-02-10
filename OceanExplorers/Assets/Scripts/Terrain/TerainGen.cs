@@ -6,6 +6,7 @@ public class TerainGen : MonoBehaviour
 {
     [SerializeField] GameObject[] FloorTiles;
     [SerializeField] GameObject Surface;
+    [SerializeField] GameObject Water;
     [SerializeField] int width;
     [SerializeField] int height; 
     [SerializeField] string seed;
@@ -19,9 +20,11 @@ public class TerainGen : MonoBehaviour
         //Replace for less intensive search later
         FloorTiles = Resources.LoadAll<GameObject>("Tiles/Floor");
         Surface = Resources.Load<GameObject>("Tiles/Surface");
+        //Water = GameObject.FindGameObjectWithTag("Water");
+        Water.SetActive(true);
+        Water.transform.localScale = new Vector3(width, 0, height);
         parent = new GameObject("Terrain");
-        GenerateMap();
-        
+        GenerateMap(); 
     } 
     void Update(){
         if (Input.GetMouseButtonDown(0)) {
@@ -47,9 +50,7 @@ public class TerainGen : MonoBehaviour
                         pos.y += (surface.transform.localScale.y / 2);
                         surface.transform.position = pos;
                         surface.transform.SetParent(parent.transform);
-                    }
-                    //Gizmos.color = (map[x, y] == 1) ? Color.black : Color.white; 
-                    //Gizmos.DrawCube(pos, Vector3.one);
+                    } 
                 }
             }
         }
