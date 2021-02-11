@@ -66,10 +66,10 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DepthMaxDistance: 9.84
+    - _DepthMaxDistance: 9.73
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FoamMaxDistance: 7.06
+    - _FoamMaxDistance: 3.38
     - _FoamMinDistance: 0.04
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -89,8 +89,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DepthGradientDeep: {r: 0.062745094, g: 0.61110985, b: 1, a: 1}
-    - _DepthGradientShallow: {r: 0.325, g: 0.807, b: 0.971, a: 0.725}
+    - _DepthGradientDeep: {r: 0.062745094, g: 0.61110985, b: 1, a: 0.7529412}
+    - _DepthGradientShallow: {r: 0.325, g: 0.807, b: 0.971, a: 0.043137256}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _SurfaceNoiseScroll: {r: 0.03, g: 0.03, b: 0, a: 0}
