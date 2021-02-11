@@ -16,6 +16,8 @@ public class CrabMovement : MonoBehaviour
     Quaternion targetRotation;
     [SerializeField]
     float randomAmount = 10000;
+    [SerializeField]
+    int rayLength = 6;
 
     Vector3 direction;
     int layerMask = 1 << 8;
@@ -30,9 +32,9 @@ public class CrabMovement : MonoBehaviour
         direction = (newPos - transform.position).normalized;
 
 
-        if (!Physics.Raycast(this.transform.position, direction, 3, layerMask))
+        if (!Physics.Raycast(this.transform.position, direction, rayLength, layerMask))
         {
-            Debug.DrawRay(transform.position, direction * 3, Color.red);
+            Debug.DrawRay(transform.position, direction * rayLength, Color.red);
 
             transform.position = Vector3.MoveTowards(this.transform.position, newPos, crabSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(direction), crabRotSpeed * Time.deltaTime);
@@ -52,7 +54,7 @@ public class CrabMovement : MonoBehaviour
         if (Random.Range(0, randomAmount) < 50)
         {
             newPos = new Vector3(Random.Range(-gameArea.x, gameArea.x),
-                0,
+                gameObject.transform.position.y,
                 Random.Range(-gameArea.z, gameArea.z));
 
             targetRotation = Quaternion.LookRotation(newPos - transform.position);
@@ -63,7 +65,7 @@ public class CrabMovement : MonoBehaviour
     private void TargetPosInstant()
     {
         newPos = new Vector3(Random.Range(-gameArea.x, gameArea.x),
-                  0,
+                  gameObject.transform.position.y,
                   Random.Range(-gameArea.z, gameArea.z));
 
         targetRotation = Quaternion.LookRotation(newPos - transform.position);
