@@ -133,6 +133,10 @@
 				lerp(_DepthGradientShallow, refraction, 1 -_RefractionShallowIntensity), 
 				lerp(_DepthGradientDeep, refraction, 1 - _RefractionDeepIntensity), waterDepthDifference); 
 
+
+				waterColor = lerp(_DepthGradientShallow, _DepthGradientDeep, waterDepthDifference); 
+
+
 				float3 existingNormal = tex2Dproj(_CameraNormalsTexture, i.screenPosition); 
  
 				float foamDistance = lerp(_FoamMaxDistance, _FoamMinDistance, saturate(dot(existingNormal, i.viewNormal)));

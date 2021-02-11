@@ -14,6 +14,7 @@ public class TerainGen : MonoBehaviour
     [Range(0, 100)] public int randomFillPercent; 
     [SerializeField] int[,] map;
     [SerializeField] int Size = 10;
+    [SerializeField] bool RenderOnlyAround = true;
     private GameObject parent;
 
     void Start(){
@@ -28,8 +29,8 @@ public class TerainGen : MonoBehaviour
     } 
     void Update(){
         if (Input.GetMouseButtonDown(0)) {
-            foreach (GameObject item in parent.transform) {
-                Destroy(item);
+            foreach (Transform item in parent.transform) {
+                Destroy(item.gameObject);
             }
             GenerateMap();
         }
@@ -47,7 +48,7 @@ public class TerainGen : MonoBehaviour
                         floor.transform.SetParent(parent.transform);
                     } else {
                         GameObject surface = GameObject.Instantiate(Surface);
-                        pos.y += (surface.transform.localScale.y / 2);
+                        pos.y += (surface.transform.localScale.y / 2) + 0.5f;
                         surface.transform.position = pos;
                         surface.transform.SetParent(parent.transform);
                     } 
