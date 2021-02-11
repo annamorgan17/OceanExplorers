@@ -20,10 +20,10 @@ public class SettingsMenu : MonoBehaviour
     {
         MenuClose();
 
-        vrOnButton.onClick.AddListener(() => ButtonClicked(0));
+        /*vrOnButton.onClick.AddListener(() => ButtonClicked(0));
         vrOffButton.onClick.AddListener(() => ButtonClicked(1));
         TeleportOnButton.onClick.AddListener(() => ButtonClicked(2));
-        TeleportOffButton.onClick.AddListener(() => ButtonClicked(3));
+        TeleportOffButton.onClick.AddListener(() => ButtonClicked(3));*/
     }
     private void Update()
     {
