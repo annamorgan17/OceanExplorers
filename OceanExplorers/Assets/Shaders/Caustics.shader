@@ -35,6 +35,7 @@ Shader "Water/Caustics"
         {
             float2 uv_MainTex; 
             float3 worldPos;
+            float3 worldNormal;
         };
 
         sampler2D _SurfaceNoise;
@@ -66,10 +67,17 @@ Shader "Water/Caustics"
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
             float3 localPos = IN.worldPos;
-
+            float2 UV;
+            if(abs(IN.worldNormal.x)>0.5) {
+                UV = IN.worldPos.yz; // side 
+            } else if(abs(IN.worldNormal.z)>0.5) {
+                UV = IN.worldPos.xy; // front 
+            } else {
+                UV = IN.worldPos.xz; // top 
+            }
             // Albedo comes from a texture tinted by color
-            
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
+            float3 worlduv = (IN.worldPos / 10);
+            fixed4 c = tex2D (_MainTex, worlduv.xy) * _Color;
             o.Albedo = c.rgb;
         
             // Caustics sampling
@@ -79,9 +87,9 @@ Shader "Water/Caustics"
 
                 float DistanceFromWater = localPos.y / 50;
                 float InvertedDistanceFromWater = -DistanceFromWater;
-                float2 distortSample = (tex2D(_SurfaceDistortion, uv).xy * 2 - 1) * (_SurfaceDistortionAmount * DistanceFromWater); 
+                float2 distortSample = (tex2D(_SurfaceDistortion, worlduv.xy).xy * 2 - 1) * (_SurfaceDistortionAmount * DistanceFromWater); 
                 float2 noiseUV = float2((uv.x + _Time.y * _SurfaceNoiseScroll.x) + distortSample.x,  (uv.y + _Time.y * _SurfaceNoiseScroll.y) + distortSample.y); 
-                float surfaceNoise = smoothstep(_SurfaceNoiseCutoff - SMOOTHSTEP_AA, _SurfaceNoiseCutoff + SMOOTHSTEP_AA, tex2D(_SurfaceNoise, noiseUV).r);  
+                float surfaceNoise = smoothstep(_SurfaceNoiseCutoff - SMOOTHSTEP_AA, _SurfaceNoiseCutoff + SMOOTHSTEP_AA, tex2D(_SurfaceNoise, worlduv.xy).r);  
                 float3 tone = tex2D(_SurfaceNoise, noiseUV).rgb; 
                 tone * surfaceNoise;
                 o.Albedo += (tone * InvertedDistanceFromWater);   
