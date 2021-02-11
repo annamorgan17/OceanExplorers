@@ -5,15 +5,14 @@ using UnityEngine.VR;
 
 public class ControllerInteract : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private int buttonTouchID;
+    private void Update()
     {
-        
-    }
+        UnityEngine.Input.GetTouch(buttonTouchID);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (buttonTouchID != 0)
+        {
+            Debug.Log(buttonTouchID);
+        }
     }
 }
