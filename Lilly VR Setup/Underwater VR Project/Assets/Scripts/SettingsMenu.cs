@@ -6,13 +6,14 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
-    [SerializeField] GameObject canvas, player, secondaryCamera;
+    [SerializeField] GameObject canvas, basicPlayer, vrPlayer, secondaryCamera;
     [SerializeField] Button vrOnButton, TeleportOnButton , vrOffButton, TeleportOffButton;
 
     private bool canvasEnabled = false;
     private bool vrEnabled = true;
     private bool teleportEnabled = false;
-    private int vrOnID = 0, vrOffIF = 1, tpOnID = 2, tpOffID = 3;
+    private int vrOnID = 0, vrOffID = 2, tpOnID = 1, tpOffID = 3;
+    private GameObject activePlayer;
 
     private Color grey = new Color(0.5f, 0.5f, 0.5f, 1f);
     private Color white = new Color(1f, 1f, 1f, 1f);
@@ -20,10 +21,10 @@ public class SettingsMenu : MonoBehaviour
     {
         MenuClose();
 
-        /*vrOnButton.onClick.AddListener(() => ButtonClicked(0));
-        vrOffButton.onClick.AddListener(() => ButtonClicked(1));
-        TeleportOnButton.onClick.AddListener(() => ButtonClicked(2));
-        TeleportOffButton.onClick.AddListener(() => ButtonClicked(3));*/
+        vrOnButton.onClick.AddListener(() => ButtonClicked(vrOnID));
+        vrOffButton.onClick.AddListener(() => ButtonClicked(vrOffID));
+        TeleportOnButton.onClick.AddListener(() => ButtonClicked(tpOnID));
+        TeleportOffButton.onClick.AddListener(() => ButtonClicked(tpOffID));
     }
     private void Update()
     {
@@ -44,13 +45,15 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-    /*private void ButtonClicked(int buttonID)
+    private void ButtonClicked(int buttonID)
     {
         switch (buttonID)
         {
             case 0:
                 ActiveButton(vrOnButton);
                 UnactiveButton(vrOffButton);
+
+                activatePlayerState("vr");
                 break;
             case 1:
                 ActiveButton(TeleportOnButton);
@@ -59,6 +62,8 @@ public class SettingsMenu : MonoBehaviour
             case 2:
                 ActiveButton(vrOffButton);
                 UnactiveButton(vrOnButton);
+
+                activatePlayerState("basic");
                 break;
             case 3:
                 ActiveButton(TeleportOffButton);
@@ -67,7 +72,7 @@ public class SettingsMenu : MonoBehaviour
 
         }
 
-    }*/
+    }
     
     private void CursorUnlock()
     {
@@ -85,7 +90,7 @@ public class SettingsMenu : MonoBehaviour
     {
         canvas.SetActive(true);
         canvasEnabled = true;
-        player.SetActive(false);
+        activePlayer.SetActive(false);
         secondaryCamera.SetActive(true);
     }
 
@@ -93,7 +98,7 @@ public class SettingsMenu : MonoBehaviour
     {
         canvas.SetActive(false);
         canvasEnabled = false;
-        player.SetActive(true);
+        activePlayer.SetActive(true);
         secondaryCamera.SetActive(false);
     }
 
@@ -111,5 +116,23 @@ public class SettingsMenu : MonoBehaviour
         ColorBlock cb = button.colors;
         cb.normalColor = white;
         button.colors = cb;
+    }
+
+    private void activatePlayerState(string playerToActivate)
+    {
+        if (playerToActivate == "vr")
+        {
+            basicPlayer.SetActive(false);
+            vrPlayer.SetActive(true);
+
+            activePlayer = vrPlayer;
+        }
+        else if (playerToActivate == "basic")
+        {
+            basicPlayer.SetActive(true);
+            vrPlayer.SetActive(false);
+
+            activePlayer = basicPlayer;
+        }
     }
 }
