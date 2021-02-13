@@ -6,36 +6,51 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
+    //public gameobjects for canvas (setting menu), non-vr player (basicPlayer),
+    //vr player (vrPlayer) and the camera used for settings menu (secondary camera)
     [SerializeField] GameObject canvas, basicPlayer, vrPlayer, secondaryCamera;
+    //public button variables for the settings menu
     [SerializeField] Button vrOnButton, TeleportOnButton , vrOffButton, TeleportOffButton;
 
+    //booleans
     private bool canvasEnabled = false;
-    private bool vrEnabled = true;
     private bool teleportEnabled = false;
-    private int vrOnID = 0, vrOffID = 2, tpOnID = 1, tpOffID = 3;
-    private GameObject activePlayer;
+    private bool vrEnabled = true;
 
+    //colours
     private Color grey = new Color(0.5f, 0.5f, 0.5f, 1f);
     private Color white = new Color(1f, 1f, 1f, 1f);
+
+    //ints for button listener/case IDs
+    private int vrOnID = 0, vrOffID = 2, tpOnID = 1, tpOffID = 3;
+
+    //gameobject for the current active player
+    private GameObject activePlayer;
+    
     private void Start()
     {
+        //disables the settings menu upon starting
         MenuClose();
 
+        //adds listeners to the buttons
         vrOnButton.onClick.AddListener(() => ButtonClicked(vrOnID));
         vrOffButton.onClick.AddListener(() => ButtonClicked(vrOffID));
         TeleportOnButton.onClick.AddListener(() => ButtonClicked(tpOnID));
         TeleportOffButton.onClick.AddListener(() => ButtonClicked(tpOffID));
     }
+
     private void Update()
     {
+        //enables the settings menu
         if (Input.GetKeyDown("f") && canvasEnabled == false)
         {
-            Debug.Log("F Pressed");
+            Debug.Log("Settings Menu Enabled");
 
             MenuOpen();
             CursorUnlock();
         }
 
+        //disables the settings menu
         else if (Input.GetKeyDown("f") && canvasEnabled == true)
         {
             Debug.Log("F Pressed");
