@@ -7,111 +7,58 @@ using UnityEditor;
 using System;
 using Plant.Utilities;
 using System.Linq;
-public class Generation : MonoBehaviour {
-    #region varibles
-    //used to save chocen index and prev rotation for custom inspector
-    public EditorVar EditorVariables;
-    public struct EditorVar {
-        public int[] _choiceIndex;
-        public int _prevRotation;
-    }
-
-    //shape of branch
-    private enum Shape { PrimitiveCube, PrimitiveCylinder }
-
-
-    //colour settings - handled with tools 
-    [HideInInspector] public Color Col1 = new Color(255 / 219, 255 / 116, 255 / 80, 1);
-    [HideInInspector] public Color Col2 = new Color(255, 255, 255, 1);
-    [HideInInspector] public bool FlipColour = false;
-    [HideInInspector] public bool SolidColour = true;
-
-    //Display
-    [Header("Display settings")]
-    [SerializeField] private float angle = 25.000f;
-    [HideInInspector] public bool rotate = true;
-    [HideInInspector] public int RotationAngle = 90;
-
-
-    #region Branch Settings
-    //Branch generation settings
-    [Header("Generation")]
-    [SerializeField] [Range(0, 2.0f)] private float length = 1.0f; private float currentLength;
-    [SerializeField] [Range(1, 50)] private float thickness = 8;
-    [SerializeField] [Range(1, 10)] private int generations = 3;
-    [SerializeField] [Range(0, 1)] private float lengthVariance = 0f;
-    [SerializeField] [Range(0, 100)] private int ammendmentChance = 0;
-    [SerializeField] [Range(0f, 5f)] private int randomThickness = 0;
-    [SerializeField] [Range(0, 4)] public int pillarHeight = 0;
-    [SerializeField] private Shape shape = Shape.PrimitiveCube;
-
-    #endregion 
+public class Generation : MonoBehaviour { 
+    public LSystemVisualData lSystemVisualData; 
+    public EditorVar EditorVariables; 
 
     //List of branches to meshify
-    private List<MeshFilter> meshObjectList;
-    //Validate is called on update while script is awake when inspector value is changed
-    [HideInInspector] public bool Validate = false;
+    private List<MeshFilter> meshObjectList; 
     //stack of transform locations to push and pop
     private Stack<TransformInfo> transformStack;
     //Gameboy used for location 
     private GameObject turtle;
     //Highest y value for texture calculation
-    private float highestY;
-
-
+    private float highestY; 
     //leaves
-    [Header("Leaves")]
-    [SerializeField] private GenerationType LeafGeneration = GenerationType.PrimitiveSphere;
-    private List<Leaf> leaves = new List<Leaf>(); 
-    
+    [Header("Leaves")] 
+    private List<Leaf> leaves = new List<Leaf>();
+    private Dictionary<char, string> rules = new Dictionary<char, string>();
     //Lsystem specific
-    [Header("LSystem")]
-    [SerializeField] private List<Param> variables = new List<Param>(); 
-    [HideInInspector] public char[] dictionaryChar = { 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F' };
-    [HideInInspector] public string[] dictionaryString = { "F", "F", "F", "F", "F", "F", "F", "F", "F", "F" }; 
-    [HideInInspector] public int RuleLength;
-    [HideInInspector] public Dictionary<char, string> rules = new Dictionary<char, string>(); 
+    [Header("LSystem")]  
     [HideInInspector] string currentString = string.Empty;
-    [SerializeField] string StartString = string.Empty;
-    #endregion
-
-    #region general
+    private float currentLength;
+    //Draw a box around its position
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
         MeshExstension.DrawCube(gameObject.transform.position, gameObject.transform.rotation, gameObject.transform.localScale);
-    }
-    private void OnValidate() { 
-        if (Application.isPlaying) { 
-            Validate = true; 
-        } 
     } 
-    public void Rotation() { transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0 + RotationAngle, transform.eulerAngles.z); }
-    #endregion
-    private void Make(){
-        //set current string to inspector value
-        currentString = StartString;
-
-        //Transform rotation
-        transform.rotation = Quaternion.Euler(new Vector3(-90, 0, -90));  
-
-        //Rule data
-        rules = new Dictionary<char, string>();
-        for (int i = 0; i < RuleLength; i++) {
-            Debug.Log("Rule " + i + ": " + dictionaryChar[i] + " -> " + dictionaryString[i]);
-            if (rules.ContainsKey(dictionaryChar[i])) {
-                Debug.LogError("Duplicate axoim. Duplicate character " + dictionaryChar[i] + " will not be added");
-            } else {
-                rules.Add(dictionaryChar[i], dictionaryString[i]);
-            }
-        } 
-         
-        meshObjectList = new List<MeshFilter>();
-
+    public void Rotation() { transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0 + lSystemVisualData.RotationAngle, transform.eulerAngles.z); }
+    private void Start() {
+        Make();
+    }
+    public void Clear() {
         //Remove previous validates
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("Validate")) {
             Destroy(item);
-        }
+        } 
+    }
+    public void Make(){ 
+        //set current string to inspector value
+        currentString = lSystemVisualData.StartString; 
+        //Transform rotation
+        transform.rotation = Quaternion.Euler(new Vector3(-90, 0, -90));   
         
+        rules = new Dictionary<char, string>(); 
+        foreach (var item in lSystemVisualData.dictionary) { 
+            Debug.Log(item.Key + " -> " + item.Value);
+            if (rules.ContainsKey(item.Key)) {
+                Debug.LogError("Duplicate axoim. Duplicate character " + item.Key + " will not be added");
+            } else {
+                rules.Add(item.Key, item.Value);
+            }
+        } 
+         
+        meshObjectList = new List<MeshFilter>(); 
         transformStack = new Stack<TransformInfo>(); 
 
         //Turtle Transform Info
@@ -122,37 +69,33 @@ public class Generation : MonoBehaviour {
 
         //overwrite current string is start string was blank
         if (currentString == "") {
-            currentString = dictionaryChar[0].ToString();
+            currentString = lSystemVisualData.dictionary[0].Key.ToString();
         } 
         //generate l system n times
-        for (int i = 0; i < generations; i++) {
-            new Lsystem(ref currentString, rules, ammendmentChance);
+        for (int i = 0; i < lSystemVisualData.generations; i++) {
+            new Lsystem(ref currentString, rules, lSystemVisualData.ammendmentChance);
         }
 
         //add together for pillar generation
-        for (int i = 0; i < pillarHeight; i++) {
+        for (int i = 0; i < lSystemVisualData.pillarHeight; i++) {
             currentString += currentString;
         }
 
         //Draw and make mesh
         Gen();
-        MeshExstension.CombineMeshes(meshObjectList, transform);
 
+        MeshExstension.CombineMeshes(meshObjectList, transform);
+         
     }
-    private void Update(){ 
-        //make the object if it needs to be validated
-        if (Validate){
-            Validate = false;
-            Make(); 
-        }
+    private void Update(){  
         //rotating the object
-        if (rotate)  
+        if (lSystemVisualData.rotate)  
             transform.Rotate(Vector3.forward * (Time.deltaTime * 20f)); 
     } 
     //Branch
     private Vector3 Move(Vector3 direction, float length, float Gravity = 0){
         //Moving the turtle forward by a direciton and length with a basic gravity applied.
-        turtle.transform.Translate(direction * (length + (UnityEngine.Random.Range(0, lengthVariance * 100f) / 100f)));
+        turtle.transform.Translate(direction * (length + (UnityEngine.Random.Range(0, lSystemVisualData.lengthVariance * 100f) / 100f)));
         turtle.transform.position = turtle.transform.position + (Vector3.down * Gravity);
         return turtle.transform.position;
     }
@@ -161,21 +104,24 @@ public class Generation : MonoBehaviour {
 
         GameObject gm = new GameObject("Branch", typeof(MeshFilter), typeof(MeshRenderer));
         Vector3 between = pB - pA;
-        float thicknessMultiplier = (float)(UnityEngine.Random.Range(0f, 5f) * (float)randomThickness) / 50f;
+        float thicknessMultiplier = (float)(UnityEngine.Random.Range(0f, 5f) * (float)lSystemVisualData.randomThickness) / 50f;
 
         //shape
-        if (shape == Shape.PrimitiveCube) {
+        if (lSystemVisualData.shape == Shape.PrimitiveCube) {
             gm.GetComponent<MeshFilter>().mesh = MeshExstension.PrimitiveShape(PrimitiveType.Cube);
-            gm.transform.localScale = new Vector3((length) / thickness + thicknessMultiplier, (between.magnitude) * 1f, (length) / thickness + thicknessMultiplier);
+            gm.transform.localScale = new Vector3((length) / lSystemVisualData.thickness + thicknessMultiplier, (between.magnitude) * 1f, (length) / lSystemVisualData.thickness + thicknessMultiplier);
         } else {
             gm.GetComponent<MeshFilter>().mesh = MeshExstension.PrimitiveShape(PrimitiveType.Cylinder);
-            gm.transform.localScale = new Vector3((length) / thickness + thicknessMultiplier, (between.magnitude) * 0.5f, (length) / thickness + thicknessMultiplier);
+            gm.transform.localScale = new Vector3((length) / lSystemVisualData.thickness + thicknessMultiplier, (between.magnitude) * 0.5f, (length) / lSystemVisualData.thickness + thicknessMultiplier);
         }
 
         //colour
-        if (FlipColour) gm.GetComponent<MeshRenderer>().material.color = GetColour(Col2, Col1);
-        else gm.GetComponent<MeshRenderer>().material.color = GetColour(Col1, Col2);
+        /*
+        if (lSystemVisualData.FlipColour) gm.GetComponent<MeshRenderer>().material.color = GetColour(lSystemVisualData.Col2, lSystemVisualData.Col1);
+        else gm.GetComponent<MeshRenderer>().material.color = GetColour(lSystemVisualData.Col1, lSystemVisualData.Col2);
 
+        */
+        gm.GetComponent<MeshRenderer>().material.color = lSystemVisualData.Colour.Evaluate(0);
         //transform
         gm.transform.localPosition = pA + (between / 2.0f);
         gm.transform.LookAt(pB);
@@ -186,7 +132,7 @@ public class Generation : MonoBehaviour {
 
     }
     private void Gen() {
-        currentLength = length;
+        currentLength = lSystemVisualData.length;
 
         //Sort out leaf parent
         GameObject a_Leaves = new GameObject("Leaves");
@@ -204,8 +150,8 @@ public class Generation : MonoBehaviour {
 
             //Current values
             TransformInfo current = new TransformInfo(new TransformHolder(turtle.transform), currentLength);
-            float l = currentLength + (UnityEngine.Random.Range(0, lengthVariance * 100f) / 100f);
-            float ang = angle; 
+            float l = currentLength + (UnityEngine.Random.Range(0, lSystemVisualData.lengthVariance * 100f) / 100f);
+            float ang = lSystemVisualData.angle; 
 
             //Replace every G with a F. Used in one fractal
             if (c == 'G')
@@ -217,7 +163,7 @@ public class Generation : MonoBehaviour {
                     //Extract length and gravity paramiter
                     if (i + 1 < currentString.ToCharArray().Length) {
                         if (currentString.ToCharArray()[i + 1] == '(') {
-                            List<float> Param = Lsystem.ExtractParmiter(currentString, i + 1, current, variables, angle);
+                            List<float> Param = Lsystem.ExtractParmiter(currentString, i + 1, current, lSystemVisualData.Variables, lSystemVisualData.angle);
                             if (Param.Count > 0)
                                 l = Param[0];
                             if (Param.Count > 1)
@@ -240,7 +186,7 @@ public class Generation : MonoBehaviour {
                     //extract paramiter 
                     if (i + 1 < currentString.ToCharArray().Length) {
                         if (currentString.ToCharArray()[i + 1] == '(') {
-                            List<float> Param = Lsystem.ExtractParmiter(currentString, i + 1, current, variables, angle);
+                            List<float> Param = Lsystem.ExtractParmiter(currentString, i + 1, current, lSystemVisualData.Variables, lSystemVisualData.angle);
                             if (Param.Count > 0)
                                 ang = Param[0];
                         }
@@ -251,17 +197,17 @@ public class Generation : MonoBehaviour {
                     //extract paramiter
                     if (i + 1 < currentString.ToCharArray().Length) {
                         if (currentString.ToCharArray()[i + 1] == '(') {
-                            List<float> Param = Lsystem.ExtractParmiter(currentString, i + 1, current, variables, angle);
+                            List<float> Param = Lsystem.ExtractParmiter(currentString, i + 1, current, lSystemVisualData.Variables, lSystemVisualData.angle);
                             if (Param.Count > 0)
                                 ang = Param[0];
                         }
                     }  
                     //rotate
                     turtle.transform.Rotate(Vector3.right   * -ang); break; //pitch 
-                case '{': turtle.transform.Rotate(Vector3.up      *  angle); break; //yaw
-                case '}': turtle.transform.Rotate(Vector3.up      * -angle); break; //yaw 
-                case '<': turtle.transform.Rotate(Vector3.forward *  angle); break; //roll
-                case '>': turtle.transform.Rotate(Vector3.forward * -angle); break; //roll   
+                case '{': turtle.transform.Rotate(Vector3.up      * lSystemVisualData.angle); break; //yaw
+                case '}': turtle.transform.Rotate(Vector3.up      * -lSystemVisualData.angle); break; //yaw 
+                case '<': turtle.transform.Rotate(Vector3.forward * lSystemVisualData.angle); break; //roll
+                case '>': turtle.transform.Rotate(Vector3.forward * -lSystemVisualData.angle); break; //roll   
                 case '[':  //push from stack
                     transformStack.Push(new TransformInfo(current.transform, currentLength));
 
@@ -295,7 +241,7 @@ public class Generation : MonoBehaviour {
         }
 
         //Generate leaf
-        if (LeafGeneration != GenerationType.None) {
+        if (lSystemVisualData.LeafGeneration != GenerationType.None) {
             Texture2D[] texture = new Texture2D[2]; 
             //Texture 
             for (int i = 0; i < 2; i++) {
@@ -311,15 +257,15 @@ public class Generation : MonoBehaviour {
              
             foreach (var item in LeafNodes) {
                 //Add leaf
-                Leaf leaf = new Leaf(item, ref a_Leaves, LeafGeneration);
+                Leaf leaf = new Leaf(item, ref a_Leaves, lSystemVisualData.LeafGeneration);
                 leaves.Add(leaf);
 
                 //draw first texture if mesh generation (top values)
-                if (LeafGeneration == GenerationType.Mesh) {
+                if (lSystemVisualData.LeafGeneration == GenerationType.Mesh) {
                     leaf.DrawTexture(texture[0], highestY, gameObject.transform.position);
                 }
             }
-            if (LeafGeneration == GenerationType.Mesh) {
+            if (lSystemVisualData.LeafGeneration == GenerationType.Mesh) {
                 //Reverse list and draw second texture (bottom values)
                 leaves.Reverse();
                 foreach (var item in leaves) {
@@ -330,6 +276,7 @@ public class Generation : MonoBehaviour {
             }
         }
     } 
+    /*
     /// <summary>
     /// Used to return a colour gradient or soild colour dependant on inpsector value
     /// </summary>
@@ -337,9 +284,10 @@ public class Generation : MonoBehaviour {
     /// <param name="Col2"><Second colour/param>
     /// <returns></returns>
     private Color GetColour(Color Col1, Color Col2) { 
-        if (SolidColour) return Col1;
-        else return Color.Lerp(Col2, Col1, (float)transformStack.Count / generations);
+        if (lSystemVisualData.SolidColour) return Col1;
+        else return Color.Lerp(Col2, Col1, (float)transformStack.Count / lSystemVisualData.generations);
     }
+    */
     /// <summary>
     /// Creates a mesh using two textures generated from the leaf array
     /// </summary>

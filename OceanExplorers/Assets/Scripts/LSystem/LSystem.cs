@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine; 
 using System.Text;
-public class Lsystem {
-
-
+public class Lsystem { 
     /// <summary>
     /// Ammend a string using a l system 
     /// </summary>
@@ -26,6 +24,8 @@ public class Lsystem {
         //output
         s = sb.ToString();
     } 
+
+
     /// <summary>
     /// Extract a parmiter from a string
     /// </summary>
@@ -60,13 +60,13 @@ public class Lsystem {
                 c = characters[i];
                 //Check for keywords
                 foreach (var item in Keywords) {
-                    if (item.character == c) {
+                    if (item.Character == c) {
                         param = item.Value.ToString();
                     }
                 }
                 //Variables
                 foreach (var item in variables) { 
-                    if (item.character == c) {
+                    if (item.Character == c) {
                         param = item.Value.ToString(); 
                     }
                 }
@@ -129,13 +129,4 @@ public class Lsystem {
     }
 }
 
-/// <summary>
-/// Data structure to store variables and keywords
-/// </summary>
-[System.Serializable] public struct Param {
-    public char character;
-    public float Value;
-    public Param(char _character, float _value) {
-        character = _character; Value = _value;
-    }
-}
+
