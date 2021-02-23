@@ -82,9 +82,10 @@ Material:
     - _SurfaceDistortionAmount: 0.27
     - _SurfaceNoiseCutoff: 0.654
     - _UVSec: 0
+    - _VertexColour: 1
     - _WaterHeight: 10
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.9811321, g: 0.63403344, b: 0.70054084, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SurfaceNoiseScroll: {r: 0.03, g: 0.03, b: 0, a: 0}

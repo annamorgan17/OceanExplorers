@@ -84,7 +84,7 @@ public class Generation : MonoBehaviour {
         //Draw and make mesh
         Gen();
 
-        MeshExstension.CombineMeshes(meshObjectList, transform);
+        MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform);
          
     }
     private void Update(){  
@@ -114,13 +114,7 @@ public class Generation : MonoBehaviour {
             gm.GetComponent<MeshFilter>().mesh = MeshExstension.PrimitiveShape(PrimitiveType.Cylinder);
             gm.transform.localScale = new Vector3((length) / lSystemVisualData.thickness + thicknessMultiplier, (between.magnitude) * 0.5f, (length) / lSystemVisualData.thickness + thicknessMultiplier);
         }
-
-        //colour
-        /*
-        if (lSystemVisualData.FlipColour) gm.GetComponent<MeshRenderer>().material.color = GetColour(lSystemVisualData.Col2, lSystemVisualData.Col1);
-        else gm.GetComponent<MeshRenderer>().material.color = GetColour(lSystemVisualData.Col1, lSystemVisualData.Col2);
-
-        */
+         
         gm.GetComponent<MeshRenderer>().material.color = lSystemVisualData.Colour.Evaluate(0);
         //transform
         gm.transform.localPosition = pA + (between / 2.0f);
@@ -275,19 +269,7 @@ public class Generation : MonoBehaviour {
                 MeshifyLeaves(texture);
             }
         }
-    } 
-    /*
-    /// <summary>
-    /// Used to return a colour gradient or soild colour dependant on inpsector value
-    /// </summary>
-    /// <param name="Col1">First colour</param>
-    /// <param name="Col2"><Second colour/param>
-    /// <returns></returns>
-    private Color GetColour(Color Col1, Color Col2) { 
-        if (lSystemVisualData.SolidColour) return Col1;
-        else return Color.Lerp(Col2, Col1, (float)transformStack.Count / lSystemVisualData.generations);
-    }
-    */
+    }  
     /// <summary>
     /// Creates a mesh using two textures generated from the leaf array
     /// </summary>
@@ -463,15 +445,16 @@ public class Generation : MonoBehaviour {
 
         //Combine into a mesh
         List<MeshFilter> meshList = new List<MeshFilter> { gm1.GetComponent<MeshFilter>(), gm2.GetComponent<MeshFilter>(), gm3.GetComponent<MeshFilter>()};
-        GameObject leaves = MeshExstension.CombineMeshes(meshList);
+        GameObject leaves = MeshExstension.CombineMeshes(meshList, lSystemVisualData.Colour, highestY);
 
         //Colour mesh
         foreach (var item in leaves.transform.GetComponentsInChildren<MeshFilter>()) {
             Color[] colors = new Color[item.mesh.vertexCount];
             for (int i = 0; i < colors.Length; i++) {
+                //colors[i] = lSystemVisualData.Colour.Evaluate();
                 float random = Mathf.PerlinNoise(item.mesh.vertices[i].x, item.mesh.vertices[i].z); 
                     colors[i] = colour(63, 122, 77); 
-                
+
             }
             item.mesh.colors = colors;
         } 

@@ -78,7 +78,7 @@ namespace Plant.Utilities {
         /// <param name="MaterialEmision">Emmision of material</param>
         /// <param name="MaterialShinyness">Shinyness of material</param>
         /// <returns></returns>
-        public static GameObject CombineMeshes(List<MeshFilter> filterList, Transform transform = null, float MaterialEmision = 1, float MaterialShinyness = 1) {
+        public static GameObject CombineMeshes(List<MeshFilter> filterList, CustomGradient customGadient, float Ymax, Transform transform = null, float MaterialEmision = 1, float MaterialShinyness = 1) {
             //Gameobject setup
             GameObject MeshObject = new GameObject("MeshObject", typeof(MeshFilter), typeof(MeshRenderer));
             MeshObject.tag = "Validate";
@@ -101,7 +101,12 @@ namespace Plant.Utilities {
                         combine[i].transform = filterList[i].transform.localToWorldMatrix;
                         //add colour mesh
                         for (int d = 0; d < combine[i].mesh.vertexCount; d++) {
-                            colours.Add(filterList[i].GetComponent<MeshRenderer>().material.color);
+                            //colours.Add(filterList[i].GetComponent<MeshRenderer>().material.color);
+                            float evalulate = combine[i].mesh.vertices[d].y;
+                            Color colour = customGadient.Evaluate(0);
+                            //Debug.LogError(evalulate + " : " + combine[i].mesh.vertices[d] + " : " + Ymax);
+                            colours.Add(colour);
+                            //Debug.LogError(customGadient.Evaluate(0));
                         };
                         //destroy added mesh
                         filterList[i].gameObject.AddComponent<Destroy>();

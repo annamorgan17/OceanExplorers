@@ -19,6 +19,8 @@
 
 		_RefractionShallowIntensity("Refraction Shallow", Range(0, 1)) = 0.2
 		_RefractionDeepIntensity("Refraction Deep", Range(0, 1)) = 0.8
+
+		_ReflectionTex("Reflection Texture", 2D) = "white" {}
     }
     SubShader {
 		Tags {
@@ -38,8 +40,7 @@
 			#define SMOOTHSTEP_AA 0.01
 
             #pragma vertex vert
-            #pragma fragment frag
-
+            #pragma fragment frag 
             #include "UnityCG.cginc" 
 
 			float4 alphaBlend(float4 top, float4 bottom) {
@@ -48,6 +49,11 @@
 
 				return float4(color, alpha);
 			}
+			    struct Input {
+
+					float2 reflection;
+
+				};
 
             struct appdata {
                 float4 vertex : POSITION;
@@ -63,6 +69,8 @@
 				float3 viewNormal : NORMAL;
             };
 			sampler2D _GrabTexture;
+
+			sampler2D _ReflectionTex;
 
             sampler2D _CausticTex;
             float4 _CausticTile;
@@ -108,18 +116,36 @@
 			sampler2D _CameraNormalsTexture;
  
             float4 frag (v2f i) : SV_Target {  
-				float4 uv = i.screenPosition;
-				
-				float a = (tex2D(_SurfaceDistortion, UNITY_PROJ_COORD(i.distortUV)).xy * 2 - 1); 
-				
 
+				#pragma region Refraction
+
+				
+					//object space to homogeneous clip space.
+
+					float4 clipPos = UnityObjectToClipPos(i.vertex);
+ 
+					//From homogeneous clip space to normalized device space.
+
+					clipPos.xy = (clipPos.xy / clipPos.w); 
+					//Invert Y for reflection
+
+					clipPos.y *= -1; 
+					//To uv coordinates. 
+					clipPos.xy = 0.5 * clipPos.xy + 0.5;
+ 
+				float4 colll = tex2D(_ReflectionTex, clipPos.xy).rgba;
+
+				float4 uv = i.screenPosition;
+				  
 				float refractionSpeed = 100;
 				float off = cos((_Time.x * refractionSpeed) + i.vertex.y * 32.0) ;
 
 				float4 offset = float4( sin((_Time.x * refractionSpeed) + i.screenPosition.y * 32.0) * 0.1, 0, 0, 0);
 				offset = float4(off, off, off, off);
 				float4 refraction = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(uv + offset));
+				#pragma endregion
 
+				#pragma region Water
 				//get the linear depth
 				float depth = LinearEyeDepth(tex2Dproj(_CameraDepthTexture, i.screenPosition).r);  
 
@@ -129,13 +155,9 @@
 				float waterDepthDifference = saturate(depthDifference / _DepthMaxDistance);
 
 				//create a colour based on the depth
-				float4 waterColor = lerp(
-				lerp(_DepthGradientShallow, refraction, 1 -_RefractionShallowIntensity), 
-				lerp(_DepthGradientDeep, refraction, 1 - _RefractionDeepIntensity), waterDepthDifference); 
-
+				float4 waterColor = lerp( lerp(_DepthGradientShallow, refraction, 1 -_RefractionShallowIntensity), lerp(_DepthGradientDeep, refraction, 1 - _RefractionDeepIntensity), waterDepthDifference); 
 
 				waterColor = lerp(_DepthGradientShallow, _DepthGradientDeep, waterDepthDifference); 
-
 
 				float3 existingNormal = tex2Dproj(_CameraNormalsTexture, i.screenPosition); 
  
@@ -154,16 +176,17 @@
 				float2 noiseUV = float2((i.noiseUV.x + _Time.y * _SurfaceNoiseScroll.x) + distortSample.x, (i.noiseUV.y + _Time.y * _SurfaceNoiseScroll.y) + distortSample.y);
  				  
 				float surfaceNoise = smoothstep(surfaceNoiseCutoff - SMOOTHSTEP_AA, surfaceNoiseCutoff + SMOOTHSTEP_AA, tex2D(_SurfaceNoise, noiseUV).r);  
-				
-				float d = lerp(_SurfaceDistortionAmount * 7, distortedWater, foamDepthDifference);
-				float4 surfaceNoiseColor = _FoamColor + (_FoamColor * d); 
-				surfaceNoiseColor.a *= surfaceNoise;  
+				 
+				float4 surfaceNoiseColor = _FoamColor + (_FoamColor * lerp(_SurfaceDistortionAmount * 7, distortedWater, foamDepthDifference)); 
+				surfaceNoiseColor.a *= surfaceNoise;   
+				#pragma endregion
 
-
-				half4 Colour = alphaBlend(surfaceNoiseColor, waterColor);
+				half4 Colour = alphaBlend(surfaceNoiseColor, waterColor );
 				return Colour;
             }
             ENDCG
+			 
+
         }
     }
 }
