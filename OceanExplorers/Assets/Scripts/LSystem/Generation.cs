@@ -9,8 +9,10 @@ using Plant.Utilities;
 using System.Linq;
 public class Generation : MonoBehaviour { 
     public LSystemVisualData lSystemVisualData; 
-    public EditorVar EditorVariables; 
-
+    public EditorVar EditorVariables;
+    public float xradius;
+    public float yradius;
+    public int Points;
     //List of branches to meshify
     private List<MeshFilter> meshObjectList; 
     //stack of transform locations to push and pop
@@ -30,23 +32,23 @@ public class Generation : MonoBehaviour {
     //Draw a box around its position
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        MeshExstension.DrawCube(gameObject.transform.position, gameObject.transform.rotation, gameObject.transform.localScale);
+        MeshExstension.DrawCube(gameObject.transform.position, gameObject.transform.rotation, gameObject.transform.localScale); 
     } 
     public void Rotation() { transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0 + lSystemVisualData.RotationAngle, transform.eulerAngles.z); }
     private void Start() {
         Make();
     }
-    public void Clear() {
+    public void Clear() { 
         //Remove previous validates
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("Validate")) {
             Destroy(item);
-        } 
+        }
+        gameObject.GetComponent<MeshFilter>().mesh.Clear();
     }
+    float maxY = 0;
     public void Make(){ 
         //set current string to inspector value
-        currentString = lSystemVisualData.StartString; 
-        //Transform rotation
-        transform.rotation = Quaternion.Euler(new Vector3(-90, 0, -90));   
+        currentString = lSystemVisualData.StartString;  
         
         rules = new Dictionary<char, string>(); 
         foreach (var item in lSystemVisualData.dictionary) { 
@@ -64,8 +66,8 @@ public class Generation : MonoBehaviour {
         //Turtle Transform Info
         turtle = new GameObject("turtle");
         turtle.tag = "Validate";
-        turtle.transform.rotation = transform.rotation;
-        turtle.transform.position = transform.position;
+        turtle.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, -90));
+        turtle.transform.position = new Vector3(0,0,0);
 
         //overwrite current string is start string was blank
         if (currentString == "") {
@@ -83,9 +85,16 @@ public class Generation : MonoBehaviour {
 
         //Draw and make mesh
         Gen();
+        gameObject.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Coral");
 
-        MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform);
-         
+        List<Color> colours = new List<Color>();
+        foreach (var item in gameObject.GetComponent<MeshFilter>().mesh.vertices) {
+            colours.Add(lSystemVisualData.Colour.Evaluate(item.y / maxY));
+        }
+        gameObject.GetComponent<MeshFilter>().mesh.colors = colours.ToArray();
+        //MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform);
+        gameObject.GetComponent<MeshFilter>().mesh.RecalculateBounds();
+        gameObject.GetComponent<MeshFilter>().mesh.RecalculateNormals();
     }
     private void Update(){  
         //rotating the object
@@ -99,31 +108,68 @@ public class Generation : MonoBehaviour {
         turtle.transform.position = turtle.transform.position + (Vector3.down * Gravity);
         return turtle.transform.position;
     }
-
-    private void DrawBranch(Vector3 pA, Vector3 pB, float length, out TransformInfo ti) {
-
-        GameObject gm = new GameObject("Branch", typeof(MeshFilter), typeof(MeshRenderer));
-        Vector3 between = pB - pA;
-        float thicknessMultiplier = (float)(UnityEngine.Random.Range(0f, 5f) * (float)lSystemVisualData.randomThickness) / 50f;
-
-        //shape
-        if (lSystemVisualData.shape == Shape.PrimitiveCube) {
-            gm.GetComponent<MeshFilter>().mesh = MeshExstension.PrimitiveShape(PrimitiveType.Cube);
-            gm.transform.localScale = new Vector3((length) / lSystemVisualData.thickness + thicknessMultiplier, (between.magnitude) * 1f, (length) / lSystemVisualData.thickness + thicknessMultiplier);
-        } else {
-            gm.GetComponent<MeshFilter>().mesh = MeshExstension.PrimitiveShape(PrimitiveType.Cylinder);
-            gm.transform.localScale = new Vector3((length) / lSystemVisualData.thickness + thicknessMultiplier, (between.magnitude) * 0.5f, (length) / lSystemVisualData.thickness + thicknessMultiplier);
+    bool drawTri = true;
+    GameObject gm;
+    private void DrawBranch(Vector3 pA, Vector3 pB, float length, int triRowCount = -1) {
+        if (true) {
+            triRowCount = gameObject.GetComponent<MeshFilter>().mesh.vertices.Length - Points;
         }
-         
-        gm.GetComponent<MeshRenderer>().material.color = lSystemVisualData.Colour.Evaluate(0);
-        //transform
-        gm.transform.localPosition = pA + (between / 2.0f);
+        if (gm == null) {
+            gm = new GameObject();
+        }
+        Vector3 between = pB - pA;
         gm.transform.LookAt(pB);
-        gm.transform.Rotate(90, 0, 0);
-        gm.tag = "Validate";
-        ti = new TransformInfo(new TransformHolder(gm.transform), length);
-        meshObjectList.Add(gm.GetComponent<MeshFilter>());
-
+        Vector3 e = pA + (between / 2.0f);
+        gameObject.GetComponent<MeshFilter>().mesh.vertices = CombineVector3Arrays(gameObject.GetComponent<MeshFilter>().mesh.vertices, MakeCircle(Points, e, gm.transform.rotation));
+        if (drawTri == true) {
+            gameObject.GetComponent<MeshFilter>().mesh.triangles = CombineIntArrays(gameObject.GetComponent<MeshFilter>().mesh.triangles, MakeTris(Points, triRowCount));
+        } else {
+            drawTri = true;
+        }
+        if (maxY < e.y) {
+            maxY = e.y;
+        }
+    }
+    
+    public Vector3[] MakeCircle(int numOfPoints, Vector3 localPosition, Quaternion rotion) { 
+        List<Vector3> vertexList = new List<Vector3>();
+        float angle = 20f;
+        float z = 0f;  
+        for (int i = 0; i < numOfPoints; i++) {
+            float x = Mathf.Sin(Mathf.Deg2Rad * angle) * xradius;
+            float y = Mathf.Cos(Mathf.Deg2Rad * angle) * yradius;
+            
+            Vector3 rot =  rotion * new Vector3(x, y, z);
+            vertexList.Add(rot + localPosition); 
+            angle += (360f / numOfPoints); 
+        }
+        return vertexList.ToArray();
+    }  
+    public int[] MakeTris(int numOfPoints, int prevcount) {
+        List<int> t = new List<int>();
+        for (int i = 0; i < numOfPoints - 1; i++) { 
+            int t0 = prevcount - 2 - i;
+            int t1 = prevcount - 1 - i;
+            int t4 = prevcount + numOfPoints - 2 - i;
+            int t5 = prevcount + numOfPoints - 1 - i;
+            if (t0 >= 0) {
+                t.Add(t4); t.Add(t0); t.Add(t5); 
+                t.Add(t0); t.Add(t1); t.Add(t5); 
+            }
+        }
+        return t.ToArray();
+    }
+    Vector3[] CombineVector3Arrays(Vector3[] array1, Vector3[] array2){
+        var array3 = new Vector3[array1.Length + array2.Length];
+    System.Array.Copy(array1, array3, array1.Length);
+        System.Array.Copy(array2, 0, array3, array1.Length, array2.Length);
+        return array3;
+    }
+    int[] CombineIntArrays(int[] array1, int[] array2) {
+        var array = new int[array1.Length + array2.Length];
+        System.Array.Copy(array1, array, array1.Length);
+        System.Array.Copy(array2, 0, array, array1.Length, array2.Length);
+        return array;
     }
     private void Gen() {
         currentLength = lSystemVisualData.length;
@@ -136,14 +182,14 @@ public class Generation : MonoBehaviour {
         List<TransformInfo> LeafNodes = new List<TransformInfo>();
         List<char> ignoredWarnings = new List<char> {'(',')','1','2','3','4','5','6','7','8','9','0','.' };  //warning ignore data likely to be passed in variables
         highestY = 1;
-
+        int Tindex = -1;
         for (int i = 0; i < currentString.Length; i++) {  
-
+            
             //Current character
             Char c = currentString.ToCharArray()[i];
 
             //Current values
-            TransformInfo current = new TransformInfo(new TransformHolder(turtle.transform), currentLength);
+            TransformInfo current = new TransformInfo(new TransformHolder(turtle.transform), currentLength, -1);
             float l = currentLength + (UnityEngine.Random.Range(0, lSystemVisualData.lengthVariance * 100f) / 100f);
             float ang = lSystemVisualData.angle; 
 
@@ -165,7 +211,8 @@ public class Generation : MonoBehaviour {
                         }
                     } 
                     //Draw branch 
-                    DrawBranch(current.transform.position, Move(Vector3.forward, l, Gravity), currentLength, out current); 
+                    DrawBranch(current.transform.position, Move(Vector3.forward, l, Gravity), currentLength, Tindex);
+                    Tindex = -1;
                     break;
                 case 'f': //move foward without draw
                     Move(Vector3.forward, l);
@@ -174,7 +221,7 @@ public class Generation : MonoBehaviour {
                     Move(-Vector3.forward, l);
                     break;
                 case 'B': // back and draw 
-                    DrawBranch(current.transform.position, Move(-Vector3.forward, l), currentLength, out current); 
+                    DrawBranch(current.transform.position, Move(-Vector3.forward, l), currentLength); 
                     break; 
                 case '+':
                     //extract paramiter 
@@ -203,14 +250,15 @@ public class Generation : MonoBehaviour {
                 case '<': turtle.transform.Rotate(Vector3.forward * lSystemVisualData.angle); break; //roll
                 case '>': turtle.transform.Rotate(Vector3.forward * -lSystemVisualData.angle); break; //roll   
                 case '[':  //push from stack
-                    transformStack.Push(new TransformInfo(current.transform, currentLength));
-
+                    transformStack.Push(new TransformInfo(current.transform, currentLength, gameObject.GetComponent<MeshFilter>().mesh.vertices.Length - Points));
+                    
                     //Check if already a leaf location
                     for (int o = 0; o < LeafNodes.Count; o++) 
                         if (current.transform.position == LeafNodes[o].transform.position) 
                             LeafNodes.RemoveAt(o);
                     break;  
                 case ']': //pop from stack
+                    drawTri = false;
                     LeafNodes.Add(current);
                     //Highest Y is used in leaf texture to find max Y value possible
                     if (highestY < current.transform.position.y)
@@ -218,7 +266,8 @@ public class Generation : MonoBehaviour {
                     //set to current
                     current = transformStack.Pop();
                     current.SetTransform(ref turtle);
-                    currentLength = current.branchLength; 
+                    currentLength = current.branchLength;
+                    Tindex = current.triIndex;
                     break;  
                 default:
                     //create a warning, and not repeat the warning

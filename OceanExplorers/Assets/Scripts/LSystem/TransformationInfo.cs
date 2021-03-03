@@ -11,10 +11,11 @@ public class TransformInfo {
     /// <param name="_transform">Transformholder to hold location</param>
     /// <param name="_length">Branch length</param>
     /// <param name="_mesh"></param>
-    public TransformInfo(TransformHolder _transform, float _length){
+    public TransformInfo(TransformHolder _transform, float _length, int triIndex){
         transform = _transform; 
         branchLength = _length;  
         Y = transform.position.y;
+        this.triIndex = triIndex;
     }
     /// <summary>
     /// Create blank transform info
@@ -38,7 +39,8 @@ public class TransformInfo {
     //Y value
     public float Y;
     //branch Length
-    public float branchLength;  
+    public float branchLength;
+    public int triIndex;
 }
 
 /// <summary>
