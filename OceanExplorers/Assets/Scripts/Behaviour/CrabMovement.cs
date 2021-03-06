@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CrabMovement : MonoBehaviour
 {
     [SerializeField]
     Vector3 gameArea = Vector3.zero;
-    [SerializeField]
-    [Range(0.1f, 5.0f)]
-    float crabSpeed;
-    [SerializeField]
-    [Range(1.0f, 5.0f)]
-    float crabRotSpeed;
+    //[SerializeField]
+    //[Range(0.1f, 5.0f)]
+    //float crabSpeed;
+    //[SerializeField]
+    //[Range(1.0f, 5.0f)]
+    //float crabRotSpeed;
     Vector3 newPos = Vector3.zero;
     Quaternion targetRotation;
     [SerializeField]
@@ -20,32 +21,38 @@ public class CrabMovement : MonoBehaviour
     int rayLength = 6;
 
     Vector3 direction;
-    int layerMask = 1 << 8;
+    //int layerMask = 1 << 8;
+    NavMeshAgent agent;
 
     private void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
         targetRotation = Quaternion.LookRotation(newPos - transform.position);
         TargetPosInstant();
+
     }
     private void Update()
     {
         direction = (newPos - transform.position).normalized;
+        Debug.DrawRay(transform.position, direction * rayLength, Color.red);
+        agent.destination = newPos;
+        TargetPos();
 
+        //if (!Physics.Raycast(this.transform.position, direction, rayLength, layerMask))
+        //{
+        //    Debug.DrawRay(transform.position, direction * rayLength, Color.red);
 
-        if (!Physics.Raycast(this.transform.position, direction, rayLength, layerMask))
-        {
-            Debug.DrawRay(transform.position, direction * rayLength, Color.red);
+        //    transform.position = Vector3.MoveTowards(this.transform.position, newPos, crabSpeed * Time.deltaTime);
+        //    transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(direction), crabRotSpeed * Time.deltaTime);
 
-            transform.position = Vector3.MoveTowards(this.transform.position, newPos, crabSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(direction), crabRotSpeed * Time.deltaTime);
+        //    TargetPos();
+        //}
+        //else
+        //{
 
-            TargetPos();
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(this.transform.position, direction * 1, crabSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(direction * 1), crabRotSpeed * Time.deltaTime);
-        }
+        //    transform.position = Vector3.MoveTowards(this.transform.position, direction * 1, crabSpeed * Time.deltaTime);
+        //    transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(direction * 1), crabRotSpeed * Time.deltaTime);
+        //}
 
     }
 

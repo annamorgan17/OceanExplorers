@@ -1,2 +1,10 @@
-Base path: 'C:/Program Files/Unity/Hub/Editor/2019.3.15f1/Editor/Data', plugins path 'C:/Program Files/Unity/Hub/Editor/2019.3.15f1/Editor/Data/PlaybackEngines'
+Base path: 'E:/unity install/Unity/19.13.15/Editor/Data', plugins path 'E:/unity install/Unity/19.13.15/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
+Cmd: preprocess
+  error: 1 plat 21 at (120): Unrecognized #pragma directive: region
+  error: 1 plat 21 at (146): Unrecognized #pragma directive: endregion
+  error: 1 plat 21 at (148): Unrecognized #pragma directive: region
+  error: 1 plat 21 at (182): Unrecognized #pragma directive: endregion
+  insize=6290 outsize=1331 ok=1
+Cmd: preprocess
+  insize=5928 outsize=2008 ok=1
