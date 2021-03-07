@@ -754,16 +754,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 697f31e8fa875e549aa9fef2f69182c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishprefab: {fileID: 1336688621205060, guid: 925bc3fd925fd0c4c80d7e83b67ba239, type: 3}
+  data: {fileID: 11400000, guid: 4811a8fe40ec32447b9dbf2a0f0a8f02, type: 2}
   allFish: []
   goalPos: {x: 0, y: 0, z: 0}
   setPoint: {x: -21.2, y: -27.61533, z: 27.1}
-  swimLimits: {x: 90, y: 35, z: 80}
-  randomAmount: 10000
-  maxSpeed: 20
-  fishDistance: 4
-  rotationSpeed: 7
-  fishAmount: 50
 --- !u!4 &327025912
 Transform:
   m_ObjectHideFlags: 0
@@ -1541,6 +1535,7 @@ MonoBehaviour:
   FogMinDencity: 0.00565
   FogMaxDencity: 0.0092
   FogTransition: 30
+  water: {fileID: 0}
 --- !u!1 &1191091334
 GameObject:
   m_ObjectHideFlags: 0
@@ -2162,9 +2157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d236106a9be7d64d9c524bd8c107f94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameArea: {x: 20, y: 10, z: 20}
-  randomAmount: 100000
-  rayLength: 20
+  data: {fileID: 11400000, guid: d4d35864dfb8a5a4689d7d396fb70b86, type: 2}
 --- !u!4 &1336881814 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4188331867383602, guid: d2d67fda15fa26342932fffde03aeb05,
@@ -2378,9 +2371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d236106a9be7d64d9c524bd8c107f94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameArea: {x: 20, y: 10, z: 20}
-  randomAmount: 100000
-  rayLength: 20
+  data: {fileID: 11400000, guid: d4d35864dfb8a5a4689d7d396fb70b86, type: 2}
 --- !u!4 &1431498181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4188331867383602, guid: d2d67fda15fa26342932fffde03aeb05,
@@ -3255,15 +3246,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4188331867383602, guid: d2d67fda15fa26342932fffde03aeb05, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 55.83
+      value: 176.8
       objectReference: {fileID: 0}
     - target: {fileID: 4188331867383602, guid: d2d67fda15fa26342932fffde03aeb05, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -80.47
+      value: -78.3
       objectReference: {fileID: 0}
     - target: {fileID: 4188331867383602, guid: d2d67fda15fa26342932fffde03aeb05, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 49.8
+      value: 76.3
       objectReference: {fileID: 0}
     - target: {fileID: 4188331867383602, guid: d2d67fda15fa26342932fffde03aeb05, type: 3}
       propertyPath: m_LocalRotation.x

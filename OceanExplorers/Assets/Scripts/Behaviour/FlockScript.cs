@@ -12,12 +12,12 @@ public class FlockScript : MonoBehaviour
 
     void Start()
     {
-        speed = Random.Range(1, fishManager.maxSpeed);
+        speed = Random.Range(1, fishManager.data.maxSpeed);
     }
 
     void Update()
     {
-        Bounds b = new Bounds(fishManager.setPoint, fishManager.swimLimits * 2);
+        Bounds b = new Bounds(fishManager.setPoint, fishManager.data.swimLimits * 2);
 
         if (!b.Contains(transform.position))
         {
@@ -31,8 +31,8 @@ public class FlockScript : MonoBehaviour
         if (turning)
         {
             Vector3 direction = fishManager.setPoint - transform.position;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), fishManager.rotationSpeed * Time.deltaTime);
-            speed = Random.Range(1, fishManager.maxSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), fishManager.data.rotationSpeed * Time.deltaTime);
+            speed = Random.Range(1, fishManager.data.maxSpeed);
         }
         else
         {
@@ -64,7 +64,7 @@ public class FlockScript : MonoBehaviour
             if (fish != this.gameObject)
             {
                 distance = Vector3.Distance(fish.transform.position, this.transform.position);
-                if (distance <= fishManager.fishDistance)
+                if (distance <= fishManager.data.fishDistance)
                 {
                     center += fish.transform.position;
                     groupSize++;
@@ -86,7 +86,7 @@ public class FlockScript : MonoBehaviour
 
             Vector3 direction = (center + avoid) - transform.position;
             if (direction != fishManager.setPoint)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), fishManager.rotationSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), fishManager.data.rotationSpeed * Time.deltaTime);
 
         }
 
