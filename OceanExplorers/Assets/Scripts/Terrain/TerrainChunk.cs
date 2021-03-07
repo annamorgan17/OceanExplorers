@@ -60,7 +60,7 @@ public class TerrainChunk {
 		}
 
 		maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
-
+		meshObject.AddComponent<NavData>();
 	}
 
 	public void Load() {

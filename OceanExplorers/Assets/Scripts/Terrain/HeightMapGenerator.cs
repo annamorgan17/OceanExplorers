@@ -24,8 +24,8 @@ public static class HeightMapGenerator
 				}
 			}
 		}
-
-		return new HeightMap(values, minValue, maxValue);
+		HeightMap heightmap = new HeightMap(values, minValue, maxValue);
+		return heightmap;
 	}
 
 }

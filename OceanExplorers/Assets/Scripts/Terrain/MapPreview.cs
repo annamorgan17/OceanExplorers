@@ -22,14 +22,14 @@ public class MapPreview : MonoBehaviour {
     public void DrawMapInEditor() {
         textureData.ApplyToMaterial(terrainMaterial);
         textureData.UpdateMeshHeights(terrainMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
-        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero); 
-        //should prob change to switch
+        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero);
+
         if (mode == DrawMode.NoiseMap) {
-            DrawTexture(TextureGenerator.TexturefromHeightMap(heightMap.values));
+            DrawTexture(TextureGenerator.TextureFromHeightMap(heightMap));
         } else if (mode == DrawMode.DrawMesh) {
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.values, meshSettings, editorPreviewLOD));
         } else if (mode == DrawMode.FalloffMap) {
-            DrawTexture(TextureGenerator.TexturefromHeightMap(FalloffGenerator.GenerateFalloffMap(meshSettings.numVertsPerLine)));
+            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(FalloffGenerator.GenerateFalloffMap(meshSettings.numVertsPerLine), 0, 1)));
         }
     }
 
