@@ -9,15 +9,17 @@ public class FlockScript : MonoBehaviour
 
     float speed;
     bool turning = false;
+    GameObject bubble;
 
     void Start()
     {
         speed = Random.Range(1, fishManager.data.maxSpeed);
+        Bubbles(fishManager.data.bubblesPrefab);
     }
 
     void Update()
     {
-        Bounds b = new Bounds(fishManager.setPoint, fishManager.data.swimLimits * 2);
+        Bounds b = new Bounds(fishManager.data.setPoint, fishManager.data.swimLimits * 2);
 
         if (!b.Contains(transform.position))
         {
@@ -30,9 +32,10 @@ public class FlockScript : MonoBehaviour
 
         if (turning)
         {
-            Vector3 direction = fishManager.setPoint - transform.position;
+            Vector3 direction = fishManager.data.setPoint - transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), fishManager.data.rotationSpeed * Time.deltaTime);
             speed = Random.Range(1, fishManager.data.maxSpeed);
+            
         }
         else
         {
@@ -41,6 +44,10 @@ public class FlockScript : MonoBehaviour
                 ApplyRules();
             }
 
+        }
+        if(Random.Range(0, fishManager.data.randomAmount) < 10)
+        {
+            Bubbles(fishManager.data.bubblesPrefab);
         }
         transform.Translate(0, 0, Time.deltaTime * speed);
 
@@ -51,8 +58,8 @@ public class FlockScript : MonoBehaviour
         GameObject[] fishArray;
         fishArray = fishManager.allFish;
 
-        Vector3 center = fishManager.setPoint;
-        Vector3 avoid = fishManager.setPoint;
+        Vector3 center = fishManager.data.setPoint;
+        Vector3 avoid = fishManager.data.setPoint;
         Vector3 goalPos = fishManager.goalPos;
 
         float averageSpeed = 0.1f;
@@ -69,7 +76,7 @@ public class FlockScript : MonoBehaviour
                     center += fish.transform.position;
                     groupSize++;
 
-                    if (distance < 1)
+                    if (distance < 2)
                     {
                         avoid = avoid + (this.transform.position - fish.transform.position);
                     }
@@ -85,11 +92,18 @@ public class FlockScript : MonoBehaviour
             speed = averageSpeed / groupSize;
 
             Vector3 direction = (center + avoid) - transform.position;
-            if (direction != fishManager.setPoint)
+            if (direction != fishManager.data.setPoint)
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), fishManager.data.rotationSpeed * Time.deltaTime);
 
         }
 
     }
+
+    private void Bubbles(GameObject bubblePrefab)
+    {
+        bubble = Instantiate(bubblePrefab, this.transform.position, Quaternion.LookRotation(fishManager.mainCamera.transform.position));
+        Destroy(bubble, 10f);
+                
+    }  
 
 }

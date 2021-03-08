@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Flock Data
   m_EditorClassIdentifier: 
   swimLimits: {x: 40, y: 40, z: 40}
+  setPoint: {x: -0.7, y: -33, z: -9.5}
   randomAmount: 10000
   maxSpeed: 12.04
-  fishDistance: 4.68
+  fishDistance: 2.55
   rotationSpeed: 5.98
   fishAmount: 29
   fishprefab: {fileID: 1336688621205060, guid: 925bc3fd925fd0c4c80d7e83b67ba239, type: 3}
+  bubblesPrefab: {fileID: 5574959257128656683, guid: 0c949920cce5d2a4e963371352586b20,
+    type: 3}
