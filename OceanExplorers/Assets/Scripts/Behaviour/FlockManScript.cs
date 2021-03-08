@@ -5,11 +5,9 @@ using UnityEngine;
 public class FlockManScript : MonoBehaviour
 {
     public FlockData data;
+    public Camera mainCamera;
     [HideInInspector] public GameObject[] allFish = null;
     [HideInInspector] public Vector3 goalPos = Vector3.zero;
-
-
-    public GameObject mainCamera;
     void Start()
     {
         goalPos = data.setPoint;

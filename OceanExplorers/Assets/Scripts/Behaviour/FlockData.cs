@@ -12,6 +12,6 @@ public class FlockData : ScriptableObject {
     [Range(2.0f, 500.0f)] public int fishAmount = 10;
 
     public GameObject fishprefab = null;
-    public GameObject bubblesPrefab = null;
+    public GameObject bubblePrefab = null;
     
 }

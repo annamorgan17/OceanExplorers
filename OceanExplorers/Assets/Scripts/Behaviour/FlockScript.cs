@@ -9,12 +9,12 @@ public class FlockScript : MonoBehaviour
 
     float speed;
     bool turning = false;
-    GameObject bubble;
+    GameObject bubble = null;
 
     void Start()
     {
         speed = Random.Range(1, fishManager.data.maxSpeed);
-        Bubbles(fishManager.data.bubblesPrefab);
+        Bubbles(fishManager.data.bubblePrefab);
     }
 
     void Update()
@@ -47,7 +47,7 @@ public class FlockScript : MonoBehaviour
         }
         if(Random.Range(0, fishManager.data.randomAmount) < 10)
         {
-            Bubbles(fishManager.data.bubblesPrefab);
+            Bubbles(fishManager.data.bubblePrefab);
         }
         transform.Translate(0, 0, Time.deltaTime * speed);
 
@@ -103,7 +103,7 @@ public class FlockScript : MonoBehaviour
     {
         bubble = Instantiate(bubblePrefab, this.transform.position, Quaternion.LookRotation(fishManager.mainCamera.transform.position));
         Destroy(bubble, 10f);
-                
-    }  
+
+    }
 
 }
