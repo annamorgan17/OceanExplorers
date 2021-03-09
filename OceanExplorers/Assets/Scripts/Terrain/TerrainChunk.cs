@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-
+using System.Collections;
+using System.Collections.Generic;
 public class TerrainChunk {
 	const float colliderGenerationDistanceThreshold = 5;
 	public event System.Action<TerrainChunk, bool> onVisibilityChanged;
@@ -61,6 +62,36 @@ public class TerrainChunk {
 
 		maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
 		meshObject.AddComponent<NavData>();
+
+		//Create Objects ontop
+		PossonData data = new PossonData();
+		data.radius = 7;
+		data.sampleRegionSize = bounds.size;
+		data.numSamplesBeforeRejection = 2;
+
+		List<Vector2> points = new List<Vector2>();
+
+		points = PossonDiscSampling.GeneratePoints(data.radius, data.sampleRegionSize, data.numSamplesBeforeRejection);
+
+		if (points != null) {
+			foreach (Vector2 point in points) {
+				GameObject gm = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+				float sampleHeight;
+				Vector3 pos = new Vector3(position.x + point.x - (bounds.size.x / 2), 90, position.y + point.y - (bounds.size.y / 2));
+				//change to be less intensive 
+				gm.transform.position = pos;
+				gm.transform.SetParent(meshObject.transform); 
+				RaycastHit hit;
+				Ray ray = new Ray(new Vector3(pos.x, 90, pos.y), Vector3.down);
+				if (Physics.Raycast(ray, out hit)) {
+					Debug.Log("Hit point: " + hit.point);
+				}
+
+				
+			}
+		} else {
+			Debug.LogError("points was null");
+		}
 	}
 
 	public void Load() {

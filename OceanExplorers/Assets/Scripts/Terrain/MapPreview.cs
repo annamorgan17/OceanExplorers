@@ -7,7 +7,7 @@ public class MapPreview : MonoBehaviour {
     public MeshFilter meshFilter;
     public MeshRenderer meshRenderer;
 
-    public enum DrawMode { NoiseMap, DrawMesh, FalloffMap }
+    public enum DrawMode { NoiseMap, DrawMesh, FalloffMap}
     public DrawMode mode;
 
     public MeshSettings meshSettings;
@@ -30,7 +30,7 @@ public class MapPreview : MonoBehaviour {
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.values, meshSettings, editorPreviewLOD));
         } else if (mode == DrawMode.FalloffMap) {
             DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(FalloffGenerator.GenerateFalloffMap(meshSettings.numVertsPerLine), 0, 1)));
-        }
+        } 
     }
 
     public void DrawTexture(Texture2D texture) { 
