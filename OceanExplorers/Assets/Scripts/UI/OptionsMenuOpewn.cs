@@ -17,6 +17,14 @@ public class OptionsMenuOpewn : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape)) {
             CanvasUI.SetActive(!CanvasUI.activeSelf);
+            CanvasUI.transform.position = gameObject.transform.position;
+            CanvasUI.transform.rotation = gameObject.transform.rotation;
+            CanvasUI.transform.Translate(CanvasUI.transform.forward * 5f);
+        }
+        if (CanvasUI.activeSelf) {
+            if (Vector3.Distance(CanvasUI.transform.position, gameObject.transform.position) >= 20f) { // remove if the character walked to far away
+                CanvasUI.SetActive(false);
+            } 
         }
     }
 }
