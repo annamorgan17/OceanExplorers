@@ -5,7 +5,7 @@ using UnityEngine;
 public class FishData : ScriptableObject {
     public FishInfo[] fishInformation;
 }
-
+[System.Serializable]
 public class FishInfo {
     public GameObject prefrab;
     public string name;
