@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: New L System Visual Data
+  m_EditorClassIdentifier: Assembly-CSharp::LSystemVisualData
+  Colour:
+    blendMode: 0
+    randomColour: 0
+    keys:
+    - colour: {r: 0.20741367, g: 0.28705937, b: 0.5566038, a: 1}
+      time: 0.07847296
+    - colour: {r: 0.18503025, g: 0.6226415, b: 0.5605611, a: 1}
+      time: 0.28950158
+    - colour: {r: 0.84297633, g: 0.7492853, b: 0.5999412, a: 1}
+      time: 0.71580064
+    - colour: {r: 0.84297633, g: 0.7492853, b: 0.5999412, a: 1}
+      time: 0.7910923
+  angle: 25
+  rotate: 0
+  RotationAngle: 90
+  length: 1.71
+  thickness: 21
+  generations: 2
+  lengthVariance: 0
+  ammendmentChance: 14
+  randomThickness: 2
+  pillarHeight: 0
+  shape: 1
+  LeafGeneration: 3
+  StartString: 
+  Variables:
+  - Character: 68
+    Value: 10
+  dictionary:
+  - Key: 70
+    Value: FF-[<-F+F+F>]+[<+F-F-F>]
