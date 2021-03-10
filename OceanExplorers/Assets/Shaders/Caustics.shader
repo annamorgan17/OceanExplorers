@@ -122,7 +122,7 @@ Shader "Water/Caustics"
                 o.Albedo += (caustics);  
             } 
             o.Metallic = _Metallic;
-            o.Smoothness = _Smoothness; 
+            o.Smoothness = _Smoothness;  
             //o.Normal = UnpackNormal (tex2D (_BumpMap, IN.uv_BumpMap));
             o.Alpha = 1;
         }
