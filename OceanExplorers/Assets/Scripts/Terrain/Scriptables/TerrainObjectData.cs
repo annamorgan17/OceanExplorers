@@ -11,5 +11,6 @@ public class TerrainObjectData : ScriptableObject {
 }
 [System.Serializable] public class TerrainObject {
     public GameObject objectPrefab;
-    public bool surfaceSpawn = false; 
+    public bool surfaceSpawn = false;
+    public bool randomRotation = true;
 }

@@ -70,11 +70,13 @@ public class TerrainChunk {
 		meshObject.AddComponent<NavData>();
 
 		SpawnParent = new GameObject("Spawn Parent");
-		SpawnParent.transform.SetParent(SpawnParent.transform);
+		SpawnParent.transform.SetParent(meshObject.transform);
 
 	}
 	List<Vector2> points = new List<Vector2>();
-	private void GenerateObjects() { 
+	bool GeneratedObjects = false;
+	private void GenerateObjects() {
+		GeneratedObjects = true;
 		PossonData data = possonData; 
 		data.sampleRegionSize = new Vector2( heightMap.values.GetLength(0), heightMap.values.GetLength(1));  
 		points = PossonDiscSampling.GeneratePoints(data.radius, data.sampleRegionSize, data.numSamplesBeforeRejection);
@@ -95,10 +97,12 @@ public class TerrainChunk {
 										bounds.center.x + point.x - (bounds.size.x / 2), 
 										sampleHeight, 
 										bounds.center.y + point.y - (bounds.size.y / 2));
-
+                if (to.randomRotation) {
+					//gm.transform.localScale = new Vector3(0, Random.Range(0,360), 0);
+                }
 				//change to be less intensive 
 				gm.transform.position = pos;
-				gm.transform.SetParent(meshObject.transform);
+				gm.transform.SetParent(SpawnParent.transform);
 			}
 		} else {
 			Debug.LogError("points was null");
@@ -152,7 +156,11 @@ public class TerrainChunk {
 					}
 				}
 
-
+                if (lodIndex == 0) {
+					SpawnParent.SetActive(true);
+                } else {
+					SpawnParent.SetActive(false); 
+				}
 			}
 
 			if (wasVisible != visible) {
@@ -162,9 +170,9 @@ public class TerrainChunk {
 					onVisibilityChanged(this, visible);
 				}
 			}
-
-
-			GenerateObjects();
+			if (GeneratedObjects == false) {
+				GenerateObjects();
+			}
 		}
 	}
 
