@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Plant (2)
+  m_EditorClassIdentifier: Assembly-CSharp::LSystemVisualData
+  Colour:
+    blendMode: 0
+    randomColour: 0
+    keys:
+    - colour: {r: 1, g: 1, b: 1, a: 1}
+      time: 0
+    - colour: {r: 0, g: 0, b: 0, a: 1}
+      time: 1
+  angle: 25
+  rotate: 0
+  RotationAngle: 90
+  length: 4.49
+  generations: 2
+  lengthVariance: 0
+  ammendmentChance: 0
+  randomThickness: 0
+  pillarHeight: 0
+  points: 8
+  radius: {x: 1, y: 1}
+  LeafGeneration: 1
+  StartString: 
+  Variables: []
+  dictionary:
+  - Key: 70
+    Value: F

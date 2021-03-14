@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu()]
 public class TerrainObjectData : ScriptableObject {
-    [SerializeField] private TerrainObject[] terrainList = new TerrainObject[1];
+    [SerializeField] private List<TerrainObject> terrainList = new List<TerrainObject>();
     [HideInInspector] public TerrainObject getRandomObject() { 
-        int randomValue = Random.Range(0, terrainList.Length);
+        int randomValue = Random.Range(0, terrainList.Count);
         return terrainList[randomValue];
     }
 }
