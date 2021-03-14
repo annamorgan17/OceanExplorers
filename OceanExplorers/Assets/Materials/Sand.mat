@@ -87,7 +87,7 @@ Material:
     - _SurfaceNoiseCutoff: 0
     - _UVSec: 0
     - _VertexColour: 0
-    - _WaterHeight: 10
+    - _WaterHeight: 8.5
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
