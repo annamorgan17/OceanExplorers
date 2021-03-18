@@ -23,6 +23,7 @@ Shader "Water/Caustics"
     }
     SubShader
     {
+        
         Tags { "LightMode"="ForwardBase" "RenderType"="Opaque" }
         LOD 200  
         CGPROGRAM
@@ -128,13 +129,15 @@ Shader "Water/Caustics"
         }
         ENDCG
         
+        GrabPass {"_MainTex2"}
         //normal pass (although does mess with albedo currently)
         //https://bgolus.medium.com/normal-mapping-for-a-triplanar-shader-10bf39dca05a#668e
         //https://github.com/bgolus/Normal-Mapping-for-a-Triplanar-Shader/blob/master/TriplanarSwizzle.shader
         
         Pass
         {
-            CGPROGRAM
+            Blend SrcAlpha OneMinusSrcAlpha
+            CGPROGRAM  
             #pragma vertex vert
             #pragma fragment frag
 
@@ -159,6 +162,8 @@ Shader "Water/Caustics"
                 half3 worldNormal : TEXCOORD1;
             };
 
+            uniform sampler2D _MainTex2;
+            
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
@@ -187,9 +192,11 @@ Shader "Water/Caustics"
 
                 // calculate triplanar uvs
                 // applying texture scale and offset values ala TRANSFORM_TEX macro
-                float2 uvX = i.worldPos.zy * _MainTex_ST.xy + _MainTex_ST.zw;
-                float2 uvY = i.worldPos.xz * _MainTex_ST.xy + _MainTex_ST.zw;
-                float2 uvZ = i.worldPos.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                float scale = 0.05;
+                float4 TextureScale = float4(scale,scale,scale,scale);
+                float2 uvX = i.worldPos.zy * TextureScale.xy + TextureScale.zw;
+                float2 uvY = i.worldPos.xz * TextureScale.xy + TextureScale.zw;
+                float2 uvZ = i.worldPos.xy * TextureScale.xy + TextureScale.zw;
 
                 // offset UVs to prevent obvious mirroring
             #if defined(TRIPLANAR_UV_OFFSET)
@@ -208,9 +215,9 @@ Shader "Water/Caustics"
             #endif
 
                 // albedo textures
-                fixed4 colX = tex2D(_MainTex, uvX);
-                fixed4 colY = tex2D(_MainTex, uvY);
-                fixed4 colZ = tex2D(_MainTex, uvZ);
+                fixed4 colX = tex2D(_MainTex2, uvX);
+                fixed4 colY = tex2D(_MainTex2, uvY);
+                fixed4 colZ = tex2D(_MainTex2, uvZ);
                 fixed4 col = colX * triblend.x + colY * triblend.y + colZ * triblend.z;
 
                 // tangent space normal maps
@@ -248,7 +255,7 @@ Shader "Water/Caustics"
                 // preview directional lighting
                 // return fixed4(ndotl.xxx, 1);
 
-                return fixed4(col.rgb * lighting, 1);
+                return fixed4(lighting, 0.5);
             }
             ENDCG
         }

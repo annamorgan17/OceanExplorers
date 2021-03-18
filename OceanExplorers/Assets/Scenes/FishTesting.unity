@@ -2454,13 +2454,13 @@ GameObject:
   - component: {fileID: 1416169247}
   - component: {fileID: 1416169246}
   - component: {fileID: 1416169245}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Water Surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &1416169245
 MeshCollider:
   m_ObjectHideFlags: 0
