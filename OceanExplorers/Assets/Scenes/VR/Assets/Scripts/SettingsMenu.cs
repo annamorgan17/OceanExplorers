@@ -44,7 +44,7 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-    /*private void ButtonClicked(int buttonID)
+    private void ButtonClicked(int buttonID)
     {
         switch (buttonID)
         {
@@ -67,7 +67,7 @@ public class SettingsMenu : MonoBehaviour
 
         }
 
-    }*/
+    }
     
     private void CursorUnlock()
     {
