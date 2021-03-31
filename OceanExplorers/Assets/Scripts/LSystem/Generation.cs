@@ -110,24 +110,25 @@ public class Generation : MonoBehaviour {
         turtle.transform.position = turtle.transform.position + (Vector3.down * Gravity);
         return turtle.transform.position;
     }
-    bool drawTri = true;
     GameObject gm;
-    private void DrawBranch(Vector3 pA, Vector3 pB, float length, int triRowCount = -1) {
-        if (true) {
-            triRowCount = gameObject.GetComponent<MeshFilter>().mesh.vertices.Length - lSystemVisualData.points;
-        }
+    private void DrawBranch(Vector3 pA, Vector3 pB, float length) {
         if (gm == null) {
             gm = new GameObject();
         }
         Vector3 between = pB - pA;
         gm.transform.LookAt(pB);
         Vector3 e = pA + (between / 2.0f);
-        gameObject.GetComponent<MeshFilter>().mesh.vertices = CombineVector3Arrays(gameObject.GetComponent<MeshFilter>().mesh.vertices, MakeCircle(lSystemVisualData.points, e, gm.transform.rotation));
-        if (drawTri == true) {
-            gameObject.GetComponent<MeshFilter>().mesh.triangles = CombineIntArrays(gameObject.GetComponent<MeshFilter>().mesh.triangles, MakeTris(lSystemVisualData.points, triRowCount));
-        } else {
-            drawTri = true;
+        Mesh cylinder = new Mesh();
+
+        MeshExstension.CreateCylinder(cylinder, 1, 1, length, 8, 1, false, transform.TransformPoint(between));
+
+        for (int i = 0; i < cylinder.vertices.Length; i++) {
+            cylinder.vertices[i] = cylinder.vertices[i] + (between * 100);
         }
+
+        gameObject.GetComponent<MeshFilter>().mesh.vertices = CombineVector3Arrays(gameObject.GetComponent<MeshFilter>().mesh.vertices, cylinder.vertices);
+        gameObject.GetComponent<MeshFilter>().mesh.triangles = CombineIntArrays(gameObject.GetComponent<MeshFilter>().mesh.triangles, cylinder.triangles);
+        Debug.LogError(gameObject.GetComponent<MeshFilter>().mesh.vertices.Length);
         if (maxY < e.y) {
             maxY = e.y;
         }
@@ -223,7 +224,7 @@ public class Generation : MonoBehaviour {
                         }
                     } 
                     //Draw branch 
-                    DrawBranch(current.transform.position, Move(Vector3.forward, l, Gravity), currentLength, Tindex);
+                    DrawBranch(current.transform.position, Move(Vector3.forward, l, Gravity), currentLength);
                     Tindex = -1;
                     break;
                 case 'f': //move foward without draw
@@ -269,8 +270,7 @@ public class Generation : MonoBehaviour {
                         if (current.transform.position == LeafNodes[o].transform.position) 
                             LeafNodes.RemoveAt(o);
                     break;  
-                case ']': //pop from stack
-                    drawTri = false;
+                case ']': //pop from stack 
                     LeafNodes.Add(current);
                     //Highest Y is used in leaf texture to find max Y value possible
                     if (highestY < current.transform.position.y)
