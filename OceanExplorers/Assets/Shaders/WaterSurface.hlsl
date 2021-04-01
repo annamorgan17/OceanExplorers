@@ -1,7 +1,7 @@
 #ifndef WATERSURFACE_INCLUDED
 #define WATERSURFACE_INCLUDED
 
-//include any helper functions 
+//include any helper functions  
 
 //define structures
 struct Input {
@@ -10,6 +10,7 @@ struct Input {
 
 //attribute data
 struct appdata {
+	uint vertexID : SV_VertexID;
     float4 vertex : POSITION;   //Vertex Position
 	float4 uv : TEXCOORD0;      //UV
 	float3 normal : NORMAL;     //Normal
@@ -51,7 +52,7 @@ float4 _CameraDepthTexture_ST;
 */
 
 TEXTURE2D(_CameraNormalsTexture); SAMPLER(sampler_CameraNormalsTexture); float4 _CameraNormalsTexture_ST;
-
+ 
 float4 alphaBlend(float4 top, float4 bottom) {
 	float3 color = (top.rgb * top.a) + (bottom.rgb * (1 - top.a));
 	float alpha = top.a + bottom.a * (1 - top.a);
@@ -62,11 +63,11 @@ float4 alphaBlend(float4 top, float4 bottom) {
 v2f vert (appdata v) {
     v2f o;
 
-    //o.vertex = UnityObjectToClipPos(v.vertex);
-	o.screenPosition = ComputeScreenPos(o.vertex);
+    o.vertex = GetFullScreenTriangleVertexPosition(v.vertexID);
+	o.screenPosition = ComputeScreenPos (o.vertex);
 	o.distortUV = TRANSFORM_TEX(v.uv, _SurfaceDistortion); 
 	o.noiseUV = TRANSFORM_TEX(v.uv, _SurfaceNoise);
-	o.viewNormal = COMPUTE_VIEW_NORMAL;
+	//o.viewNormal = COMPUTE_VIEW_NORMAL;
 
     return o;
 }
@@ -76,6 +77,11 @@ float4 frag (v2f i) : SV_Target {
 
 	#pragma region Refraction
     /*
+	make clip position
+
+	float4(input.pos.xy, 0.0, 1.0);
+
+
 		//object space to homogeneous clip space.
 		//float4 clipPos = UnityObjectToClipPos(i.vertex);
 		//From homogeneous clip space to normalized device space.
@@ -96,8 +102,8 @@ float4 frag (v2f i) : SV_Target {
 
 	#pragma region Water
 		//get the linear depth
-        float Rdepth = LOAD_TEXTURE2D_LOD(_CameraDepthTexture, screenPos, 0).r;
-		float depth = LinearEyeDepth(Rdepth);  
+        float Rdepth = LOAD_TEXTURE2D_LOD(_CameraDepthTexture, i.screenPosition,0).r;
+		float depth = LinearEyeDepth(Rdepth);   
 		float depthDifference = depth - i.screenPosition.w; 
 		//get the deep areas in white, with the rest in normal
 		float waterDepthDifference = saturate(depthDifference / _DepthMaxDistance);
@@ -105,7 +111,7 @@ float4 frag (v2f i) : SV_Target {
 		float4 waterColor = lerp( lerp(_DepthGradientShallow, refraction, 1 -_RefractionShallowIntensity), lerp(_DepthGradientDeep, refraction, 1 - _RefractionDeepIntensity), waterDepthDifference); 
 		waterColor = lerp(_DepthGradientShallow, _DepthGradientDeep, waterDepthDifference); 
         float3 existingNormal = tex2Dproj(_CameraNormalsTexture, i.screenPosition); 
-		float foamDistance = lerp(_FoamMaxDistance, _FoamMinDistance, saturate(dot(existingNormal, i.viewNormal)));
+		float foamDistance = lerp(_FoamMaxDistance, _FoamMinDistance, saturate(dot(existingNormal, i.vertex))); //was i.viewNormal
 		//set the very edge of the water as normal, with the mid while
 		float foamDepthDifference = saturate(depthDifference / foamDistance);
 		float surfaceNoiseCutoff = foamDepthDifference * _SurfaceNoiseCutoff; 
