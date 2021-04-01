@@ -127,8 +127,7 @@ public class Generation : MonoBehaviour {
         }
 
         gameObject.GetComponent<MeshFilter>().mesh.vertices = CombineVector3Arrays(gameObject.GetComponent<MeshFilter>().mesh.vertices, cylinder.vertices);
-        gameObject.GetComponent<MeshFilter>().mesh.triangles = CombineIntArrays(gameObject.GetComponent<MeshFilter>().mesh.triangles, cylinder.triangles);
-        Debug.LogError(gameObject.GetComponent<MeshFilter>().mesh.vertices.Length);
+        gameObject.GetComponent<MeshFilter>().mesh.triangles = CombineIntArrays(gameObject.GetComponent<MeshFilter>().mesh.triangles, cylinder.triangles); 
         if (maxY < e.y) {
             maxY = e.y;
         }
