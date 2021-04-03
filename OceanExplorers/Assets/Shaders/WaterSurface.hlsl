@@ -2,76 +2,95 @@
 #define WATERSURFACE_INCLUDED
 
 //include any helper functions  
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Shadow/ShadowSamplingTent.hlsl"
 
-//define structures
-struct Input {
-	float2 reflection;
-};
+CBUFFER_START(UnityPerFrame)
+	float4x4 unity_MatrixVP;
+CBUFFER_END
+
+CBUFFER_START(UnityPerDraw)
+	float4x4 unity_ObjectToWorld;
+	float4 unity_LightIndicesOffsetAndCount;
+	float4 unity_4LightIndices0, unity_4LightIndices1;
+CBUFFER_END
+
+#define MAX_VISIBLE_LIGHTS 16
+
+CBUFFER_START(_LightBuffer)
+	float4 _VisibleLightColors[MAX_VISIBLE_LIGHTS];
+	float4 _VisibleLightDirectionsOrPositions[MAX_VISIBLE_LIGHTS];
+	float4 _VisibleLightAttenuations[MAX_VISIBLE_LIGHTS];
+	float4 _VisibleLightSpotDirections[MAX_VISIBLE_LIGHTS];
+CBUFFER_END
+
+CBUFFER_START(_ShadowBuffer)
+	float4x4 _WorldToShadowMatrices[MAX_VISIBLE_LIGHTS];
+	float4 _ShadowData[MAX_VISIBLE_LIGHTS];
+	float4 _ShadowMapSize;
+CBUFFER_END
+  
+TEXTURE2D_SHADOW(_ShadowMap);
+SAMPLER_CMP(sampler_ShadowMap);
+
+
+
+
 
 //attribute data
 struct appdata {
-	uint vertexID : SV_VertexID;
-    float4 vertex : POSITION;   //Vertex Position
+    float4 pos : POSITION;
+	float3 normal : NORMAL;
+	UNITY_VERTEX_INPUT_INSTANCE_ID
+
 	float4 uv : TEXCOORD0;      //UV
-	float3 normal : NORMAL;     //Normal
+	
 };
 
 //vertex to fragment (vertex output data)
 struct v2f {
-    float4 vertex : SV_POSITION;	//position in clip space
-	float2 noiseUV : TEXCOORD0;     //UVs of noise
-	float2 distortUV : TEXCOORD1;   //UVs of distortion
-	float4 screenPosition : TEXCOORD2;  //Position on screen
-	float3 viewNormal : NORMAL;     //View normal Position
+	float4 clipPos : SV_POSITION;
+	float3 normal : TEXCOORD0;
+	float3 worldPos : TEXCOORD1; 
+	UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
+
+
+
+
+
+
 TEXTURE2D(_GrabTexture);
-
 TEXTURE2D(_ReflectionTex);
-
 TEXTURE2D(_CausticTex); SAMPLER(sampler_CausticTex); float4 _CausticTile_ST;
-
 TEXTURE2D(_SurfaceNoise); SAMPLER(sampler_SurfaceNoise); float4 _SurfaceNoise_ST;
-
 TEXTURE2D(_SurfaceDistortion); SAMPLER(sampler_SurfaceDistortion); float4 _SurfaceDistortion_ST; 
-
 float4 _DepthGradientShallow; float4 _DepthGradientDeep; float _DepthMaxDistance;
-
 float4 _FoamColor; float _FoamMaxDistance; float _FoamMinDistance;
-
 float _SurfaceNoiseCutoff; float _SurfaceDistortionAmount;
-
 float _RefractionShallowIntensity; float _RefractionDeepIntensity;
-
 float2 _SurfaceNoiseScroll;
-
-/*
-TEXTURE2D(_CameraDepthTexture); 
-SAMPLER(sampler_CameraDepthTexture); 
-float4 _CameraDepthTexture_ST;
-*/
-
+/* TEXTURE2D(_CameraDepthTexture);  SAMPLER(sampler_CameraDepthTexture);  float4 _CameraDepthTexture_ST; */
 TEXTURE2D(_CameraNormalsTexture); SAMPLER(sampler_CameraNormalsTexture); float4 _CameraNormalsTexture_ST;
  
 float4 alphaBlend(float4 top, float4 bottom) {
 	float3 color = (top.rgb * top.a) + (bottom.rgb * (1 - top.a));
 	float alpha = top.a + bottom.a * (1 - top.a);
-
 	return float4(color, alpha);
 }
 
-v2f vert (appdata v) {
+v2f vert (appdata input) {
     v2f o;
-
-    o.vertex = GetFullScreenTriangleVertexPosition(v.vertexID);
-	o.screenPosition = ComputeScreenPos (o.vertex);
-	o.distortUV = TRANSFORM_TEX(v.uv, _SurfaceDistortion); 
-	o.noiseUV = TRANSFORM_TEX(v.uv, _SurfaceNoise);
-	//o.viewNormal = COMPUTE_VIEW_NORMAL;
-
+	UNITY_SETUP_INSTANCE_ID(input);
+	UNITY_TRANSFER_INSTANCE_ID(input, output);
+	float4 worldPos = mul(UNITY_MATRIX_M, float4(input.pos.xyz, 1.0));
+	o.clipPos = mul(unity_MatrixVP, worldPos);
+	o.normal = mul((float3x3)UNITY_MATRIX_M, input.normal);
+	o.worldPos = worldPos.xyz; 
+	o.screenPosition = ComputeScreenPos (o.vertex);  
     return o;
 }
-
 
 float4 frag (v2f i) : SV_Target {  
 

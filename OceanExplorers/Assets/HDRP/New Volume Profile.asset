@@ -197,7 +197,7 @@ MonoBehaviour:
     showEyeDropper: 1
   tint:
     m_OverrideState: 1
-    m_Value: {r: 0.48460305, g: 0.63548094, b: 0.8490566, a: 1}
+    m_Value: {r: 0, g: 0.40860224, b: 1, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
@@ -220,19 +220,19 @@ MonoBehaviour:
     min: 0
   baseHeight:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 58
   maximumHeight:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 658.6
   albedo:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 0.04705883, g: 0.3019608, b: 0.48235297, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 400
+    m_Value: 40.5
     min: 1
   enableVolumetricFog:
     m_OverrideState: 1
