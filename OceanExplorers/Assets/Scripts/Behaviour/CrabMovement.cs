@@ -14,9 +14,7 @@ public class CrabMovement : MonoBehaviour {
         TargetPosInstant();
     }
     private void Update() {
-        if (GetComponent<NavMeshAgent>().isOnNavMesh) {
-            GetComponent<NavMeshAgent>().destination = newPos;
-        } 
+        GetComponent<NavMeshAgent>().destination = newPos;
         TargetPos();
  
     }

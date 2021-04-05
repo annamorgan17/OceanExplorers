@@ -8,8 +8,6 @@ TagManager:
   - Water
   - Fire
   - Plant
-  - GoldFish
-  - Crab
   layers:
   - Default
   - TransparentFX

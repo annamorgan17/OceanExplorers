@@ -101,7 +101,7 @@ public class FlockScript : MonoBehaviour
 
     private void Bubbles(GameObject bubblePrefab)
     {
-        bubble = Instantiate(bubblePrefab, this.transform.position, Quaternion.LookRotation(Camera.main.transform.position));
+        bubble = Instantiate(bubblePrefab, this.transform.position, Quaternion.LookRotation(fishManager.mainCamera.transform.position));
         Destroy(bubble, 10f);
 
     }
