@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/TerrainTest.unity
+- path: Assets/Scenes/FishTesting.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

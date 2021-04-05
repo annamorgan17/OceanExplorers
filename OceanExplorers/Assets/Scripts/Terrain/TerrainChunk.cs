@@ -28,13 +28,19 @@ public class TerrainChunk {
 	MeshSettings meshSettings;
 	Transform viewer;
 
-	public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material) {
+	TerrainObjectData terrainObjectData;
+	PossonData possonData;
+
+	GameObject SpawnParent;
+	public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, TerrainObjectData terrainObjectData, PossonData possonData) {
 		this.coord = coord;
 		this.detailLevels = detailLevels;
 		this.colliderLODIndex = colliderLODIndex;
 		this.heightMapSettings = heightMapSettings;
 		this.meshSettings = meshSettings;
 		this.viewer = viewer;
+		this.terrainObjectData = terrainObjectData;
+		this.possonData = possonData;
 
 		sampleCentre = coord * meshSettings.meshWorldSize / meshSettings.meshScale;
 		Vector2 position = coord * meshSettings.meshWorldSize;
@@ -63,37 +69,45 @@ public class TerrainChunk {
 		maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
 		meshObject.AddComponent<NavData>();
 
-		//Create Objects ontop
-		PossonData data = new PossonData();
-		data.radius = 7;
-		data.sampleRegionSize = bounds.size;
-		data.numSamplesBeforeRejection = 2;
+		SpawnParent = new GameObject("Spawn Parent");
+		SpawnParent.transform.SetParent(meshObject.transform);
 
-		List<Vector2> points = new List<Vector2>();
-
+	}
+	List<Vector2> points = new List<Vector2>();
+	bool GeneratedObjects = false;
+	private void GenerateObjects() {
+		GeneratedObjects = true;
+		PossonData data = possonData; 
+		data.sampleRegionSize = new Vector2( heightMap.values.GetLength(0), heightMap.values.GetLength(1));  
 		points = PossonDiscSampling.GeneratePoints(data.radius, data.sampleRegionSize, data.numSamplesBeforeRejection);
 
 		if (points != null) {
 			foreach (Vector2 point in points) {
-				GameObject gm = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-				float sampleHeight;
-				Vector3 pos = new Vector3(position.x + point.x - (bounds.size.x / 2), 90, position.y + point.y - (bounds.size.y / 2));
+				TerrainObject to = terrainObjectData.getRandomObject();
+				GameObject gm = Object.Instantiate( to.objectPrefab);
+				
+				float sampleHeight = heightMap.values[(int)point.x, (int)point.y];
+
+				float surfaceHeight = 58.5f;
+				if (to.surfaceSpawn == true) {
+					sampleHeight = surfaceHeight;
+
+				}
+				Vector3 pos = new Vector3(
+										bounds.center.x + point.x - (bounds.size.x / 2), 
+										sampleHeight, 
+										bounds.center.y + point.y - (bounds.size.y / 2));
+                if (to.randomRotation) {
+					//gm.transform.localScale = new Vector3(0, Random.Range(0,360), 0);
+                }
 				//change to be less intensive 
 				gm.transform.position = pos;
-				gm.transform.SetParent(meshObject.transform); 
-				RaycastHit hit;
-				Ray ray = new Ray(new Vector3(pos.x, 90, pos.y), Vector3.down);
-				if (Physics.Raycast(ray, out hit)) {
-					Debug.Log("Hit point: " + hit.point);
-				}
-
-				
+				gm.transform.SetParent(SpawnParent.transform);
 			}
 		} else {
 			Debug.LogError("points was null");
 		}
 	}
-
 	public void Load() {
 		ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap(meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, sampleCentre), OnHeightMapReceived);
 	}
@@ -142,7 +156,11 @@ public class TerrainChunk {
 					}
 				}
 
-
+                if (lodIndex == 0) {
+					SpawnParent.SetActive(true);
+                } else {
+					SpawnParent.SetActive(false); 
+				}
 			}
 
 			if (wasVisible != visible) {
@@ -151,6 +169,9 @@ public class TerrainChunk {
 				if (onVisibilityChanged != null) {
 					onVisibilityChanged(this, visible);
 				}
+			}
+			if (GeneratedObjects == false) {
+				GenerateObjects();
 			}
 		}
 	}
