@@ -10,7 +10,6 @@ TagManager:
   - Plant
   - GoldFish
   - Crab
-  - Clickable
   layers:
   - Default
   - TransparentFX
