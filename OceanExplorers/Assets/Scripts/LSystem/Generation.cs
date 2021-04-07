@@ -8,7 +8,6 @@ using System;
 using Plant.Utilities;
 using System.Linq;
 public class Generation : MonoBehaviour { 
-
     public LSystemVisualData lSystemVisualData; 
 
     //stack of transform locations to push and pop
@@ -25,8 +24,6 @@ public class Generation : MonoBehaviour {
     private List<Leaf> leaves = new List<Leaf>();
     private Dictionary<char, string> rules = new Dictionary<char, string>();
 
-
-
     private string currentString = string.Empty;
     private float currentLength;
 
@@ -37,25 +34,39 @@ public class Generation : MonoBehaviour {
     } 
     public void Rotation() { transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0 + lSystemVisualData.RotationAngle, transform.eulerAngles.z); }
     private void Start() {
-        //if not baked
-        Make();
-        //if baked load baked model
+        string[] GUIDs = AssetDatabase.FindAssets("t:" + lSystemVisualData.name);
+        bool Bake = false;
+        if (GUIDs.Length != 0) { //if baked load baked model 
+            foreach (var item in GUIDs) {
+                if (item != "") {
+                    Bake = true;
+                }
+            }
+            Debug.LogError(GUIDs.Length);
+            if (Bake) {
+                Debug.LogError("Loaded bake");
+
+                gameObject.GetComponent<MeshFilter>().mesh = (Mesh)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(GUIDs[0]), typeof(Mesh));
+            }
+        }
+        else { Make(); Debug.LogError("A mesh was made"); } //if not baked
     }
-    public void Clear() { 
-        //Remove previous validates
+    public void Clear() {
+        //Remove previous validates 
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("Validate")) {
             Destroy(item);
         }
         gameObject.GetComponent<MeshFilter>().mesh.Clear();
     }
     
-    public void Make(){ 
+    public void Make(){
+        //Debug.LogError(lSystemVisualData.ToString());
         //set current string to inspector value
         currentString = lSystemVisualData.StartString;  
         
         rules = new Dictionary<char, string>(); 
         foreach (var item in lSystemVisualData.dictionary) { 
-            Debug.Log(item.Key + " -> " + item.Value);
+            //Debug.Log(item.Key + " -> " + item.Value);
             if (rules.ContainsKey(item.Key)) {
                 Debug.LogError("Duplicate axoim. Duplicate character " + item.Key + " will not be added");
             } else {
@@ -97,6 +108,13 @@ public class Generation : MonoBehaviour {
         //MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform);
         gameObject.GetComponent<MeshFilter>().mesh.RecalculateBounds();
         gameObject.GetComponent<MeshFilter>().mesh.RecalculateNormals();
+
+
+        //Bake mesh out here!!!  
+       
+        gameObject.GetComponent<MeshFilter>().mesh.name = lSystemVisualData.ToString(); //Set the name to be searched by later!
+        AssetDatabase.CreateAsset(gameObject.GetComponent<MeshFilter>().mesh, "Assets/GeneratedMesh/" + lSystemVisualData.name); // create
+        AssetDatabase.SaveAssets(); //save it 
     }
     private void Update(){  
         //rotating the object
@@ -128,6 +146,7 @@ public class Generation : MonoBehaviour {
 
         gameObject.GetComponent<MeshFilter>().mesh.vertices = CombineVector3Arrays(gameObject.GetComponent<MeshFilter>().mesh.vertices, cylinder.vertices);
         gameObject.GetComponent<MeshFilter>().mesh.triangles = CombineIntArrays(gameObject.GetComponent<MeshFilter>().mesh.triangles, cylinder.triangles); 
+
         if (maxY < e.y) {
             maxY = e.y;
         }

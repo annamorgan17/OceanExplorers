@@ -26,8 +26,7 @@ public struct Param {
     }
 }
 [CreateAssetMenu()]
-public class LSystemVisualData : ScriptableObject {
-
+public class LSystemVisualData : ScriptableObject { 
     //redo to use based on height
     [Header("Colour")]
     public CustomGradient Colour;
@@ -58,7 +57,20 @@ public class LSystemVisualData : ScriptableObject {
     public string StartString = string.Empty;
     [HideInInspector] public List<Param> Variables = new List<Param>(); 
     [HideInInspector] public List<dictValues> dictionary = new List<dictValues>() { new dictValues('F', "F+[F+F]") };
-
+    private string returnVariablesToString() {
+        string Out = string.Empty;
+        foreach (var item in Variables) {
+            Out += item.Character + "," + item.Value;
+        }
+        return Out;
+    }
+    private string returnDictionaryToString() {
+        string Out = string.Empty;
+        foreach (var item in dictionary) {
+            Out += item.Key + "," + item.Value;
+        }
+        return Out;
+    }
     private void OnValidate() {
         if (radius.x <= 0) {
             radius = new Vector2(1, radius.y);
@@ -67,4 +79,17 @@ public class LSystemVisualData : ScriptableObject {
             radius = new Vector2(radius.x, 1);
         }
     }
+    /*
+    public override string ToString() {
+        string startingString;
+        if (StartString == string.Empty) {
+            startingString = "Empty";
+        } else {
+            startingString = StartString;
+        }
+        return Colour.GetString() + ":" + Colour.blendMode.ToString() + ":" + angle + ":" + rotate + ":" + RotationAngle + ":" + length + ":" + generations + ":" + lengthVariance +
+            ":" + ammendmentChance + ":" + randomThickness + ":" + pillarHeight + ":" + points + ":" + radius + ":" + LeafGeneration.ToString() +
+            ":" + startingString; // + ":" + returnVariablesToString() + ":" + returnDictionaryToString();
+    }
+    */
 }

@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 public class CustomGradient {
+    public string GetString() {
+        string Out = string.Empty; 
+        foreach (var key in keys) {
+            Out += key.Time.ToString("F2") + "(" + key.Colour.r.ToString("F2") + "," + key.Colour.g.ToString("F2") + "," + key.Colour.b.ToString("F2") + "," + key.Colour.a.ToString("F2") + ")";
+        }
+        return Out;
+    }
     public enum BlendMode { Linear, Discrete}
     public BlendMode blendMode;
     public bool randomColour;
@@ -76,7 +83,8 @@ public class CustomGradient {
         texture.Apply();
         return texture;
     }
-    [System.Serializable] public struct ColourKey {
+    [System.Serializable]
+    public struct ColourKey {
         [SerializeField] Color colour;
         [SerializeField] float time;
         public ColourKey(Color colour, float time) {
