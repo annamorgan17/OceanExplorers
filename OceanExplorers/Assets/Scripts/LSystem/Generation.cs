@@ -33,21 +33,10 @@ public class Generation : MonoBehaviour {
         MeshExstension.DrawCube(gameObject.transform.position, gameObject.transform.rotation, gameObject.transform.localScale); 
     } 
     public void Rotation() { transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0 + lSystemVisualData.RotationAngle, transform.eulerAngles.z); }
-    private void Start() {
-        string[] GUIDs = AssetDatabase.FindAssets("t:" + lSystemVisualData.name);
-        bool Bake = false;
-        if (GUIDs.Length != 0) { //if baked load baked model 
-            foreach (var item in GUIDs) {
-                if (item != "") {
-                    Bake = true;
-                }
-            }
-            Debug.LogError(GUIDs.Length);
-            if (Bake) {
-                Debug.LogError("Loaded bake");
-
-                gameObject.GetComponent<MeshFilter>().mesh = (Mesh)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(GUIDs[0]), typeof(Mesh));
-            }
+    private void Start() { 
+        if (CheckModel()) { //if baked load baked model  
+            Debug.LogError("A Model was found!");
+            LoadModel();
         }
         else { Make(); Debug.LogError("A mesh was made"); } //if not baked
     }
@@ -111,10 +100,24 @@ public class Generation : MonoBehaviour {
 
 
         //Bake mesh out here!!!  
-       
-        gameObject.GetComponent<MeshFilter>().mesh.name = lSystemVisualData.ToString(); //Set the name to be searched by later!
-        AssetDatabase.CreateAsset(gameObject.GetComponent<MeshFilter>().mesh, "Assets/GeneratedMesh/" + lSystemVisualData.name); // create
-        AssetDatabase.SaveAssets(); //save it 
+        SaveModel();
+        
+    }
+    private void SaveModel() { 
+        String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
+        ObjExporter.MeshToFile(gameObject.GetComponent<MeshFilter>(), FilePath);
+        Debug.LogError(FilePath);
+    }
+    private void LoadModel() {
+        String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
+        GameObject child = OBJLoader.LoadOBJFile(FilePath);
+        child.transform.SetParent(transform);
+        child.transform.position = transform.position;
+        //GetComponent<MeshFilter>().mesh = importedMesh;
+    }
+    private bool CheckModel() {
+        String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
+        return System.IO.File.Exists(FilePath);
     }
     private void Update(){  
         //rotating the object
@@ -142,8 +145,7 @@ public class Generation : MonoBehaviour {
 
         for (int i = 0; i < cylinder.vertices.Length; i++) {
             cylinder.vertices[i] = cylinder.vertices[i] + (between * 100);
-        }
-
+        } 
         gameObject.GetComponent<MeshFilter>().mesh.vertices = CombineVector3Arrays(gameObject.GetComponent<MeshFilter>().mesh.vertices, cylinder.vertices);
         gameObject.GetComponent<MeshFilter>().mesh.triangles = CombineIntArrays(gameObject.GetComponent<MeshFilter>().mesh.triangles, cylinder.triangles); 
 
