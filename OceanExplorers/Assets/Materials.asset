@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 514893b5a609fcd44b94969927317d63, type: 3}
+  m_Name: Materials
+  m_EditorClassIdentifier: 
+  SandProcedural: {fileID: 2100000, guid: 06822150b54b9994787d83fac2c94837, type: 2}
+  Caustic: {fileID: 2100000, guid: b560880e39597ca4e94decf5094dea89, type: 2}
+  ResultTexture: {fileID: 0}
+  Size: 2048
