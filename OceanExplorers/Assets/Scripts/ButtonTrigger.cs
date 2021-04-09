@@ -14,12 +14,14 @@ public class ButtonTrigger : MonoBehaviour
         if (other.isTriggerButton() && !pressedInProgress) {
             pressedInProgress = true;
             onButtonPressed?.Invoke();
+            Debug.Log("Error A");
         }
     }
     private void OnTriggerExit(Collider other) {
         if (other.isTriggerButton()) {
             pressedInProgress = false;
             onButtonPressed?.Invoke();
+            Debug.Log("Error B");
         }
     }
 }
