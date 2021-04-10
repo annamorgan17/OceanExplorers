@@ -8,15 +8,14 @@ public class TerrainGenerator : MonoBehaviour {
 	const float sqrViewerMoveThresholdForChunkUpdate = viewerMoveThresholdForChunkUpdate * viewerMoveThresholdForChunkUpdate;
 
 
-	public int colliderLODIndex;
-	public LODInfo[] detailLevels;
+	public int colliderLODIndex = 0;
+	public LODInfo[] detailLevels = {new LODInfo(0,0), new LODInfo(1,100), new LODInfo(2,200) };
 
 	public MeshSettings meshSettings;
 	public HeightMapSettings heightMapSettings;
 	public TextureData textureSettings;
 	public TerrainObjectData terrainObjectData;
-	public PossonData possonData;
-	public Materials materials;
+	public PossonData possonData; 
 	public Transform viewer;
 	public Material mapMaterial;
 
@@ -41,6 +40,51 @@ public class TerrainGenerator : MonoBehaviour {
 		UpdateVisibleChunks();
 	}
 
+	private bool DebugErrors() {
+		/*
+		 * 	public MeshSettings meshSettings;
+	public HeightMapSettings heightMapSettings;
+	public TextureData textureSettings;
+	public TerrainObjectData terrainObjectData;
+	public PossonData possonData; 
+	public Transform viewer;
+	public Material mapMaterial;
+
+		 * */
+		bool Out = true;
+        if (mapMaterial == null) {
+			Debug.LogWarning("Material slot is null, Trying to fix now...");
+			mapMaterial = Resources.Load("/Materials/Sand", typeof(Material)) as Material;
+
+            if (mapMaterial == null) {
+				Debug.LogError("Material slot is null and couldnt be loaded, please see this for information to fix");
+				/* This issue is often caused by Unity and sometimes occurs when downloading this project for the first time
+				 * Please note we have had this occur some times with first time downloads, and seems to stem from meta files missing due to gitIgnore.
+				 * The Sand.mat seems to get taken off materials. 
+				 * 
+				 * How to fix: 
+				 * -Go to Assets/Materials/ 
+				 * -You may need to reimport Sand.mat 
+				 * -In some causes the preview material in this scene, and the sand material in other scenes may be pink. Please drag the material to these if possible.  
+				 * -Click on the Terrain Generator gameobject in the Main scene. 
+				 * -The last property of the Terrain Generator script is called MapMaterial, please search for and add the sand.mat found earlier to this slot */
+				Out = false;
+			} 
+        }
+        if (meshSettings == null) { Debug.LogError("The Mesh Settings object is not set to the Terrain Generator, Please add Assets/MeshSettings.asset to TerrainGenerator gameobject"); Out = false; }
+		if (heightMapSettings == null) { Debug.LogError("The Height Map Settings object is not set to the Terrain Generator, Please add Assets/HeightMapSettings.asset to TerrainGenerator gameobject"); Out = false; }
+		if (textureSettings == null) { Debug.LogError("The Texture Settings object is not set to the Terrain Generator, Please add Assets/TextureSettings.asset to TerrainGenerator gameobject"); Out = false; }
+		if (terrainObjectData == null) { Debug.LogError("The Terrain Object Data object is not set to the Terrain Generator, Please add Assets/TerrainObjectData.asset to TerrainGenerator gameobject"); Out = false; }
+		if (possonData == null) { Debug.LogError("The Posson Data object is not set to the Terrain Generator, Please add Assets/PossonData.asset to TerrainGenerator gameobject"); Out = false; }
+		if (viewer == null) {
+			Debug.LogWarning("The player transform needs to be set as a property to the Terrain Generator, trying to fix now....");
+			viewer = GameObject.FindGameObjectWithTag("Player").transform;
+            if (viewer == null) {
+				Debug.LogError("Object with 'Player' tag couldnt be found in scene");
+            }
+		}
+		return Out;
+    }
 	void Update() {
 		viewerPosition = new Vector2(viewer.position.x, viewer.position.z);
 
@@ -73,7 +117,7 @@ public class TerrainGenerator : MonoBehaviour {
 					if (terrainChunkDictionary.ContainsKey(viewedChunkCoord)) {
 						terrainChunkDictionary[viewedChunkCoord].UpdateTerrainChunk();
 					} else {
-						TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, viewer, materials, terrainObjectData, possonData);
+						TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, viewer, mapMaterial, terrainObjectData, possonData);
 						terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
 						newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
 						newChunk.Load();
@@ -99,7 +143,10 @@ public class TerrainGenerator : MonoBehaviour {
 	public int lod;
 	public float visibleDstThreshold;
 
-
+	public LODInfo(int lod, float visibleDstThreshold) {
+		this.lod = lod;
+		this.visibleDstThreshold = visibleDstThreshold;
+	}
 	public float sqrVisibleDstThreshold {
 		get {
 			return visibleDstThreshold * visibleDstThreshold;
