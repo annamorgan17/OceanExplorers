@@ -169,9 +169,9 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
-    - _GrainColourBlend: 0.533
-    - _GrainPeriod: 143
-    - _GrainShineStrength: 0.58
+    - _GrainColourBlend: 0.695
+    - _GrainPeriod: 500
+    - _GrainShineStrength: 1
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
@@ -190,24 +190,24 @@ Material:
     - _Metallic: 0
     - _NormalMapSpace: 0
     - _NormalScale: 1
-    - _NormalStrength: 0.45
+    - _NormalStrength: 1
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
     - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
-    - _PolygonSides: 5
+    - _PolygonSides: 3
     - _ReceivesSSR: 1
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _SSRefractionProjectionModel: 0
     - _ShineDuneHeightMin: 0.798
-    - _ShineThreashold: 0.9
+    - _ShineThreashold: 0.85
     - _SinFrequency: 7.65
     - _SineAmplitude: 1.47
     - _SineFrequency: 10
-    - _SineRotation: 2.65
+    - _SineRotation: 5
     - _Smoothness: 0
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
@@ -227,7 +227,7 @@ Material:
     - _StencilWriteMaskMV: 40
     - _SubstrateDuneHeightMax: 0.245
     - _SubstrateGrainHeightMax: 0.219
-    - _SubstrateTightening: 0.75
+    - _SubstrateTightening: 4.91
     - _SubsurfaceMask: 1
     - _SupportDecals: 1
     - _SurfaceType: 0
@@ -253,7 +253,7 @@ Material:
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
-    - _UVScale: 0.697
+    - _UVScale: 0.179
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
     - _WorldScale: 0.02
@@ -274,9 +274,9 @@ Material:
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _SandHighColour: {r: 0.92549026, g: 0.9058824, b: 0.8196079, a: 0}
-    - _SandLowColour: {r: 0.9058824, g: 0.82745105, b: 0.64705884, a: 0}
-    - _ShineColour: {r: 0.8078432, g: 0.73333335, b: 0.5803922, a: 1}
+    - _SandHighColour: {r: 0.95699996, g: 0.93672454, b: 0.84751266, a: 0}
+    - _SandLowColour: {r: 0.86300004, g: 0.78828144, b: 0.6164286, a: 0}
+    - _ShineColour: {r: 0.681, g: 0.6159044, b: 0.4857132, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _SubstrateColour: {r: 0.8078432, g: 0.73333335, b: 0.5803922, a: 0}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}

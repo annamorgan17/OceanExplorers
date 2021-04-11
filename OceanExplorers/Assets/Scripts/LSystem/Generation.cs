@@ -26,6 +26,7 @@ public class Generation : MonoBehaviour {
 
     private string currentString = string.Empty;
     private float currentLength;
+    private List<MeshFilter> meshObjectList;
 
     //Draw a box around its position
     private void OnDrawGizmos() {
@@ -35,10 +36,10 @@ public class Generation : MonoBehaviour {
     public void Rotation() { transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0 + lSystemVisualData.RotationAngle, transform.eulerAngles.z); }
     private void Start() { 
         if (CheckModel()) { //if baked load baked model  
-            Debug.LogError("A Model was found!");
+            Debug.Log("A Model was found at: " + (Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj"));
             LoadModel();
         }
-        else { Make(); Debug.LogError("A mesh was made"); } //if not baked
+        else { Make(); Debug.Log("A mesh was made : " + (Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj")); } //if not baked
     }
     public void Clear() {
         //Remove previous validates 
@@ -49,6 +50,8 @@ public class Generation : MonoBehaviour {
     }
     
     public void Make(){
+        meshObjectList = new List<MeshFilter>();
+
         //Debug.LogError(lSystemVisualData.ToString());
         //set current string to inspector value
         currentString = lSystemVisualData.StartString;  
@@ -94,7 +97,9 @@ public class Generation : MonoBehaviour {
             colours.Add(lSystemVisualData.Colour.Evaluate(item.y / maxY));
         }
         gameObject.GetComponent<MeshFilter>().mesh.colors = colours.ToArray();
-        //MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform);
+
+        MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform);
+
         gameObject.GetComponent<MeshFilter>().mesh.RecalculateBounds();
         gameObject.GetComponent<MeshFilter>().mesh.RecalculateNormals();
 
@@ -105,7 +110,7 @@ public class Generation : MonoBehaviour {
     }
     private void SaveModel() { 
         String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
-        ObjExporter.MeshToFile(gameObject.GetComponent<MeshFilter>(), FilePath);
+        ObjExporter.MeshToFile(gameObject.GetComponent<MeshFilter>(), FilePath); 
         Debug.LogError(FilePath);
     }
     private void LoadModel() {
@@ -130,30 +135,46 @@ public class Generation : MonoBehaviour {
         turtle.transform.Translate(direction * (length + (UnityEngine.Random.Range(0, lSystemVisualData.lengthVariance * 100f) / 100f)));
         turtle.transform.position = turtle.transform.position + (Vector3.down * Gravity);
         return turtle.transform.position;
-    }
-    GameObject gm;
+    } 
     private void DrawBranch(Vector3 pA, Vector3 pB, float length) {
-        if (gm == null) {
-            gm = new GameObject();
-        }
+        GameObject gm = new GameObject("Branch", typeof(MeshFilter), typeof(MeshRenderer));
+
+        //cact some variables 
         Vector3 between = pB - pA;
-        gm.transform.LookAt(pB);
         Vector3 e = pA + (between / 2.0f);
-        Mesh cylinder = new Mesh();
 
-        MeshExstension.CreateCylinder(cylinder, 1, 1, length, 8, 1, false, transform.TransformPoint(between));
+        //Make mesh
+        Mesh cylinder = new Mesh(); 
+        MeshExstension.CreateCylinder(cylinder, 1, 1, length, 8, 1, false, transform.TransformPoint(between)); 
 
-        for (int i = 0; i < cylinder.vertices.Length; i++) {
-            cylinder.vertices[i] = cylinder.vertices[i] + (between * 100);
-        } 
-        gameObject.GetComponent<MeshFilter>().mesh.vertices = CombineVector3Arrays(gameObject.GetComponent<MeshFilter>().mesh.vertices, cylinder.vertices);
-        gameObject.GetComponent<MeshFilter>().mesh.triangles = CombineIntArrays(gameObject.GetComponent<MeshFilter>().mesh.triangles, cylinder.triangles); 
+        //Add mesh to object
+        gameObject.GetComponent<MeshFilter>().mesh = MeshExstension.PrimitiveShape(PrimitiveType.Cylinder); ;
 
+        //Find colour
+        gm.GetComponent<MeshRenderer>().material.color = lSystemVisualData.Colour.Evaluate(0);
+
+        //transform
+        
+        gm.transform.localPosition = pA + (between / 2.0f);
+        gm.transform.LookAt(pB);
+        gm.transform.Rotate(90, 0, 0);
+        gm.tag = "Validate"; 
+
+        //Add to list to merge
+        meshObjectList.Add(gm.GetComponent<MeshFilter>());
+
+        //Find max y
         if (maxY < e.y) {
             maxY = e.y;
         }
     }
-    
+    private Vector3[] WorldSpaceVerts(Vector3[] verts) {
+        Vector3[] Out = new Vector3[verts.Length];
+        for (int i = 0; i < verts.Length; i++) { 
+            Out[i] = transform.TransformPoint(verts[i]);
+        }
+        return Out;
+    }
     public Vector3[] MakeCircle(int numOfPoints, Vector3 localPosition, Quaternion rotion) { 
         List<Vector3> vertexList = new List<Vector3>();
         float angle = 20f;

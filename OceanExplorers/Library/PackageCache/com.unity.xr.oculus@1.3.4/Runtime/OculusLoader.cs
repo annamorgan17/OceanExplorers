@@ -108,17 +108,17 @@ namespace Unity.XR.Oculus
         
             if (displaySubsystem == null || inputSubsystem == null)
             {
-                Debug.LogError("Unable to start Oculus XR Plugin.");
+                Debug.LogWarning("Unable to start Oculus XR Plugin, Please attach a headset");
             }
 
             if (displaySubsystem == null)
             {
-                Debug.LogError("Failed to load display subsystem.");
+                Debug.LogWarning("Failed to load display subsystem, Please attach a headset");
             }
 
             if (inputSubsystem == null)
             {
-                Debug.LogError("Failed to load input subsystem.");
+                Debug.LogWarning("Failed to load input subsystem, Please attach a headset");
             }
  
 

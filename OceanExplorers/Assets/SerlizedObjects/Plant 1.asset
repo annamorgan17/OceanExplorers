@@ -27,7 +27,7 @@ MonoBehaviour:
   angle: 25
   rotate: 0
   RotationAngle: 90
-  length: 1.71
+  length: 5
   generations: 2
   lengthVariance: 0
   ammendmentChance: 14
