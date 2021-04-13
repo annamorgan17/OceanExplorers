@@ -8,32 +8,28 @@ using System;
 using Plant.Utilities;
 using System.Linq;
 public class Generation : MonoBehaviour { 
-    public LSystemVisualData lSystemVisualData; 
 
+    //VARIABLES --------------------------------------------------------------------------------------------------------------------------------------------
+    public LSystemVisualData lSystemVisualData; 
     //stack of transform locations to push and pop
     private Stack<TransformInfo> transformStack;
-
     //Gameboy used for location 
     private GameObject turtle;
-
     //Highest y value for texture calculation
     private float highestY;
-    private float maxY = 0;
-
-    //leaves
+    private float maxY = 0; 
     private List<Leaf> leaves = new List<Leaf>();
     private Dictionary<char, string> rules = new Dictionary<char, string>();
-
     private string currentString = string.Empty;
     private float currentLength;
     private List<MeshFilter> meshObjectList;
+    Mesh branch;
 
+    //GIZMOS ----------------------------------------------------------------------------------------------------------------------------------------------
     //Draw a box around its position
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        MeshExstension.DrawCube(gameObject.transform.position, gameObject.transform.rotation, gameObject.transform.localScale); 
-    } 
-    public void Rotation() { transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0 + lSystemVisualData.RotationAngle, transform.eulerAngles.z); }
+    private void OnDrawGizmos() { Gizmos.color = Color.red; MeshExstension.DrawCube(gameObject.transform.position, gameObject.transform.rotation, gameObject.transform.localScale); }  
+
+    //START -----------------------------------------------------------------------------------------------------------------------------------------------
     private void Start() { 
         if (CheckModel()) { //if baked load baked model  
             Debug.Log("A Model was found at: " + (Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj"));
@@ -41,21 +37,19 @@ public class Generation : MonoBehaviour {
         }
         else { Make(); Debug.Log("A mesh was made : " + (Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj")); } //if not baked
     }
-    public void Clear() {
-        //Remove previous validates 
-        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Validate")) {
-            Destroy(item);
-        }
-        gameObject.GetComponent<MeshFilter>().mesh.Clear();
-    }
-    
+
+    //CREATE -----------------------------------------------------------------------------------------------------------------------------------------------
     public void Make(){
+        //Create mesh lish
         meshObjectList = new List<MeshFilter>();
 
-        //Debug.LogError(lSystemVisualData.ToString());
         //set current string to inspector value
-        currentString = lSystemVisualData.StartString;  
-        
+        currentString = lSystemVisualData.StartString;
+
+        transform.rotation = Quaternion.Euler(new Vector3(-90, 0, -90));
+
+        #region Load Rules
+        //Load each rule in from the serlized object
         rules = new Dictionary<char, string>(); 
         foreach (var item in lSystemVisualData.dictionary) { 
             //Debug.Log(item.Key + " -> " + item.Value);
@@ -64,20 +58,24 @@ public class Generation : MonoBehaviour {
             } else {
                 rules.Add(item.Key, item.Value);
             }
-        } 
-         
-        transformStack = new Stack<TransformInfo>(); 
+        }
+        #endregion
 
+        //Create a new transform stack
+        transformStack = new Stack<TransformInfo>();
+
+        #region Setup Turtle
         //Turtle Transform Info
         turtle = new GameObject("turtle");
         turtle.tag = "Validate";
-        turtle.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, -90));
+        turtle.transform.rotation = transform.rotation;
         turtle.transform.position = new Vector3(0,0,0);
+        #endregion
 
+        #region Call LSysten
         //overwrite current string is start string was blank
-        if (currentString == "") {
-            currentString = lSystemVisualData.dictionary[0].Key.ToString();
-        } 
+        if (currentString == "") { currentString = lSystemVisualData.dictionary[0].Key.ToString(); } 
+
         //generate l system n times
         for (int i = 0; i < lSystemVisualData.generations; i++) {
             new Lsystem(ref currentString, rules, lSystemVisualData.ammendmentChance);
@@ -86,10 +84,16 @@ public class Generation : MonoBehaviour {
         //add together for pillar generation
         for (int i = 0; i < lSystemVisualData.pillarHeight; i++) {
             currentString += currentString;
-        }
+        } 
+        #endregion
+
+        //Set current length to default 
+        currentLength = lSystemVisualData.length;
 
         //Draw and make mesh
         Gen();
+
+        #region Finish Mesh
         gameObject.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Coral");
 
         List<Color> colours = new List<Color>();
@@ -98,20 +102,35 @@ public class Generation : MonoBehaviour {
         }
         gameObject.GetComponent<MeshFilter>().mesh.colors = colours.ToArray();
 
-        MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform);
+        MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform).transform.position = transform.position;
 
         gameObject.GetComponent<MeshFilter>().mesh.RecalculateBounds();
         gameObject.GetComponent<MeshFilter>().mesh.RecalculateNormals();
 
+        #endregion
 
         //Bake mesh out here!!!  
         SaveModel();
         
-    }
-    private void SaveModel() { 
-        String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
-        ObjExporter.MeshToFile(gameObject.GetComponent<MeshFilter>(), FilePath); 
-        Debug.LogError(FilePath);
+    } 
+
+    //MODEL SAVING AND LOADING --------------------------------------------------------------------------------------------
+    private void SaveModel() {
+        foreach (var item in gameObject.GetComponentsInChildren<MeshFilter>()) {
+            if (item.name == "MeshObject") {
+                Debug.Log("Mesh parent was found");
+                foreach (var child in item.GetComponentsInChildren<MeshFilter>()) {
+                    if (child.name == "Mesh Child") {
+
+
+                        Debug.Log("Mesh child was found");
+                        String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
+                        ObjExporter.MeshToFile(child.GetComponent<MeshFilter>(), FilePath);
+                    }
+                }
+                    
+            }
+        } 
     }
     private void LoadModel() {
         String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
@@ -124,19 +143,24 @@ public class Generation : MonoBehaviour {
         String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
         return System.IO.File.Exists(FilePath);
     }
+
+    //ROTATION -----------------------------------------------------------------------------------------------------------
     private void Update(){  
         //rotating the object
         if (lSystemVisualData.rotate)  
             transform.Rotate(Vector3.forward * (Time.deltaTime * 20f)); 
     } 
-    //Branch
+
+    //BRANCH CALCULATIONS ---------------------------------------------------------------------------------------------------------- 
     private Vector3 Move(Vector3 direction, float length, float Gravity = 0){
         //Moving the turtle forward by a direciton and length with a basic gravity applied.
         turtle.transform.Translate(direction * (length + (UnityEngine.Random.Range(0, lSystemVisualData.lengthVariance * 100f) / 100f)));
         turtle.transform.position = turtle.transform.position + (Vector3.down * Gravity);
         return turtle.transform.position;
-    } 
+    }
+    
     private void DrawBranch(Vector3 pA, Vector3 pB, float length) {
+        //Create new gameobject
         GameObject gm = new GameObject("Branch", typeof(MeshFilter), typeof(MeshRenderer));
 
         //cact some variables 
@@ -144,89 +168,29 @@ public class Generation : MonoBehaviour {
         Vector3 e = pA + (between / 2.0f);
 
         //Make mesh
-        Mesh cylinder = new Mesh(); 
-        MeshExstension.CreateCylinder(cylinder, 1, 1, length, 8, 1, false, transform.TransformPoint(between)); 
+        if (branch == null) {
+            branch = new Mesh();
+            MeshExstension.CreateCylinder(branch, 1, 1, length, 8, 1, false, transform.TransformPoint(between));
+        }
 
         //Add mesh to object
-        gameObject.GetComponent<MeshFilter>().mesh = MeshExstension.PrimitiveShape(PrimitiveType.Cylinder); ;
+        gm.GetComponent<MeshFilter>().mesh = branch;
 
-        //Find colour
-        gm.GetComponent<MeshRenderer>().material.color = lSystemVisualData.Colour.Evaluate(0);
-
-        //transform
+        //transform       
         
-        gm.transform.localPosition = pA + (between / 2.0f);
+        gm.transform.position = pA + (between / 2.0f);
         gm.transform.LookAt(pB);
         gm.transform.Rotate(90, 0, 0);
-        gm.tag = "Validate"; 
-
+        gm.transform.SetParent(transform);
         //Add to list to merge
         meshObjectList.Add(gm.GetComponent<MeshFilter>());
 
-        //Find max y
+        //Find max y value
         if (maxY < e.y) {
             maxY = e.y;
         }
     }
-    private Vector3[] WorldSpaceVerts(Vector3[] verts) {
-        Vector3[] Out = new Vector3[verts.Length];
-        for (int i = 0; i < verts.Length; i++) { 
-            Out[i] = transform.TransformPoint(verts[i]);
-        }
-        return Out;
-    }
-    public Vector3[] MakeCircle(int numOfPoints, Vector3 localPosition, Quaternion rotion) { 
-        List<Vector3> vertexList = new List<Vector3>();
-        float angle = 20f;
-        float z = 0f;  
-        for (int i = 0; i < numOfPoints; i++) {
-            float x = Mathf.Sin(Mathf.Deg2Rad * angle) * lSystemVisualData.radius.x;
-            float y = Mathf.Cos(Mathf.Deg2Rad * angle) * lSystemVisualData.radius.y;
-            
-            Vector3 rot =  rotion * new Vector3(x, y, z);
-            vertexList.Add(rot + localPosition); 
-            angle += (360f / numOfPoints); 
-        }
-        return vertexList.ToArray();
-    }  
-    public int[] MakeTris(int numOfPoints, int prevcount) {
-        List<int> t = new List<int>();
-        int t0, t1, t4, t5;
-        t0 = prevcount - 2;
-        t1 = prevcount - 1;
-        t4 = prevcount + numOfPoints - 2;
-        t5 = prevcount + numOfPoints - 1;
-        if (t0 >= 0) {
-            t.Add(t4); t.Add(t0); t.Add(t5);
-            t.Add(t0); t.Add(t1); t.Add(t5);
-        }
-
-        for (int i = 0; i < numOfPoints - 1; i++) { 
-            t0 = prevcount - 2 - i; 
-            t1 = prevcount - 1 - i;
-            t4 = prevcount + numOfPoints - 2 - i;
-            t5 = prevcount + numOfPoints - 1 - i;
-            if (t0 >= 0) {
-                t.Add(t4); t.Add(t0); t.Add(t5); 
-                t.Add(t0); t.Add(t1); t.Add(t5); 
-            }
-        }
-        return t.ToArray();
-    }
-    Vector3[] CombineVector3Arrays(Vector3[] array1, Vector3[] array2){
-        var array3 = new Vector3[array1.Length + array2.Length];
-    System.Array.Copy(array1, array3, array1.Length);
-        System.Array.Copy(array2, 0, array3, array1.Length, array2.Length);
-        return array3;
-    }
-    int[] CombineIntArrays(int[] array1, int[] array2) {
-        var array = new int[array1.Length + array2.Length];
-        System.Array.Copy(array1, array, array1.Length);
-        System.Array.Copy(array2, 0, array, array1.Length, array2.Length);
-        return array;
-    }
     private void Gen() {
-        currentLength = lSystemVisualData.length;
 
         //Sort out leaf parent
         GameObject a_Leaves = new GameObject("Leaves");
@@ -235,10 +199,12 @@ public class Generation : MonoBehaviour {
 
         List<TransformInfo> LeafNodes = new List<TransformInfo>();
         List<char> ignoredWarnings = new List<char> {'(',')','1','2','3','4','5','6','7','8','9','0','.' };  //warning ignore data likely to be passed in variables
+
         highestY = 1;
         int Tindex = -1;
+
+
         for (int i = 0; i < currentString.Length; i++) {  
-            
             //Current character
             Char c = currentString.ToCharArray()[i];
 
@@ -303,14 +269,15 @@ public class Generation : MonoBehaviour {
                 case '}': turtle.transform.Rotate(Vector3.up      * -lSystemVisualData.angle); break; //yaw 
                 case '<': turtle.transform.Rotate(Vector3.forward * lSystemVisualData.angle); break; //roll
                 case '>': turtle.transform.Rotate(Vector3.forward * -lSystemVisualData.angle); break; //roll   
+
                 case '[':  //push from stack
                     transformStack.Push(new TransformInfo(current.transform, currentLength, gameObject.GetComponent<MeshFilter>().mesh.vertices.Length - lSystemVisualData.points));
-                    
                     //Check if already a leaf location
                     for (int o = 0; o < LeafNodes.Count; o++) 
                         if (current.transform.position == LeafNodes[o].transform.position) 
                             LeafNodes.RemoveAt(o);
                     break;  
+
                 case ']': //pop from stack 
                     LeafNodes.Add(current);
                     //Highest Y is used in leaf texture to find max Y value possible
@@ -322,6 +289,7 @@ public class Generation : MonoBehaviour {
                     currentLength = current.branchLength;
                     Tindex = current.triIndex;
                     break;  
+
                 default:
                     //create a warning, and not repeat the warning
                     bool warn = true;
@@ -335,7 +303,6 @@ public class Generation : MonoBehaviour {
                     break;
             } 
         }
-
         //Generate leaf
         if (lSystemVisualData.LeafGeneration != GenerationType.None) {
             Texture2D[] texture = new Texture2D[2]; 
@@ -372,6 +339,8 @@ public class Generation : MonoBehaviour {
             }
         }
     }  
+
+
     /// <summary>
     /// Creates a mesh using two textures generated from the leaf array
     /// </summary>
@@ -566,6 +535,8 @@ public class Generation : MonoBehaviour {
         leaves.transform.position = new Vector3(-0.5f,0,-0.5f);
         leaves.tag = "Validate"; 
     }
+
+
     /// <summary>
     /// translates a 255 colour in a unity colour
     /// </summary>
@@ -573,9 +544,12 @@ public class Generation : MonoBehaviour {
     /// <param name="g">0 - 255 green</param>
     /// <param name="b">0 - 255 blue</param>
     /// <returns></returns>
+    /// 
     private Color colour(int r, int g, int b) {
         return new Color(r / 255f, g / 255f, b / 255f);
     }
+
+
     /// <summary>
     /// check if a vertex has height assosiated with it
     /// </summary>
@@ -583,6 +557,7 @@ public class Generation : MonoBehaviour {
     /// <param name="t">texture looking at</param>
     /// <param name="verticies">array looking at</param>
     /// <returns></returns>
+    /// 
     private bool isVertFilled(int vert, int t, ref Vector3[][] verticies) { 
         //return if out of bounds
         if (vert < 0 | vert > verticies[t].Length) {
