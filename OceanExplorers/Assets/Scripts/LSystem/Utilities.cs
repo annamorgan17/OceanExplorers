@@ -247,9 +247,9 @@ namespace Plant.Utilities {
                         for (int d = 0; d < combine[i].mesh.vertexCount; d++) {
                             //colours.Add(filterList[i].GetComponent<MeshRenderer>().material.color);
                             float evalulate = combine[i].mesh.vertices[d].y;
-                            Color colour = customGadient.Evaluate(0);
+                            //Color colour = customGadient.Evaluate(combine[i].mesh.vertices[i].y / Ymax);
                             //Debug.LogError(evalulate + " : " + combine[i].mesh.vertices[d] + " : " + Ymax);
-                            colours.Add(colour);
+                            //colours.Add(colour);
                             //Debug.LogError(customGadient.Evaluate(0));
                         };
                         //destroy added mesh
@@ -268,6 +268,7 @@ namespace Plant.Utilities {
             Combine(colours, combine, MeshObject, material);
             return MeshObject;
         } 
+
         /// <summary>
         /// Return material and set the emmision and shinyness value to a custom shader
         /// </summary>

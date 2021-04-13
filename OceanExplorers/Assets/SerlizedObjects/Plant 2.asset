@@ -22,7 +22,7 @@ MonoBehaviour:
       time: 1
   angle: 25
   rotate: 0
-  RotationAngle: 90
+  RotationAngle: 30
   length: 5
   generations: 3
   lengthVariance: 0
@@ -32,8 +32,8 @@ MonoBehaviour:
   points: 8
   radius: {x: 1, y: 1}
   LeafGeneration: 1
-  StartString: 
+  StartString: F<F>
   Variables: []
   dictionary:
   - Key: 70
-    Value: F+[F+F]
+    Value: F+<[F+F]>

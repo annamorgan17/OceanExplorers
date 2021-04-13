@@ -94,19 +94,22 @@ public class Generation : MonoBehaviour {
         Gen();
 
         #region Finish Mesh
-        gameObject.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Coral");
+        GameObject child = MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform);
+        child.transform.position = transform.position;
+        Debug.LogError(child.name);
+        
+        foreach (var item in child.GetComponentsInChildren<MeshFilter>()) {
 
-        List<Color> colours = new List<Color>();
-        foreach (var item in gameObject.GetComponent<MeshFilter>().mesh.vertices) {
-            colours.Add(lSystemVisualData.Colour.Evaluate(item.y / maxY));
-        }
-        gameObject.GetComponent<MeshFilter>().mesh.colors = colours.ToArray();
+            List<Color> colours = new List<Color>();
+            for (int i = 0; i < item.mesh.vertices.Length; i++) { 
+                float index = item.mesh.vertices[i].y / maxY;
+                Color col = lSystemVisualData.Colour.Evaluate(index);
+                Debug.Log(index + " : " + col);
+                colours.Add(col); 
+            }
+            item.mesh.colors = colours.ToArray();
 
-        MeshExstension.CombineMeshes(meshObjectList, lSystemVisualData.Colour, highestY, transform).transform.position = transform.position;
-
-        gameObject.GetComponent<MeshFilter>().mesh.RecalculateBounds();
-        gameObject.GetComponent<MeshFilter>().mesh.RecalculateNormals();
-
+        } 
         #endregion
 
         //Bake mesh out here!!!  
@@ -117,24 +120,20 @@ public class Generation : MonoBehaviour {
     //MODEL SAVING AND LOADING --------------------------------------------------------------------------------------------
     private void SaveModel() {
         foreach (var item in gameObject.GetComponentsInChildren<MeshFilter>()) {
-            if (item.name == "MeshObject") {
-                Debug.Log("Mesh parent was found");
+            if (item.name == "MeshObject") { 
                 foreach (var child in item.GetComponentsInChildren<MeshFilter>()) {
-                    if (child.name == "Mesh Child") {
-
-
-                        Debug.Log("Mesh child was found");
+                    if (child.name == "Mesh Child") { 
                         String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
                         ObjExporter.MeshToFile(child.GetComponent<MeshFilter>(), FilePath);
                     }
-                }
-                    
+                } 
             }
         } 
     }
     private void LoadModel() {
         String FilePath = Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj";
         GameObject child = OBJLoader.LoadOBJFile(FilePath);
+        child.GetComponentInChildren<MeshRenderer>().material = Resources.Load<Material>("Coral");
         child.transform.SetParent(transform);
         child.transform.position = transform.position;
         //GetComponent<MeshFilter>().mesh = importedMesh;
