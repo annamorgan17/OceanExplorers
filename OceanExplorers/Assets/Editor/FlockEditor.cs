@@ -14,7 +14,7 @@ public class FlockEditor : Editor {
 
         EditorGUI.BeginChangeCheck();
 
-        GameObject gameObject = ((FlockData)target).fishprefab;
+        GameObject[] gameObject = ((FlockData)target).fishprefab;
         
         GUIStyle bgColour = new GUIStyle();
         Texture2D texture = EditorGUIUtility.whiteTexture;

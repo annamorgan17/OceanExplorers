@@ -8,20 +8,27 @@ public class FlockManScript : MonoBehaviour
     public Camera mainCamera;
     [HideInInspector] public GameObject[] allFish = null;
     [HideInInspector] public Vector3 goalPos = Vector3.zero;
+    private int counter = 0;
     void Start()
     {
-        goalPos = data.setPoint;
-        allFish = new GameObject[data.fishAmount];
-        for (int i = 0; i < data.fishAmount; i++)
+        foreach (GameObject fish in data.fishprefab)
         {
-            Vector3 position = new Vector3(
-                                    Random.Range((data.setPoint.x - data.swimLimits.x), (data.setPoint.x + data.swimLimits.x)),
-                                    Random.Range((data.setPoint.y - data.swimLimits.y), (data.setPoint.y + data.swimLimits.y)),
-                                    Random.Range((data.setPoint.z - data.swimLimits.z), (data.setPoint.z + data.swimLimits.z)));
-            allFish[i] = (GameObject)Instantiate(data.fishprefab, position, Quaternion.identity);
-            allFish[i].GetComponent<FlockScript>().fishManager = this;
+            goalPos = data.setPoint;
+            allFish = new GameObject[data.fishAmount[counter]];
+            for (int i = 0; i < data.fishAmount[counter]; i++)
+            {
+                Vector3 position = new Vector3(
+                                        Random.Range((data.setPoint.x - data.swimLimits.x), (data.setPoint.x + data.swimLimits.x)),
+                                        Random.Range((data.setPoint.y - data.swimLimits.y), (data.setPoint.y + data.swimLimits.y)),
+                                        Random.Range((data.setPoint.z - data.swimLimits.z), (data.setPoint.z + data.swimLimits.z)));
+                allFish[i] = (GameObject)Instantiate(fish, position, Quaternion.identity);
+                allFish[i].GetComponent<FlockScript>().fishManager = this;
+            }
+            counter++;
         }
+
     }
+
 
     void Update()
     {

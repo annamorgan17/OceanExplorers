@@ -6,20 +6,30 @@ using UnityEngine.AI;
 public class CrabMovement : MonoBehaviour {
     public CrabData data;
     private Vector3 newPos = Vector3.zero;
+    private RaycastHit hit;
 
-    private void Start() {
-        if (GetComponent<NavMeshAgent>() == null) { // adding a navmesh if needed
+    private void Start()
+    {
+        if (GetComponent<NavMeshAgent>() == null)
+        { // adding a navmesh if needed
             gameObject.AddComponent<NavMeshAgent>();
-        } 
+        }
         TargetPosInstant();
     }
-    private void Update() {
-        if (GetComponent<NavMeshAgent>().isOnNavMesh) {
+    private void Update()
+    {
+        if (GetComponent<NavMeshAgent>().isOnNavMesh)
+        {
+            GetComponent<NavMeshAgent>().updateUpAxis = false;
             GetComponent<NavMeshAgent>().destination = newPos;
-        } 
+
+            Physics.Raycast(this.transform.position, Vector3.down, out hit);
+            transform.up -= (transform.up - hit.normal) * 0.1f;
+        }
         TargetPos();
- 
+
     }
+
 
     private void TargetPos() {
         if (Random.Range(0, data.randomAmount) < 50) {
