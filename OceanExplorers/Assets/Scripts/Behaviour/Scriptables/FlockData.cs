@@ -10,8 +10,11 @@ public class FlockData : ScriptableObject {
     [Range(0.5f, 10.0f)] public float fishDistance;
     [Range(5f, 10f)] public float rotationSpeed;
     public int[] fishAmount = { 10, 10, 10, 10 };
+    public int[] predatorsAmount = { 1, 3 }; //shark then tuna
+    public int[] soloFishAmount = { 5, 5, 5 };
 
     public GameObject[] fishprefab = null;
+    public GameObject[] soloFishprefab = null;
     public GameObject bubblePrefab = null;
 
 
