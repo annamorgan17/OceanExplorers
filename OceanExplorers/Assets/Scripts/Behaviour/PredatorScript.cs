@@ -5,16 +5,23 @@ using UnityEngine;
 public class PredatorScript : MonoBehaviour
 {
     public FlockData data;
+    public SoloFishScript fishScript;
     public GameObject[] predatorsPrefab; //shark then tuna
-    public GameObject[] predators;
-    [HideInInspector] public Vector3 goalPos = Vector3.zero;
+    public GameObject remoraPrefab;
+    private GameObject[] soloFish;
+    private GameObject[] predators;
+    private Vector3 goalPos = Vector3.zero;
     private int counter = 0;
     private GameObject bubble;
     private bool turning = false;
-    float speed;
+    private float speed;
+    private int State = 0;
+    private float distance;
+    private GameObject targetedFish;
 
     void Start()
     {
+        soloFish = fishScript.fish;
         speed = Random.Range(1, data.maxSpeed);
         foreach (GameObject p in predatorsPrefab) //loops through prefabs
         {
@@ -26,6 +33,8 @@ public class PredatorScript : MonoBehaviour
                                         Random.Range((data.setPoint.y - data.swimLimits.y), (data.setPoint.y + data.swimLimits.y)),
                                         Random.Range((data.setPoint.z - data.swimLimits.z), (data.setPoint.z + data.swimLimits.z)));
                 predators[i] = (GameObject)Instantiate(p, position, Quaternion.identity);
+                Vector3 remoraPos = new Vector3(position.x - 5, position.y - 5, position.z);
+                Instantiate(remoraPrefab, remoraPos, Quaternion.identity);
             }
             counter++;
         }
@@ -35,7 +44,79 @@ public class PredatorScript : MonoBehaviour
     {
         data.setPoint = transform.position;
         GoalPosRandom();
+        CheckDistance(soloFish);
+        StateMachine();
+              
+    }
 
+    private void GoalPosRandom()
+    {
+        if (Random.Range(0, data.randomAmount) < 50)
+        {
+            goalPos = new Vector3(
+                                    Random.Range(data.setPoint.x - data.swimLimits.x, data.setPoint.x + data.swimLimits.x),
+                                    Random.Range(data.setPoint.y - data.swimLimits.y, data.setPoint.y + data.swimLimits.y),
+                                    Random.Range(data.setPoint.z - data.swimLimits.z, data.setPoint.z + data.swimLimits.z));
+        }
+    }
+    private void Bubbles(GameObject bubblePrefab, Transform pos)
+    {
+        bubble = Instantiate(bubblePrefab, pos.transform.position, Quaternion.LookRotation(Camera.main.transform.position));
+        Destroy(bubble, 10f);
+
+    }
+
+    private void StateMachine()
+    {
+        switch(State)
+        {
+            case 0: //idle swimming
+                {
+                    Swim();
+
+                    break;
+                }
+            case 1: //chasing down the prey
+                {
+                    Chase(targetedFish);
+
+                    break;
+                }
+            case 2: //eating the prey
+                {
+                    Eat();
+
+                    break;
+                }
+        }
+    }
+
+    private void CheckDistance(GameObject[] soloFish)
+    {
+        foreach(GameObject f in soloFish)
+        {
+            distance = Vector3.Distance(transform.position, f.transform.position);
+
+            if (distance < data.chaseDistance)
+            {
+                targetedFish = f;
+                State = 1;
+
+                if (distance < data.eatDistance)
+                {
+                    State = 2;
+                }
+            }
+            else
+            {
+                State = 0;
+            }
+        }
+        
+    }
+
+    private void Swim()
+    {
         Bounds b = new Bounds(data.setPoint, data.swimLimits * 2);
         foreach (GameObject p in predators) //loops through created game objs 
         {
@@ -65,23 +146,44 @@ public class PredatorScript : MonoBehaviour
             }
             p.transform.Translate(0, 0, Time.deltaTime * speed);
         }
-       
     }
 
-    private void GoalPosRandom()
+    private void Chase(GameObject soloFish)
     {
-        if (Random.Range(0, data.randomAmount) < 50)
+        Bounds b = new Bounds(data.setPoint, data.swimLimits * 2);
+        foreach (GameObject p in predators) //loops through created game objs 
         {
-            goalPos = new Vector3(
-                                    Random.Range(data.setPoint.x - data.swimLimits.x, data.setPoint.x + data.swimLimits.x),
-                                    Random.Range(data.setPoint.y - data.swimLimits.y, data.setPoint.y + data.swimLimits.y),
-                                    Random.Range(data.setPoint.z - data.swimLimits.z, data.setPoint.z + data.swimLimits.z));
+            if (!b.Contains(p.transform.position))
+            {
+                turning = true;
+            }
+            else
+            {
+                turning = false;
+            }
+
+            if (turning)
+            {
+                Vector3 direction = data.setPoint - p.transform.position;
+                p.transform.rotation = Quaternion.Slerp(p.transform.rotation, Quaternion.LookRotation(direction), data.rotationSpeed * Time.deltaTime);
+                speed = Random.Range(1, data.maxSpeed);
+
+            }
+            else
+            {
+                p.transform.rotation = Quaternion.Slerp(p.transform.rotation, Quaternion.LookRotation(soloFish.transform.position), data.rotationSpeed * Time.deltaTime);
+            }
+            if (Random.Range(0, data.randomAmount) < 10)
+            {
+                Bubbles(data.bubblePrefab, p.transform);
+            }
+            p.transform.Translate(0, 0, Time.deltaTime * (speed + 2.0f));
         }
     }
-    private void Bubbles(GameObject bubblePrefab, Transform pos)
-    {
-        bubble = Instantiate(bubblePrefab, pos.transform.position, Quaternion.LookRotation(Camera.main.transform.position));
-        Destroy(bubble, 10f);
 
+    private void Eat()
+    {
+        fishScript.DestroyFish(targetedFish);
     }
+
 }

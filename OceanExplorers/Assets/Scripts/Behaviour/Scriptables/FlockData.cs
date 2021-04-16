@@ -9,6 +9,8 @@ public class FlockData : ScriptableObject {
     [Range(10.0f, 30.0f)] public float maxSpeed;
     [Range(0.5f, 10.0f)] public float fishDistance;
     [Range(5f, 10f)] public float rotationSpeed;
+    public float chaseDistance = 8;
+    public float eatDistance = 2;
     public int[] fishAmount = { 10, 10, 10, 10 };
     public int[] predatorsAmount = { 1, 3 }; //shark then tuna
     public int[] soloFishAmount = { 5, 5, 5 };
