@@ -5,6 +5,8 @@ using OVR;
 
 public class GetInput : MonoBehaviour
 {
+    [SerializeField] Canvas LibraryCanvas;
+    [SerializeField] Canvas OptionCanvas;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,13 +20,23 @@ public class GetInput : MonoBehaviour
             //if on menu exit game
         }
         if (OVRInput.Get(OVRInput.RawButton.LIndexTrigger)) { // right side button
-            Debug.Log("Scan a fish");
+            ScanFish();
         }
         if (OVRInput.GetDown(OVRInput.RawButton.X)) { // z button
-            Debug.Log("Show Option menu");
+            ShowMenu(true);
         }
         if (OVRInput.GetDown(OVRInput.RawButton.Y)) { // z button
+            ShowMenu(false);
+        }
+    }
+    private void ScanFish() {
+        Debug.Log("Scan a fish");
+    }
+    private void ShowMenu(bool MenuA) {
+        if (MenuA) {
             Debug.Log("Show Option menu");
+        } else {
+            Debug.Log("Show Fish Library menu");
         }
     }
 }

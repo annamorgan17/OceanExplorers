@@ -32,7 +32,7 @@ public class Generation : MonoBehaviour {
     //START -----------------------------------------------------------------------------------------------------------------------------------------------
     private void Start() { 
         if (CheckModel()) { //if baked load baked model  
-            Debug.Log("A Model was found at: " + (Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj"));
+            //Debug.Log("A Model was found at: " + (Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj"));
             LoadModel();
         }
         else { Make(); Debug.Log("A mesh was made : " + (Application.persistentDataPath + "/" + lSystemVisualData.name + ".obj")); } //if not baked
