@@ -10,6 +10,7 @@ TagManager:
   - Plant
   - GoldFish
   - Crab
+  - PlayerHand
   layers:
   - Default
   - TransparentFX
