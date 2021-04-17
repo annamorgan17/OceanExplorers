@@ -19,5 +19,4 @@ public class FlockData : ScriptableObject {
     public GameObject[] soloFishprefab = null;
     public GameObject bubblePrefab = null;
 
-
 }

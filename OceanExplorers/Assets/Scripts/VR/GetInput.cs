@@ -7,6 +7,7 @@ public class GetInput : MonoBehaviour
 {
     [SerializeField] Canvas LibraryCanvas;
     [SerializeField] Canvas OptionCanvas;
+    [SerializeField] selectingObjScript scan;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +32,7 @@ public class GetInput : MonoBehaviour
     }
     private void ScanFish() {
         Debug.Log("Scan a fish");
+        scan.CheckObjectClicked();
     }
     private void ShowMenu(bool MenuA) {
         if (MenuA) {

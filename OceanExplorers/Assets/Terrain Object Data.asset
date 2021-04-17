@@ -45,3 +45,7 @@ MonoBehaviour:
       type: 3}
     surfaceSpawn: 0
     randomRotation: 1
+  - objectPrefab: {fileID: 7776191042877583195, guid: fb0770ff16ee3cb4d84bec242851de99,
+      type: 3}
+    surfaceSpawn: 1
+    randomRotation: 1

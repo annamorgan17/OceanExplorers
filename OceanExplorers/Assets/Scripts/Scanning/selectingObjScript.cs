@@ -22,9 +22,8 @@ public class selectingObjScript : MonoBehaviour
     }
     public void CheckObjectClicked()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            Ray ray = Camera.main.ScreenPointToRay((new Vector3(Screen.width / 2, Screen.height / 2, 0)));
             RaycastHit hit;
             counter = 0;
             if (Physics.Raycast(ray, out hit))
@@ -46,6 +45,6 @@ public class selectingObjScript : MonoBehaviour
             {
                 hitOrNot = false;
             }
-        }
+        
     }
 }

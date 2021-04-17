@@ -22,7 +22,6 @@ public class factBoxScript : MonoBehaviour
 
     void Update()
     {
-        check.CheckObjectClicked();
         if(check.hitOrNot)
         {
             objName.text = check.selectedName;

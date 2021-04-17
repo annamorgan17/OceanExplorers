@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Flock Data
   m_EditorClassIdentifier: 
   swimLimits: {x: 40, y: 20, z: 40}
-  setPoint: {x: 48.351784, y: 58.5, z: 47.216904}
+  setPoint: {x: -0.7, y: 71.990005, z: -65.2}
   randomAmount: 10000
   maxSpeed: 12
   fishDistance: 3
   rotationSpeed: 6
+  chaseDistance: 8
+  eatDistance: 2
   fishAmount: 0a000000
   predatorsAmount: 0100000003000000
   soloFishAmount: 050000000500000005000000

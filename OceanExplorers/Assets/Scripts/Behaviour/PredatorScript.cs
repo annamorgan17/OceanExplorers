@@ -115,6 +115,23 @@ public class PredatorScript : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "terrain")
+        {
+            foreach (GameObject p in predators) //loops through created game objs 
+            {
+                float floorDist = Vector3.Distance(p.transform.position, other.transform.position);
+
+                if (floorDist <= 4)
+                {
+                    p.transform.rotation = Quaternion.Slerp(p.transform.rotation, Quaternion.Inverse(p.transform.rotation), data.rotationSpeed * Time.deltaTime);
+                }
+            }
+        }
+        
+    }
+
     private void Swim()
     {
         Bounds b = new Bounds(data.setPoint, data.swimLimits * 2);

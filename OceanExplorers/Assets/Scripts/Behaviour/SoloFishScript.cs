@@ -5,7 +5,10 @@ using UnityEngine;
 public class SoloFishScript : MonoBehaviour
 {
     public FlockData data; 
+    [HideInInspector]
     public GameObject[] fish;
+
+    public GameObject[] terrain;
     [HideInInspector] public Vector3 goalPos = Vector3.zero;
     private int counter = 0;
     private GameObject bubble;
@@ -34,7 +37,6 @@ public class SoloFishScript : MonoBehaviour
     {
         data.setPoint = transform.position;
         GoalPosRandom();
-
         Bounds b = new Bounds(data.setPoint, data.swimLimits * 2);
         foreach (GameObject f in fish)
         {
@@ -63,6 +65,22 @@ public class SoloFishScript : MonoBehaviour
                 Bubbles(data.bubblePrefab, f.transform);
             }
             f.transform.Translate(0, 0, Time.deltaTime * speed);
+        }
+
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "terrain")
+        {
+            foreach (GameObject f in fish) //loops through created game objs 
+            {
+                float floorDist = Vector3.Distance(f.transform.position, other.transform.position);
+
+                if (floorDist <= 4)
+                {
+                    f.transform.rotation = Quaternion.Slerp(f.transform.rotation, Quaternion.Inverse(f.transform.rotation), data.rotationSpeed * Time.deltaTime);
+                }
+            }
         }
 
     }

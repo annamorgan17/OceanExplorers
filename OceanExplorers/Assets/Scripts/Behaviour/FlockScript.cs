@@ -9,6 +9,7 @@ public class FlockScript : MonoBehaviour
 
     float speed;
     bool turning = false;
+    //bool floor = false;
     GameObject bubble = null;
 
     void Start()
@@ -19,7 +20,24 @@ public class FlockScript : MonoBehaviour
 
     void Update()
     {
+       
         Bounds b = new Bounds(fishManager.data.setPoint, fishManager.data.swimLimits * 2);
+        //foreach (GameObject t in fishManager.terrain)
+        //{
+        //    float distance = Vector3.Distance(transform.position, t.transform.position);
+        //    if (distance <= 1)
+        //    {
+        //        floor = true;
+        //    }
+        //    else
+        //    {
+        //        floor = false;
+        //    }
+        //}
+        //if(floor == true)
+        //{
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Inverse(transform.rotation), fishManager.data.rotationSpeed * Time.deltaTime);
+        //}
 
         if (!b.Contains(transform.position))
         {
