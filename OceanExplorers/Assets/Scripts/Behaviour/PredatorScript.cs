@@ -184,6 +184,7 @@ public class PredatorScript : MonoBehaviour
     private void Eat()
     {
         fishScript.DestroyFish(targetedFish);
+        //change material from -1 to 1
     }
 
 }
