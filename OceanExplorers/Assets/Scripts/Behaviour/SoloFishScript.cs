@@ -83,4 +83,9 @@ public class SoloFishScript : MonoBehaviour
         Destroy(bubble, 10f);
 
     }
+
+    public void DestroyFish(GameObject fishInstance)
+    {
+        Destroy(fishInstance);       
+    }
 }
