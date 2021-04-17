@@ -8,7 +8,6 @@ public class SoloFishScript : MonoBehaviour
     [HideInInspector]
     public GameObject[] fish;
 
-    public GameObject[] terrain;
     [HideInInspector] public Vector3 goalPos = Vector3.zero;
     private int counter = 0;
     private GameObject bubble;

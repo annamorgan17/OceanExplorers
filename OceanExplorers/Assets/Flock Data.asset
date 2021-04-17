@@ -20,11 +20,16 @@ MonoBehaviour:
   rotationSpeed: 6
   chaseDistance: 8
   eatDistance: 2
-  fishAmount: 0a000000
+  fishAmount: 140000003200000014000000
   predatorsAmount: 0100000003000000
   soloFishAmount: 050000000500000005000000
   fishprefab:
-  - {fileID: 1336688621205060, guid: 925bc3fd925fd0c4c80d7e83b67ba239, type: 3}
-  soloFishprefab: []
+  - {fileID: 6979909836846858113, guid: d5de0ceb1a94a78458b9fd51c4fca7e6, type: 3}
+  - {fileID: 110176411341557511, guid: 09d3e950620ae9e4faba1598ed4d5989, type: 3}
+  - {fileID: 7401761506341335285, guid: 5396284c081f3244db7ed49c9ed1f3f4, type: 3}
+  soloFishprefab:
+  - {fileID: 7425324971958611556, guid: 6cf6c0c46582b6f4d9266dd2d12b7b12, type: 3}
+  - {fileID: 4415801239931566034, guid: 3f9d4b1b761086f4ba60c28e2432c287, type: 3}
+  - {fileID: 724400889678566168, guid: 9ce5fd255091e02498a423a366890534, type: 3}
   bubblePrefab: {fileID: 5574959257128656683, guid: 0c949920cce5d2a4e963371352586b20,
     type: 3}
