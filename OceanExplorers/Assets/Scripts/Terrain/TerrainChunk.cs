@@ -85,8 +85,17 @@ public class TerrainChunk {
 			foreach (Vector2 point in points) {
 				TerrainObject to = terrainObjectData.getRandomObject();
 				GameObject gm = Object.Instantiate( to.objectPrefab);
-				
-				float sampleHeight = heightMap.values[(int)point.x, (int)point.y];
+				float sampleHeight;
+
+				if (to.objectPrefab == terrainObjectData.flockManager)
+                {
+					sampleHeight = 40.0f;
+				}
+                else
+                {
+					sampleHeight = heightMap.values[(int)point.x, (int)point.y];
+				}
+							
 
 				float surfaceHeight = 58.5f;
 				if (to.surfaceSpawn == true) {

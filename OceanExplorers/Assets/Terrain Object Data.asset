@@ -39,7 +39,7 @@ MonoBehaviour:
     randomRotation: 1
   - objectPrefab: {fileID: 1220447257712330144, guid: 0def0b71dddb8294ea0bce574a55516e,
       type: 3}
-    surfaceSpawn: 1
+    surfaceSpawn: 0
     randomRotation: 1
   - objectPrefab: {fileID: 9037170102818685557, guid: b3f65dd63b947eb41a271518a0035795,
       type: 3}
@@ -49,3 +49,5 @@ MonoBehaviour:
       type: 3}
     surfaceSpawn: 1
     randomRotation: 1
+  flockManager: {fileID: 1220447257712330144, guid: 0def0b71dddb8294ea0bce574a55516e,
+    type: 3}

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0026309c79555ea44b929077ea11e1e1, type: 3}
   m_Name: Flock Data
   m_EditorClassIdentifier: 
-  swimLimits: {x: 40, y: 20, z: 40}
-  setPoint: {x: -0.7, y: 71.990005, z: -65.2}
+  swimLimits: {x: 10, y: 10, z: 40}
+  setPoint: {x: 27.20842, y: 40, z: -58.1064}
   randomAmount: 10000
   maxSpeed: 12
   fishDistance: 3

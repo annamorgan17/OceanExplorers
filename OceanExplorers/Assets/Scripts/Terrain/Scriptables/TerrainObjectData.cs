@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class TerrainObjectData : ScriptableObject {
     [SerializeField] private List<TerrainObject> terrainList = new List<TerrainObject>();
+    public GameObject flockManager = null;
     [HideInInspector] public TerrainObject getRandomObject() { 
         int randomValue = Random.Range(0, terrainList.Count);
         return terrainList[randomValue];
