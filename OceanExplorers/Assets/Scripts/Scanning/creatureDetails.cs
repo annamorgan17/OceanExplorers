@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//stores the data abount fish and adds to total collected
 public class creatureDetails : MonoBehaviour
 {
-    public string[] names = { "GoldFish", "Crab" };
-    public string[] descriptions = {"gold and small", "sharp claws"};
+    public string[] names = { "Shark", "Crab" };
+    public string[] descriptions = {"Big and Scary", "sharp claws"};
     public int totalScanned = 0;
     public GameObject[] creatures;
     
