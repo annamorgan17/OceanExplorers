@@ -7,15 +7,17 @@ public class PredatorScript : MonoBehaviour
     public FlockData data;//scriptable object
     public SoloFishScript fishScript;//connection to solo fsih script
     public GameObject[] predatorsPrefab; //shark then tuna, prefab array
-    public GameObject remora; //remora game object
+    public GameObject remoraPrefab; //remora prefab
     public AudioSource sound; //audio source connection
     public AudioClip swishClip; //sound effect for fish moving
     public AudioClip bubbleClip; //sound effect for bubbles
     public AudioClip eatClip; //sound effect for eating a fish
+    public GameObject boneFish;//prefab for skelly fish
 
     private GameObject[] soloFish; //solo fish game object array
     private GameObject[] predators; //predators game object array
-    private GameObject remoraPrefab; //remora prefab
+    private GameObject skellyFish; //game object of skelly fish
+    private GameObject remora; //remora game object
     private Vector3 goalPos = Vector3.zero; //goal pos for the predators to head towards
     private int counter = 0; //counter to count the cycles through a loop
     private GameObject bubble; //bubble prefab
@@ -29,11 +31,11 @@ public class PredatorScript : MonoBehaviour
     {
         if (predators != null) { // overiding to stop the headset lagging out
 
-
             soloFish = fishScript.fish; //array connected to solo fish script
             speed = Random.Range(1, data.maxSpeed); //sets speed to random number from 0 to the set max speed
             foreach (GameObject p in predatorsPrefab) //loops through prefabs
             {
+                predators = new GameObject[data.predatorsAmount[counter]]; //set array size to the amount of predators of that prefab
                 goalPos = data.setPoint; //sets goal pos to set point
                 for (int i = 0; i < data.predatorsAmount[counter]; i++) { //loops through all the prefabs of current predator
                     Vector3 position = new Vector3( //creates a random vector within bounds
@@ -169,6 +171,7 @@ public class PredatorScript : MonoBehaviour
                 if (Random.Range(0, data.randomAmount) < 10)
                 {// randomly create bubble and play sound effect
                     Bubbles(data.bubblePrefab, p.transform);
+                    bubble.transform.parent = p.transform; //creates the predator as the bubble parent
                     sound.PlayOneShot(bubbleClip, 0.5f);
                 }
                 p.transform.Translate(0, 0, Time.deltaTime * speed);//move the predator at its speed
@@ -197,6 +200,7 @@ public class PredatorScript : MonoBehaviour
                 }
                 if (Random.Range(0, data.randomAmount) < 10) {
                     Bubbles(data.bubblePrefab, p.transform);
+                    bubble.transform.parent = p.transform; //creates the predator as the bubble parent
                 }
                 p.transform.Translate(0, 0, Time.deltaTime * (speed + 2.0f));
             }
@@ -204,9 +208,11 @@ public class PredatorScript : MonoBehaviour
     }
     //swicthes the material of the solo fish defore destorying and plays sound effect
     private void Eat() {
+        skellyFish = (GameObject)Instantiate(boneFish, targetedFish.transform.position, Quaternion.identity);
         fishScript.DestroyFish(targetedFish);
         sound.PlayOneShot(eatClip, 0.5f);
-        //change material from -1 to 1
+        Destroy(skellyFish, 10.0f);
+        
     }
 
 }

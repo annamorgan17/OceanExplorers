@@ -22,8 +22,9 @@ public class SoloFishScript : MonoBehaviour
         speed = Random.Range(1, data.maxSpeed); //sets speed to random number from 0 to the set max speed
         foreach (GameObject f in data.soloFishprefab) //loops through fish prefabs
         {
+            fish = new GameObject[data.soloFishAmount[counter]]; //set array size to the amount of fish of that prefab
             goalPos = data.setPoint;//sets goal pos to set point
-            for (int i = 0; i < data.predatorsAmount[counter]; i++)//loops through all the prefabs of current fish
+            for (int i = 0; i < data.soloFishAmount[counter]; i++)//loops through all the prefabs of current fish
             {
                 Vector3 position = new Vector3(//creates a random vector within bounds
                                         Random.Range((data.setPoint.x - data.swimLimits.x), (data.setPoint.x + data.swimLimits.x)),
@@ -66,6 +67,7 @@ public class SoloFishScript : MonoBehaviour
             if (Random.Range(0, data.randomAmount) < 10)
             {// randomly create bubble and play sound effect
                 Bubbles(data.bubblePrefab, f.transform);
+                bubble.transform.parent = f.transform; //creates the solo fish as the bubble parent
                 sound.PlayOneShot(bubbleClip, 0.5f);
             }
             f.transform.Translate(0, 0, Time.deltaTime * speed);//move the solo fish at its speed

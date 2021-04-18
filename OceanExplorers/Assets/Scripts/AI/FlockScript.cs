@@ -15,7 +15,8 @@ public class FlockScript : MonoBehaviour
     void Start()
     {
         speed = Random.Range(1, fishManager.data.maxSpeed); //sets speed to random number from 0 to the set max speed
-        Bubbles(fishManager.data.bubblePrefab); 
+        Bubbles(fishManager.data.bubblePrefab);
+        bubble.transform.parent = this.transform; //creates the fish as the bubble parent
         fishManager.sound.PlayOneShot(fishManager.bubbleClip, 0.5f); //plays the bubble sound effect
     }
 
@@ -69,6 +70,7 @@ public class FlockScript : MonoBehaviour
         if(Random.Range(0, fishManager.data.randomAmount) < 10) // randomly create bubble and play sound effect
         {
             Bubbles(fishManager.data.bubblePrefab);
+            bubble.transform.parent = this.transform; //creates the fish as the bubble parent
             fishManager.sound.PlayOneShot(fishManager.bubbleClip, 0.5f);
         }
         transform.Translate(0, 0, Time.deltaTime * speed); //move the fish at its speed

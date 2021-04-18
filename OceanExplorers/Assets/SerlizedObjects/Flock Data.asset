@@ -13,20 +13,22 @@ MonoBehaviour:
   m_Name: Flock Data
   m_EditorClassIdentifier: 
   swimLimits: {x: 10, y: 10, z: 40}
-  setPoint: {x: 27.20842, y: 40, z: -58.1064}
+  setPoint: {x: -37.26787, y: 40, z: 24.830458}
   randomAmount: 10000
   maxSpeed: 12
   fishDistance: 3
   rotationSpeed: 6
   chaseDistance: 8
   eatDistance: 2
-  fishAmount: 140000003200000014000000
+  fishAmount: 1400000032000000140000003200000014000000
   predatorsAmount: 0100000003000000
   soloFishAmount: 050000000500000005000000
   fishprefab:
   - {fileID: 6979909836846858113, guid: d5de0ceb1a94a78458b9fd51c4fca7e6, type: 3}
   - {fileID: 110176411341557511, guid: 09d3e950620ae9e4faba1598ed4d5989, type: 3}
   - {fileID: 7401761506341335285, guid: 5396284c081f3244db7ed49c9ed1f3f4, type: 3}
+  - {fileID: 5557591586562329315, guid: c874aea04dc6b454690ad73895aa01be, type: 3}
+  - {fileID: 5537409727814849939, guid: 7d6f166788297124aaa79f6f116c4314, type: 3}
   soloFishprefab:
   - {fileID: 7425324971958611556, guid: 6cf6c0c46582b6f4d9266dd2d12b7b12, type: 3}
   - {fileID: 4415801239931566034, guid: 3f9d4b1b761086f4ba60c28e2432c287, type: 3}

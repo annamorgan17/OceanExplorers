@@ -41,6 +41,8 @@ MonoBehaviour:
   swishClip: {fileID: 8300000, guid: c1522db60d8aa614b9cd91906cd4ecce, type: 3}
   bubbleClip: {fileID: 8300000, guid: 31ce28146fbaa2642b52f021c4464284, type: 3}
   eatClip: {fileID: 8300000, guid: 1317c63d64423094aae989470843df6f, type: 3}
+  boneFish: {fileID: 8759011358877293390, guid: c7c4aba9757ee1648b06d90dc7ea5240,
+    type: 3}
 --- !u!1001 &8864617736123312891
 PrefabInstance:
   m_ObjectHideFlags: 0
