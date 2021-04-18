@@ -16,6 +16,7 @@ public class FlockScript : MonoBehaviour
     {
         speed = Random.Range(1, fishManager.data.maxSpeed);
         Bubbles(fishManager.data.bubblePrefab);
+        fishManager.sound.PlayOneShot(fishManager.bubbleClip, 0.5f);
     }
 
     void Update()
@@ -52,6 +53,7 @@ public class FlockScript : MonoBehaviour
         {
             Vector3 direction = fishManager.data.setPoint - transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), fishManager.data.rotationSpeed * Time.deltaTime);
+            fishManager.sound.PlayOneShot(fishManager.swishClip, 0.5f);
             speed = Random.Range(1, fishManager.data.maxSpeed);
             
         }
@@ -66,6 +68,7 @@ public class FlockScript : MonoBehaviour
         if(Random.Range(0, fishManager.data.randomAmount) < 10)
         {
             Bubbles(fishManager.data.bubblePrefab);
+            fishManager.sound.PlayOneShot(fishManager.bubbleClip, 0.5f);
         }
         transform.Translate(0, 0, Time.deltaTime * speed);
 

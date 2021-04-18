@@ -12,6 +12,8 @@ public class SimpleCapsuleWithStickMovement : MonoBehaviour
 	public float RotationAngle = 45.0f;
 	public float Speed = 0.0f;
 	public OVRCameraRig CameraRig;
+	public AudioSource sound;           //the audio source for all the audio
+	public AudioClip breathingClip;     //the audio clip needed for the player
 
 	private bool ReadyToSnapTurn;
 	private Rigidbody _rigidbody;
@@ -52,7 +54,9 @@ public class SimpleCapsuleWithStickMovement : MonoBehaviour
 
 		root.position = prevPos;
 		root.rotation = prevRot;
-    }
+
+		sound.PlayOneShot(breathingClip, 0.3f);
+	}
 
 	void StickMovement()
 	{
@@ -67,6 +71,7 @@ public class SimpleCapsuleWithStickMovement : MonoBehaviour
 		moveDir += ort * (primaryAxis.y * Vector3.forward);
 		//_rigidbody.MovePosition(_rigidbody.transform.position + moveDir * Speed * Time.fixedDeltaTime);
 		_rigidbody.MovePosition(_rigidbody.position + moveDir * Speed * Time.fixedDeltaTime);
+
 	}
 
 	void SnapTurn()

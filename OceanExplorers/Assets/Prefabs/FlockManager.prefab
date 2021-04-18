@@ -45,9 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: aaf37916b4567d2449be65e93e4a4bb3, type: 2}
-  mainCamera: {fileID: 0}
   allFish: []
   goalPos: {x: 0, y: 0, z: 0}
+  sound: {fileID: 8950728663041885064, guid: ea89c8c65c3de2743a71763c994a864c, type: 3}
+  bubbleClip: {fileID: 8300000, guid: 31ce28146fbaa2642b52f021c4464284, type: 3}
+  swishClip: {fileID: 8300000, guid: c1522db60d8aa614b9cd91906cd4ecce, type: 3}
 --- !u!65 &1220447257712330159
 BoxCollider:
   m_ObjectHideFlags: 0

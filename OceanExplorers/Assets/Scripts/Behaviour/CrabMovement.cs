@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class CrabMovement : MonoBehaviour {
     public CrabData data;
+    public AudioSource sound;
+    public AudioClip crabClip;
     private Vector3 newPos = Vector3.zero;
     private RaycastHit hit;
 
@@ -25,6 +27,7 @@ public class CrabMovement : MonoBehaviour {
 
             Physics.Raycast(this.transform.position, Vector3.down, out hit);
             transform.up -= (transform.up - hit.normal) * 0.1f;
+            sound.PlayOneShot(crabClip, 0.3f);
         }
         TargetPos();
 

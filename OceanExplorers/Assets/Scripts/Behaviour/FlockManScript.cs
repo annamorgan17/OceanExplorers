@@ -8,6 +8,9 @@ public class FlockManScript : MonoBehaviour
     [HideInInspector] public GameObject[] allFish = null;
     //public GameObject[] terrain = null;
     [HideInInspector] public Vector3 goalPos = Vector3.zero;
+    public AudioSource sound;
+    public AudioClip bubbleClip;
+    public AudioClip swishClip;
     private int counter = 0;
     void Start()
     { 

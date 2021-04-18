@@ -8,6 +8,11 @@ public class PredatorScript : MonoBehaviour
     public SoloFishScript fishScript;
     public GameObject[] predatorsPrefab; //shark then tuna
     public GameObject remoraPrefab;
+    public AudioSource sound;
+    public AudioClip swishClip;
+    public AudioClip bubbleClip;
+    public AudioClip eatClip;
+
     private GameObject[] soloFish;
     private GameObject[] predators;
     private Vector3 goalPos = Vector3.zero;
@@ -147,6 +152,7 @@ public class PredatorScript : MonoBehaviour
                 if (turning) {
                     Vector3 direction = data.setPoint - p.transform.position;
                     p.transform.rotation = Quaternion.Slerp(p.transform.rotation, Quaternion.LookRotation(direction), data.rotationSpeed * Time.deltaTime);
+                    sound.PlayOneShot(swishClip, 0.5f);
                     speed = Random.Range(1, data.maxSpeed);
 
                 } else {
@@ -154,6 +160,7 @@ public class PredatorScript : MonoBehaviour
                 }
                 if (Random.Range(0, data.randomAmount) < 10) {
                     Bubbles(data.bubblePrefab, p.transform);
+                    sound.PlayOneShot(bubbleClip, 0.5f);
                 }
                 p.transform.Translate(0, 0, Time.deltaTime * speed);
             }
@@ -189,6 +196,7 @@ public class PredatorScript : MonoBehaviour
 
     private void Eat() {
         fishScript.DestroyFish(targetedFish);
+        sound.PlayOneShot(eatClip, 0.5f);
         //change material from -1 to 1
     }
 

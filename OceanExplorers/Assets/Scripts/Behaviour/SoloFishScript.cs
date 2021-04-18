@@ -7,6 +7,9 @@ public class SoloFishScript : MonoBehaviour
     public FlockData data; 
     [HideInInspector]
     public GameObject[] fish;
+    public AudioSource sound;
+    public AudioClip swishClip;
+    public AudioClip bubbleClip;
 
     [HideInInspector] public Vector3 goalPos = Vector3.zero;
     private int counter = 0;
@@ -52,6 +55,7 @@ public class SoloFishScript : MonoBehaviour
             {
                 Vector3 direction = data.setPoint - f.transform.position;
                 f.transform.rotation = Quaternion.Slerp(f.transform.rotation, Quaternion.LookRotation(direction), data.rotationSpeed * Time.deltaTime);
+                sound.PlayOneShot(swishClip, 0.5f);
                 speed = Random.Range(1, data.maxSpeed);
 
             }
@@ -62,6 +66,7 @@ public class SoloFishScript : MonoBehaviour
             if (Random.Range(0, data.randomAmount) < 10)
             {
                 Bubbles(data.bubblePrefab, f.transform);
+                sound.PlayOneShot(bubbleClip, 0.5f);
             }
             f.transform.Translate(0, 0, Time.deltaTime * speed);
         }

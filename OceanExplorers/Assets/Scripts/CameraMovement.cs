@@ -68,6 +68,7 @@ public class CameraMovement : MonoBehaviour
 
 			Vector3 move = new Vector3(pos.x * panSpeed, pos.y * panSpeed, 0);
 			transform.Translate(move, Space.Self);
+
 		}
 
 		// Move the camera linearly along Z axis

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 5905bc3a413faf24c8f96fba72893818, type: 2}
+  sound: {fileID: 8950728663041885064, guid: ea89c8c65c3de2743a71763c994a864c, type: 3}
+  crabClip: {fileID: 8300000, guid: 3e51de343a0468c4b8c5c2eb005ae925, type: 3}
 --- !u!195 &1336881815
 NavMeshAgent:
   m_ObjectHideFlags: 0
