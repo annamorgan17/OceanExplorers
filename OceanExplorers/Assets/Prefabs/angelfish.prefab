@@ -60,7 +60,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1466773268909867298}
+  - {fileID: 7536309772802879685}
   - {fileID: 4089395117918373876}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -345,100 +345,6 @@ Transform:
   m_Father: {fileID: 4089395117918373876}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3430196696485946876
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1466773268909867298}
-  - component: {fileID: 4226916524770125961}
-  m_Layer: 0
-  m_Name: Marine AngelFish
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1466773268909867298
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3430196696485946876}
-  m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 89.715576, y: 0.29580688, z: 22.991058}
-  m_LocalScale: {x: 0.393162, y: 0.104171, z: 0.393162}
-  m_Children: []
-  m_Father: {fileID: 8852201050328874549}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &4226916524770125961
-SkinnedMeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3430196696485946876}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 88b1972b32629924e87747f903ce54de, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  serializedVersion: 2
-  m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 3615444692939413684, guid: 67e814cc0b22b6346bbc18e0a51aacb9, type: 3}
-  m_Bones:
-  - {fileID: 9019791671403996262}
-  - {fileID: 2856708533785707349}
-  - {fileID: 2736110623435684095}
-  - {fileID: 3223987328986186604}
-  - {fileID: 5048213983149886970}
-  - {fileID: 9071030230512950345}
-  - {fileID: 4574630943540591234}
-  - {fileID: 5868233302264381941}
-  - {fileID: 3273090508434442182}
-  - {fileID: 7693591532533232542}
-  - {fileID: 2131839532333209731}
-  - {fileID: 6643746191588421966}
-  m_BlendShapeWeights: []
-  m_RootBone: {fileID: 9071030230512950345}
-  m_AABB:
-    m_Center: {x: -64.28291, y: 15.081974, z: 0.016727448}
-    m_Extent: {x: 185.29033, y: 75.10945, z: 79.90689}
-  m_DirtyAABB: 0
 --- !u!1 &3886581057373289361
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,3 +807,78 @@ Transform:
   m_Father: {fileID: 4089395117918373876}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3309280417657510879
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8852201050328874549}
+    m_Modifications:
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_Name
+      value: MarineAngelFish
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d0eb54f544ce624a898fd242f7a0cfc, type: 3}
+--- !u!4 &7536309772802879685 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+    type: 3}
+  m_PrefabInstance: {fileID: 3309280417657510879}
+  m_PrefabAsset: {fileID: 0}
