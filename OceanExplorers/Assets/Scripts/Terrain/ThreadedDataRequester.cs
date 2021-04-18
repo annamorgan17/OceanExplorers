@@ -14,10 +14,13 @@ public class ThreadedDataRequester : MonoBehaviour{
 	}
 
 	public static void RequestData(Func<object> generateData, Action<object> callback) {
+		//check the thread instance is there to help
         if (instance == null) {
 			Debug.LogError("null thread instance, returning");
 			return;
         }
+
+		//start a thread
 		ThreadStart threadStart = delegate {
 			instance.DataThread(generateData, callback);
 		};
@@ -25,6 +28,7 @@ public class ThreadedDataRequester : MonoBehaviour{
 		new Thread(threadStart).Start();
 	}
 
+	//enque a thread
 	void DataThread(Func<object> generateData, Action<object> callback) {
 		object data = generateData();
 		lock (dataQueue) {
@@ -33,6 +37,7 @@ public class ThreadedDataRequester : MonoBehaviour{
 	}
 
 
+	//callback threads
 	void Update() {
 		if (dataQueue.Count > 0) {
 			for (int i = 0; i < dataQueue.Count; i++) {
@@ -42,6 +47,7 @@ public class ThreadedDataRequester : MonoBehaviour{
 		}
 	}
 
+	//thread info data structure
 	struct ThreadInfo {
 		public readonly Action<object> callback;
 		public readonly object parameter;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
+// a toggle button, currently unused
 public class ToggleButton : MonoBehaviour {
     [SerializeField] Image Background;
     [SerializeField] Image Handle;
@@ -11,8 +13,7 @@ public class ToggleButton : MonoBehaviour {
     bool status = false;
     Vector3[] positions = new Vector3[2];
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         Vector3[] v = new Vector3[4];
         Vector3[] a = new Vector3[4];
         Background.GetComponent<RectTransform>().GetWorldCorners(v);
@@ -20,15 +21,9 @@ public class ToggleButton : MonoBehaviour {
         positions[0] = new Vector3(v[0].x + (Handle.GetComponent<RectTransform>().sizeDelta.x / 2), Handle.GetComponent<RectTransform>().transform.position.y, 0);
         positions[1] = new Vector3(v[3].x - (Handle.GetComponent<RectTransform>().sizeDelta.x / 2), Handle.GetComponent<RectTransform>().transform.position.y, 0);
 
-        Click();
-    
+        Click(); 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void Click() {
         status = !status;
         if (status) {

@@ -2,21 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+//NO LONGER IN USE
+//previously made a toggle switch
 public class ImageSwitch : MonoBehaviour {
     [SerializeField] Sprite ImageON;
     [SerializeField] Sprite ImageOFF;
-    [SerializeField] bool status = false;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] bool status = false; 
     public void Click() {
         status = !status;
         if (status) {

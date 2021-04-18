@@ -6,17 +6,14 @@ public class OptionsMenuOpewn : MonoBehaviour
 {
     [SerializeField] GameObject CanvasUI;
     [SerializeField] KeyCode activator = KeyCode.Escape;
+    
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    // a simple script the hide the canvas when the player walks too far away from it
+    
+     
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+    void Update() {
+        if (Input.GetKeyDown(activator)) {
             CanvasUI.SetActive(!CanvasUI.activeSelf);
             CanvasUI.transform.position = gameObject.transform.position;
             CanvasUI.transform.rotation = gameObject.transform.rotation;

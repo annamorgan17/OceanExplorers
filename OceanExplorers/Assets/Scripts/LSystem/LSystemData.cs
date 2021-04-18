@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;  
-[System.Serializable]
-public struct dictValues {
+//a struct to store dict values
+[System.Serializable] public struct dictValues {
     public char Key;
     public string Value;
     public dictValues(char Key, string Value) {
@@ -16,8 +16,7 @@ public struct dictValues {
 /// <summary>
 /// Data structure to store variables and keywords
 /// </summary>
-[System.Serializable]
-public struct Param {
+[System.Serializable] public struct Param {
     public char Character;
     public float Value;
     public Param(char character, float value) {
@@ -25,8 +24,7 @@ public struct Param {
         this.Value = value;
     }
 }
-[CreateAssetMenu()]
-public class LSystemVisualData : ScriptableObject { 
+[CreateAssetMenu()] public class LSystemVisualData : ScriptableObject { 
     //redo to use based on height
     [Header("Colour")]
     public CustomGradient Colour;
@@ -78,18 +76,5 @@ public class LSystemVisualData : ScriptableObject {
         if (radius.y <= 0) {
             radius = new Vector2(radius.x, 1);
         }
-    }
-    /*
-    public override string ToString() {
-        string startingString;
-        if (StartString == string.Empty) {
-            startingString = "Empty";
-        } else {
-            startingString = StartString;
-        }
-        return Colour.GetString() + ":" + Colour.blendMode.ToString() + ":" + angle + ":" + rotate + ":" + RotationAngle + ":" + length + ":" + generations + ":" + lengthVariance +
-            ":" + ammendmentChance + ":" + randomThickness + ":" + pillarHeight + ":" + points + ":" + radius + ":" + LeafGeneration.ToString() +
-            ":" + startingString; // + ":" + returnVariablesToString() + ":" + returnDictionaryToString();
-    }
-    */
+    } 
 }

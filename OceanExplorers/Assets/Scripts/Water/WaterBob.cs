@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+//unused was previously creating a water bobbing effect
 public class WaterBob : MonoBehaviour
 { 
     [SerializeField]

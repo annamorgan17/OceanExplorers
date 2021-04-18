@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
+//THIS IS FROM A ONLINE LIBRARY BY UNITY
 
 // Tagging component for use with the LocalNavMeshBuilder
 // Supports mesh-filter and terrain - can be extended to physics and/or primitives

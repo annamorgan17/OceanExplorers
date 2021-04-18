@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//old style of movement from before vr was in  
 public class CameraMovement : MonoBehaviour
 {
 	//

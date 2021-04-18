@@ -43,7 +43,7 @@ namespace Plant.Utilities {
             Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
             Gizmos.matrix = oldGizmosMatrix;
         }
-
+        //this function was found in a online library:
         //https://github.com/GlitchEnzo/UnityProceduralPrimitives/blob/master/Assets/Procedural%20Primitives/Scripts/MeshExtensions.cs 
         public static void CreateCylinder(this Mesh mesh, float topRadius, float bottomRadius, float height, int radialSegments, int heightSegments, bool openEnded, Vector3 offset) {
             mesh.name = "Cylinder";
@@ -185,7 +185,8 @@ namespace Plant.Utilities {
             mesh.RecalculateNormals();
             //mesh.RecalculateBounds();
         }
-
+        
+        //rest of my code;
 
         /// <summary>
         /// Return a primitive shape as mesh
@@ -269,6 +270,7 @@ namespace Plant.Utilities {
             return MeshObject;
         } 
 
+        
         /// <summary>
         /// Return material and set the emmision and shinyness value to a custom shader
         /// </summary>

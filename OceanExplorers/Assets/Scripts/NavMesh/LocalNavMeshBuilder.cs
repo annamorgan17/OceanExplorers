@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using NavMeshBuilder = UnityEngine.AI.NavMeshBuilder;
 
+//THIS IS FROM A ONLINE LIBRARY BY UNITY
+
 // Build and update a localized navmesh from the sources marked by NavMeshSourceTag
 [DefaultExecutionOrder(-102)]
 public class LocalNavMeshBuilder : MonoBehaviour

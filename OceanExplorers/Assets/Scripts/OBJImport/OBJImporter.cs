@@ -9,7 +9,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
+//FROM ONLINE LIBRARY
 //Fast obj importer
 //http://wiki.unity3d.com/index.php/FastObjImporter
 public sealed class FastObjImporter {

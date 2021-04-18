@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeshBounds : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+public class MeshBounds : MonoBehaviour { 
     void Update()
     {
+        //find mesh bounds, was used for debug previous
+        //currently unused
         Debug.Log(gameObject.GetComponent<MeshFilter>().mesh.bounds.size);
     }
 }

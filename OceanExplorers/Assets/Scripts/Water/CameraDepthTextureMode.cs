@@ -1,6 +1,6 @@
 ﻿using UnityEngine; 
-public class CameraDepthTextureMode : MonoBehaviour
-{
+//curently unused, used to find camera depth texture when using cg shaders
+public class CameraDepthTextureMode : MonoBehaviour{
     [SerializeField] DepthTextureMode depthTextureMode;
     [SerializeField]  Color FogColour;
     [SerializeField] [Range(0,0.03f)] float FogMinDencity = 0.003f;

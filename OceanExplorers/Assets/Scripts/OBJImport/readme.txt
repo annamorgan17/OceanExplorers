@@ -1,3 +1,14 @@
+
+Please note that all scripts in this folder were taken from online libaries to save time
+
+
+
+
+
+
+
+
+
 OBJ IMPORTER README:
 
 This is the readme for aaro4130's OBJ Import Asset. This asset
