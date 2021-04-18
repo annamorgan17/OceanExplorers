@@ -22,7 +22,7 @@ public class MainMenuEvents : MonoBehaviour
     public void StartButtonPressed() {
         Debug.LogError("Start Button was pressed, loading the main scene");
         sound.PlayOneShot(lever, 0.5f);
-        SceneManager.LoadScene("Main", LoadSceneMode.Additive);
+        SceneManager.LoadScene("Main", LoadSceneMode.Single);
     }
     public void ExitButton() {
         Debug.LogError("Exit the game");
