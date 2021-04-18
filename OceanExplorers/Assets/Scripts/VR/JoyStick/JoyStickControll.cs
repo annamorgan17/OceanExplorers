@@ -25,7 +25,7 @@ public class JoyStickControll : MonoBehaviour
             //Debug.Log("Foward" + forwardBackwardsTilt); 
         }
 
-        if (forwardBackwardsTilt <= 5) {
+        if (transform.eulerAngles.x <= 300) { 
             OnLeverUp?.Invoke();
         }
 
@@ -48,15 +48,17 @@ public class JoyStickControll : MonoBehaviour
     }
     private void OnTriggerStay(Collider other) {
         if (other.CompareTag("PlayerHand")) {
-            Vector3 oldEuler = topOfJoystick.root.eulerAngles; 
+            Vector3 oldEuler = transform.eulerAngles; 
             transform.LookAt(other.transform.position, transform.up); 
-            Vector3 newEuler = topOfJoystick.root.eulerAngles; 
+            Vector3 newEuler = transform.eulerAngles;
+            Debug.LogWarning(oldEuler + " vs " + newEuler);
             if (leverMode) { // limit right and left direction if it is acting like a lever rather than a joystick 
-                Debug.LogWarning(newEuler.x);
                 if (newEuler.x < 30 & newEuler.x > 0) {
-                    Debug.LogWarning("kkkkkkkkkkkkk");
+                    Debug.LogError("Was out of bounds so reset");
                     newEuler.x = 0;
-                }
+                } else {
+                    //Debug.LogError("ss");
+                } 
                 transform.eulerAngles = new Vector3(newEuler.x, oldEuler.y, newEuler.z); 
             } 
         }

@@ -10,22 +10,24 @@ public class FlockManScript : MonoBehaviour
     [HideInInspector] public Vector3 goalPos = Vector3.zero;
     private int counter = 0;
     void Start()
-    {
-        foreach (GameObject fish in data.fishprefab)
-        {
-            goalPos = data.setPoint;
-            allFish = new GameObject[data.fishAmount[counter]];
-            for (int i = 0; i < data.fishAmount[counter]; i++)
-            {
-                Vector3 position = new Vector3(
-                                        Random.Range((data.setPoint.x - data.swimLimits.x), (data.setPoint.x + data.swimLimits.x)),
-                                        Random.Range((data.setPoint.y - data.swimLimits.y), (data.setPoint.y + data.swimLimits.y)),
-                                        Random.Range((data.setPoint.z - data.swimLimits.z), (data.setPoint.z + data.swimLimits.z)));
-                allFish[i] = (GameObject)Instantiate(fish, position, Quaternion.identity);
-                allFish[i].GetComponent<FlockScript>().fishManager = this;
-            }
-            counter++;
-        }
+    { 
+            foreach (GameObject fish in data.fishprefab) {
+                goalPos = data.setPoint;
+                allFish = new GameObject[data.fishAmount[counter]];
+                for (int i = 0; i < data.fishAmount[counter]; i++) {
+                    if (i > 0 & i < allFish.Length) { // overiding to stop the headset lagging out
+                    if (allFish[i] != null) { // overiding to stop the headset lagging out
+                            Vector3 position = new Vector3(
+                                                    Random.Range((data.setPoint.x - data.swimLimits.x), (data.setPoint.x + data.swimLimits.x)),
+                                                    Random.Range((data.setPoint.y - data.swimLimits.y), (data.setPoint.y + data.swimLimits.y)),
+                                                    Random.Range((data.setPoint.z - data.swimLimits.z), (data.setPoint.z + data.swimLimits.z)));
+                            allFish[i] = (GameObject)Instantiate(fish, position, Quaternion.identity);
+                            allFish[i].GetComponent<FlockScript>().fishManager = this;
+                        }
+                    }
+                }
+                counter++;
+            } 
 
     }
 

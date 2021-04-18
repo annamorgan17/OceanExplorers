@@ -32,13 +32,21 @@ public class GetInput : MonoBehaviour
     }
     private void ScanFish() {
         Debug.Log("Scan a fish");
-        scan.CheckObjectClicked();
+        //scan.CheckObjectClicked();
     }
     private void ShowMenu(bool MenuA) {
         if (MenuA) {
             Debug.Log("Show Option menu");
+            OptionCanvas.gameObject.SetActive(!OptionCanvas.gameObject.activeSelf);
+            OptionCanvas.transform.position = gameObject.transform.position;
+            OptionCanvas.transform.rotation = gameObject.transform.rotation;
+            OptionCanvas.transform.Translate(gameObject.transform.right * 5f);
         } else {
             Debug.Log("Show Fish Library menu");
+            LibraryCanvas.gameObject.SetActive(!LibraryCanvas.gameObject.activeSelf);
+            LibraryCanvas.transform.position = gameObject.transform.position;
+            LibraryCanvas.transform.rotation = gameObject.transform.rotation;
+            LibraryCanvas.transform.Translate(gameObject.transform.right * 5f);
         }
     }
 }

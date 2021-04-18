@@ -15,7 +15,7 @@ public class Screenshot : MonoBehaviour
         if (Input.GetKeyDown("space")) {
             ScreenCapture.CaptureScreenshot("Assets/Resources/Screenshots/GoldFishie.png");
             Debug.Log("A screenshot was taken");
-            UnityEditor.AssetDatabase.Refresh();
+            //UnityEditor.AssetDatabase.Refresh();
         }
     }
 }

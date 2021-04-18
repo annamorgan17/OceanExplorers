@@ -169,7 +169,7 @@ public class Generation : MonoBehaviour {
         //Make mesh
         if (branch == null) {
             branch = new Mesh();
-            MeshExstension.CreateCylinder(branch, 1, 1, length, 8, 1, false, transform.TransformPoint(between));
+            MeshExstension.CreateCylinder(branch, lSystemVisualData.radius.x, lSystemVisualData.radius.y, length, 8, 1, false, transform.TransformPoint(between));
         }
 
         //Add mesh to object

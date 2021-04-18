@@ -26,6 +26,22 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_5D01BA68:
+        m_Texture: {fileID: 2800000, guid: 59411ded5723c8f4aa3441754b8b782c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_9BC53E24:
+        m_Texture: {fileID: 2800000, guid: 6fa03c32bcb9eb24b9493f16cf80a66e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_B2604B06:
+        m_Texture: {fileID: 2800000, guid: 53beb3a4f030aa543aaa19181ffbaaea, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_DBBED760:
+        m_Texture: {fileID: 2800000, guid: 303997dd5ba6bbc4baadbb9af74a9995, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -35,7 +51,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 128dcb21515e95d47b93391a96d0658e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:

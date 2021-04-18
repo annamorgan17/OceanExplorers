@@ -10,18 +10,20 @@ public class ButtonLimit : MonoBehaviour
     private float maxDistance;
 
     private void Awake() {
-        minDistance = Vector3.Distance(buttonTrigger.transform.position,
-            transform.position);
+        minDistance = Vector3.Distance(buttonTrigger.transform.position, transform.position);
         maxDistance = buttonTrigger.transform.position.y;
         orgionalPosition = transform.position;
     }
 
     private void Update() {
-        if (Vector3.Distance(buttonTrigger.transform.position, transform.position) >= minDistance) {
+        bool BellowMinDistance = Vector3.Distance(buttonTrigger.transform.position, transform.position) >= minDistance;
+        if (BellowMinDistance) {
             transform.position = orgionalPosition;
 
         }
-        if (transform.position.y <= maxDistance) {
+
+        bool AboveMaxDistance = transform.position.y <= maxDistance;
+        if (AboveMaxDistance) {
             transform.position = new Vector3(transform.position.x, maxDistance, transform.position.z);
         }
     }

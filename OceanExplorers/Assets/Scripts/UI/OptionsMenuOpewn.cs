@@ -5,6 +5,7 @@ using UnityEngine;
 public class OptionsMenuOpewn : MonoBehaviour
 {
     [SerializeField] GameObject CanvasUI;
+    [SerializeField] KeyCode activator = KeyCode.Escape;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class OptionsMenuOpewn : MonoBehaviour
             CanvasUI.transform.rotation = gameObject.transform.rotation;
             CanvasUI.transform.Translate(CanvasUI.transform.forward * 5f);
         }
+
         if (CanvasUI.activeSelf) {
             if (Vector3.Distance(CanvasUI.transform.position, gameObject.transform.position) >= 20f) { // remove if the character walked to far away
                 CanvasUI.SetActive(false);

@@ -27,14 +27,14 @@ MonoBehaviour:
   angle: 25
   rotate: 0
   RotationAngle: 90
-  length: 5
+  length: 0.2
   generations: 2
   lengthVariance: 0
   ammendmentChance: 14
   randomThickness: 2
   pillarHeight: 0
   points: 8
-  radius: {x: 0.5, y: 0.5}
+  radius: {x: 0.05, y: 0.05}
   LeafGeneration: 3
   StartString: 
   Variables:

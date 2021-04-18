@@ -10,7 +10,7 @@ public class ButtonTrigger : MonoBehaviour
     private UnityEvent onButtonPressed;
     private bool pressedInProgress = false;
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other) { 
         if (other.isTriggerButton() && !pressedInProgress) {
             pressedInProgress = true;
             onButtonPressed?.Invoke();
