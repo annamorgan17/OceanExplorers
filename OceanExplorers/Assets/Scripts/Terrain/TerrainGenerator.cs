@@ -29,28 +29,24 @@ public class TerrainGenerator : MonoBehaviour {
 	List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
 
 	void Start() {
+		//check our variables are okay
+		if (DebugErrors()) { 
+			//apply our materials and update our mesh heights
+			textureSettings.ApplyToMaterial(mapMaterial);
+			textureSettings.UpdateMeshHeights(mapMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
 
-		textureSettings.ApplyToMaterial(mapMaterial);
-		textureSettings.UpdateMeshHeights(mapMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
 
-		float maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
-		meshWorldSize = meshSettings.meshWorldSize;
-		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / meshWorldSize);
+			//find our max view dst
+			float maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
+			meshWorldSize = meshSettings.meshWorldSize;
+			chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / meshWorldSize);
 
-		UpdateVisibleChunks();
+			//update our chunks
+			UpdateVisibleChunks();
+		}
 	}
 
-	private bool DebugErrors() {
-		/*
-		 * 	public MeshSettings meshSettings;
-	public HeightMapSettings heightMapSettings;
-	public TextureData textureSettings;
-	public TerrainObjectData terrainObjectData;
-	public PossonData possonData; 
-	public Transform viewer;
-	public Material mapMaterial;
-
-		 * */
+	private bool DebugErrors() { 
 		bool Out = true;
         if (mapMaterial == null) {
 			Debug.LogWarning("Material slot is null, Trying to fix now...");
@@ -86,27 +82,35 @@ public class TerrainGenerator : MonoBehaviour {
 		return Out;
     }
 	void Update() {
-		viewerPosition = new Vector2(viewer.position.x, viewer.position.z);
-
-		if (viewerPosition != viewerPositionOld) {
-			foreach (TerrainChunk chunk in visibleTerrainChunks) {
-				chunk.UpdateCollisionMesh();
+		//if no variables issues
+		if (DebugErrors()) { 
+			//calculate our viewer position
+			viewerPosition = new Vector2(viewer.position.x, viewer.position.z); 
+			//if position changes
+			if (viewerPosition != viewerPositionOld) {
+				//update out colliders
+				foreach (TerrainChunk chunk in visibleTerrainChunks) {
+					chunk.UpdateCollisionMesh();
+				}
 			}
-		}
 
-		if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
-			viewerPositionOld = viewerPosition;
-			UpdateVisibleChunks();
+			//udpate our old position if we have moved too far
+			if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
+				viewerPositionOld = viewerPosition;
+				UpdateVisibleChunks();
+			}
 		}
 	}
 
 	void UpdateVisibleChunks() {
+		//find the chunks already updated
 		HashSet<Vector2> alreadyUpdatedChunkCoords = new HashSet<Vector2>();
 		for (int i = visibleTerrainChunks.Count - 1; i >= 0; i--) {
 			alreadyUpdatedChunkCoords.Add(visibleTerrainChunks[i].coord);
 			visibleTerrainChunks[i].UpdateTerrainChunk();
 		}
 
+		//find our current chunk coord
 		int currentChunkCoordX = Mathf.RoundToInt(viewerPosition.x / meshWorldSize);
 		int currentChunkCoordY = Mathf.RoundToInt(viewerPosition.y / meshWorldSize);
 

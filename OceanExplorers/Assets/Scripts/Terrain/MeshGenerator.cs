@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeshGenerator : MonoBehaviour
-{
+public class MeshGenerator : MonoBehaviour {
+	//Generating a mesh
 	public static MeshData GenerateTerrainMesh(float[,] heightMap, MeshSettings meshSettings, int levelOfDetail) {
 
 		int skipIncrement = (levelOfDetail == 0) ? 1 : levelOfDetail * 2;
@@ -17,6 +17,7 @@ public class MeshGenerator : MonoBehaviour
 		int meshVertexIndex = 0;
 		int outOfMeshVertexIndex = -1;
 
+		//Calculate the vertex indices map
 		for (int y = 0; y < numVertsPerLine; y++) {
 			for (int x = 0; x < numVertsPerLine; x++) {
 				bool isOutOfMeshVertex = y == 0 || y == numVertsPerLine - 1 || x == 0 || x == numVertsPerLine - 1;
@@ -31,6 +32,7 @@ public class MeshGenerator : MonoBehaviour
 			}
 		}
 
+		//Handle edges between meshes for levels of detail
 		for (int y = 0; y < numVertsPerLine; y++) {
 			for (int x = 0; x < numVertsPerLine; x++) {
 				bool isSkippedVertex = x > 2 && x < numVertsPerLine - 3 && y > 2 && y < numVertsPerLine - 3 && ((x - 2) % skipIncrement != 0 || (y - 2) % skipIncrement != 0);
@@ -60,6 +62,7 @@ public class MeshGenerator : MonoBehaviour
 
 					meshData.AddVertex(new Vector3(vertexPosition2D.x, height, vertexPosition2D.y), percent, vertexIndex);
 
+					//Handle triangles
 					bool createTriangle = x < numVertsPerLine - 1 && y < numVertsPerLine - 1 && (!isEdgeConnectionVertex || (x != 2 && y != 2));
 
 					if (createTriangle) {
@@ -76,14 +79,15 @@ public class MeshGenerator : MonoBehaviour
 			}
 		}
 
-		meshData.ProcessMesh();
-
-		return meshData;
-
+		//Procress mesh and return
+		meshData.ProcessMesh(); 
+		return meshData; 
 	}
 }
 
 public class MeshData {
+
+	//Mesh data
 	Vector3[] vertices;
 	int[] triangles;
 	Vector2[] uvs;
@@ -97,7 +101,8 @@ public class MeshData {
 
 	bool useFlatShading;
 
-	public MeshData(int numVertsPerLine, int skipIncrement, bool useFlatShading) {
+
+	public MeshData(int numVertsPerLine, int skipIncrement, bool useFlatShading) { 
 		this.useFlatShading = useFlatShading;
 
 		int numMeshEdgeVertices = (numVertsPerLine - 2) * 4 - 4;
@@ -116,6 +121,7 @@ public class MeshData {
 		outOfMeshTriangles = new int[24 * (numVertsPerLine - 2)];
 	}
 
+	//Add a vertex to the appropirate array
 	public void AddVertex(Vector3 vertexPosition, Vector2 uv, int vertexIndex) {
 		if (vertexIndex < 0) {
 			outOfMeshVertices[-vertexIndex - 1] = vertexPosition;
@@ -125,6 +131,7 @@ public class MeshData {
 		}
 	}
 
+	//Add a triangle to the appropirate array
 	public void AddTriangle(int a, int b, int c) {
 		if (a < 0 || b < 0 || c < 0) {
 			outOfMeshTriangles[outOfMeshTriangleIndex] = a;
@@ -139,6 +146,7 @@ public class MeshData {
 		}
 	}
 
+	//Calculate the normal directions
 	Vector3[] CalculateNormals() {
 
 		Vector3[] vertexNormals = new Vector3[vertices.Length];
@@ -193,6 +201,7 @@ public class MeshData {
 		return Vector3.Cross(sideAB, sideAC).normalized;
 	}
 
+	//Process mesh
 	public void ProcessMesh() {
 		if (useFlatShading) {
 			FlatShading();
@@ -201,10 +210,12 @@ public class MeshData {
 		}
 	}
 
+	//Back the normals
 	void BakeNormals() {
 		bakedNormals = CalculateNormals();
 	}
 
+	//use flat shading
 	void FlatShading() {
 		Vector3[] flatShadedVertices = new Vector3[triangles.Length];
 		Vector2[] flatShadedUvs = new Vector2[triangles.Length];
@@ -219,6 +230,7 @@ public class MeshData {
 		uvs = flatShadedUvs;
 	}
 
+	//Create a mesh using the data we made
 	public Mesh CreateMesh() {
 		Mesh mesh = new Mesh();
 		mesh.vertices = vertices;

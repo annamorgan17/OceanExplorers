@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class PossonDiscSampling {
+    //Generate our Posson Disc points
     public static List<Vector2> GeneratePoints(float radius, Vector2 sampleRegionSize, int numSamplesBeforeRejection = 30) {
+        //Find our cell size
         float cellSize = radius / Mathf.Sqrt(2);
+
+        //Calculate our grid size
         int[,] grid = new int[Mathf.CeilToInt(sampleRegionSize.x / cellSize), Mathf.CeilToInt(sampleRegionSize.y / cellSize)];
         List<Vector2> points = new List<Vector2>();
         List<Vector2> spawnPoints = new List<Vector2>();
+         
         spawnPoints.Add(sampleRegionSize / 2);
+
+        //While there are spawn points
         while (spawnPoints.Count > 0) {
             int spawnIndex = Random.Range(0, spawnPoints.Count);
             Vector2 spawnCentre = spawnPoints[spawnIndex];
             bool candidateAcceoted = false;
 
+            //Add new spawn points
             for (int i = 0; i < numSamplesBeforeRejection; i++) {
 
                 float angle = Random.value * Mathf.PI * 2;
@@ -27,14 +35,19 @@ public static class PossonDiscSampling {
                     break;
                 }
             }
+
+            //If its accepted remove the spawn point
             if (!candidateAcceoted) {
                 spawnPoints.RemoveAt(spawnIndex);
             }
         }
         return points;
     }
+
+    //Calculate if this is a valid position
     static bool isValid(Vector2 candidate, Vector2 sampleRegionSize, float cellSize, float radius, List<Vector2> points, int[,] grid) {
         if (candidate.x >= 0 && candidate.x < sampleRegionSize.x && candidate.y >= 0 && candidate.y < sampleRegionSize.y) {
+            //Calculate our cell size
             int cellX = (int)(candidate.x / cellSize);
             int cellY = (int)(candidate.y / cellSize);
 
@@ -43,13 +56,15 @@ public static class PossonDiscSampling {
 
             int searchStartY = Mathf.Max(0, cellY - 2);
             int searchEndY = Mathf.Min(cellY + 2, grid.GetLength(1) - 1);
+
+            //Search for another others in the area
             for (int x = searchStartX; x <= searchEndX; x++) {
                 for (int y = searchStartY; y <= searchEndY; y++) {
                     int pointIndex = grid[x, y] - 1;
                     if (pointIndex != -1) {
                         float sqrDst = (candidate - points[pointIndex]).sqrMagnitude;
                         if (sqrDst < radius * radius) {
-                            return false;
+                            return false; // exit if another is overlapping
                         }
                     }
                 }

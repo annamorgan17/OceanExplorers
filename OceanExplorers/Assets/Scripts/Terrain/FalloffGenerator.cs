@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class FalloffGenerator {
+    //Generate a fall of map
      public static float[,] GenerateFalloffMap(int size) {
         float[,] map = new float[size, size];
         for (int i = 0; i < size; i++) {
@@ -16,6 +17,7 @@ public static class FalloffGenerator {
         }
         return map;
     }
+    //evaulte the value on the map
     static float Evalute(float value) {
         float a = 3;
         float b = 2.2f;
