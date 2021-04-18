@@ -4,24 +4,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
-public class OptionMenuFunctions : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+using UnityEngine.Rendering.HighDefinition; 
+public class OptionMenuFunctions : MonoBehaviour {
+    [SerializeField] Light light;
+    [SerializeField] Volume volume;
     public void ChunkDistance(float percentage) {
         float localPercentage = percentage - 50; // Going from -.5 to .5 to reduce and increase distance
         float Default1 = 50, Default2 = 100, Default3 = 200;
-        Default1 *= localPercentage; Default2 *= localPercentage; Default3 *= localPercentage;
+        Default1 *= percentage; Default2 *= percentage; Default3 *= percentage;
 
         TerrainGenerator tg = Object.FindObjectOfType<TerrainGenerator>();
         tg.detailLevels[0].visibleDstThreshold = Default1;
@@ -30,14 +20,16 @@ public class OptionMenuFunctions : MonoBehaviour
 
         Debug.Log("Changed the view distance to: " + Default1 + " / " + Default2 + " / " + Default3);
     }
-    public void fogStrength(float percentage) {
-        Volume volume = gameObject.GetComponent<Volume>();
+    public void fogStrength(float percentage) { 
         Fog fog;
         volume.profile.TryGet(out fog);
-        float max = 5;
-        fog.meanFreePath.value = max / percentage;
-        Debug.LogError("Fog is at: " + (max / percentage)); 
+        fog.baseHeight.value = percentage;
+        Debug.LogError("Fog is at: " + (percentage)); 
     }
+    public void Brightness(float percentage) {
+        light.intensity = percentage;
+    }
+    /*
     public void textureScale(float percentage) {
         foreach (var item in Object.FindObjectsOfType<Transform>()) {
             if (item.GetComponent<MeshRenderer>()) {
@@ -50,7 +42,7 @@ public class OptionMenuFunctions : MonoBehaviour
             }
             
         }
-    } 
+    } */
     public void MainMenu() {
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
     }
