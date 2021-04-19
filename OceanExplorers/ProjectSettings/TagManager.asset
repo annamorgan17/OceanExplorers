@@ -8,10 +8,19 @@ TagManager:
   - Water
   - Fire
   - Plant
-  - GoldFish
   - Crab
   - PlayerHand
   - terrain
+  - Anchovy
+  - Shark
+  - Guppy
+  - Tetra
+  - Tuna
+  - Clownfish
+  - Blue Tang
+  - Marine Angelfish
+  - Remora
+  - Stingray
   layers:
   - Default
   - TransparentFX

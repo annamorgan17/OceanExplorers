@@ -37,14 +37,11 @@ MonoBehaviour:
   - objectPrefab: {fileID: 6324346245955409473, guid: 7f5c25420350eba40811a0e91a9c0186,
       type: 3}
     spawntype: 1
-  - objectPrefab: {fileID: 7776191042877583195, guid: fb0770ff16ee3cb4d84bec242851de99,
-      type: 3}
-    spawntype: 1
-  - objectPrefab: {fileID: 709412205992639894, guid: bc30352a7019e9f48a47b00cc7e12684,
-      type: 3}
-    spawntype: 1
   - objectPrefab: {fileID: 1305337142220829007, guid: 21c2a3f58245e51448a7edb2e2d32f04,
       type: 3}
     spawntype: 2
+  - objectPrefab: {fileID: 709412205992639894, guid: bc30352a7019e9f48a47b00cc7e12684,
+      type: 3}
+    spawntype: 1
   flockManager: {fileID: 1220447257712330144, guid: 0def0b71dddb8294ea0bce574a55516e,
     type: 3}

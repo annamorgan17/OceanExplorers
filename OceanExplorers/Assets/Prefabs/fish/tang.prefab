@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8132041686723809086}
   m_Layer: 0
   m_Name: tang
-  m_TagString: Untagged
+  m_TagString: Blue Tang
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

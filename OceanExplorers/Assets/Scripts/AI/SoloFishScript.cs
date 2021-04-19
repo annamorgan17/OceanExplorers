@@ -64,37 +64,40 @@ public class SoloFishScript : MonoBehaviour
     {
         data.setPoint = transform.position;//sets set point to this scripts pos
         GoalPosRandom();
-        Bounds b = new Bounds(data.setPoint, data.swimLimits * 4);//creates a new bound the size of the swim limit
-        foreach (GameObject f in fish)//loops through game objects
-        {
-            if (!b.Contains(f.transform.position))
-            { //if not in bound
-                turning = true;
-            }
-            else
-            {//if in bounds
-                turning = false;
-            }
+        //Bounds b = new Bounds(data.setPoint, data.swimLimits * 4);//creates a new bound the size of the swim limit
+        foreach (GameObject f in fish)
+        {//loops through game objects
+                                      //{
+                                      //    if (!b.Contains(f.transform.position))
+                                      //    { //if not in bound
+                                      //        turning = true;
+                                      //    }
+                                      //    else
+                                      //    {//if in bounds
+                                      //        turning = false;
+                                      //    }
 
-            if (turning)
-            {//if out of bound turn the predator towards the centre at a new speed 
-                Vector3 direction = data.setPoint - f.transform.position;
-                f.transform.rotation = Quaternion.Slerp(f.transform.rotation, Quaternion.LookRotation(direction), data.rotationSpeed * Time.deltaTime);
-                sound.PlayOneShot(swishClip, 0.5f);//plays the fish swimming sound effect
-                speed = Random.Range(1, data.maxSpeed);
+            //    if (turning)
+            //    {//if out of bound turn the predator towards the centre at a new speed 
+            //        Vector3 direction = data.setPoint - f.transform.position;
+            //        f.transform.rotation = Quaternion.Slerp(f.transform.rotation, Quaternion.LookRotation(direction), data.rotationSpeed * Time.deltaTime);
+            //        sound.PlayOneShot(swishClip, 0.5f);//plays the fish swimming sound effect
+            //        speed = Random.Range(1, data.maxSpeed);
 
-            }
-            else
-            {//if in bounds head towards goal
-                f.transform.rotation = Quaternion.Slerp(f.transform.rotation, Quaternion.LookRotation(goalPos), data.rotationSpeed * Time.deltaTime);
-            }
-            if (Random.Range(0, data.randomAmount) < 10)
+            //    }
+            //    else
+            //    {//if in bounds head towards goal
+            //        f.transform.rotation = Quaternion.Slerp(f.transform.rotation, Quaternion.LookRotation(goalPos), data.rotationSpeed * Time.deltaTime);
+            //    }
+            if (Random.Range(0, data.randomAmount) < 1000)
             {// randomly create bubble and play sound effect
                 Bubbles(data.bubblePrefab, f.transform);
               //  bubble.transform.parent = f.transform; //creates the solo fish as the bubble parent
                 sound.PlayOneShot(bubbleClip, 0.5f);
             }
-            f.transform.Translate(0, 0, Time.deltaTime * speed);//move the solo fish at its speed
+            //f.transform.Translate(0, 0, Time.deltaTime * speed);//move the solo fish at its speed
+            f.transform.rotation = Quaternion.Slerp(f.transform.rotation, Quaternion.LookRotation(goalPos), data.rotationSpeed * Time.deltaTime);
+            f.transform.position = Vector3.MoveTowards(f.transform.position, goalPos, Time.deltaTime * speed);
         }
 
     }
@@ -121,16 +124,16 @@ public class SoloFishScript : MonoBehaviour
         if (Random.Range(0, 10) < 8)
         {
             goalPos = new Vector3(
-                                    Random.Range(data.setPoint.x - data.swimLimits.x, data.setPoint.x + data.swimLimits.x),
-                                    Random.Range(data.setPoint.y - data.swimLimits.y, data.setPoint.y + data.swimLimits.y),
-                                    Random.Range(data.setPoint.z - data.swimLimits.z, data.setPoint.z + data.swimLimits.z));
+                                    Random.Range(- data.swimLimits.x,  data.swimLimits.x),
+                                    Random.Range(- data.swimLimits.y,  data.swimLimits.y),
+                                    Random.Range(- data.swimLimits.z, data.swimLimits.z));
         }
     }
     //creates an instance of bubbles for 10f
     private void Bubbles(GameObject bubblePrefab, Transform pos)
     {
         bubble = Instantiate(bubblePrefab, pos.transform.position, Quaternion.LookRotation(Camera.main.transform.position));
-        Destroy(bubble, 10f);
+        Destroy(bubble, 2f);
 
     }
     //destroys instance of fish after 10f

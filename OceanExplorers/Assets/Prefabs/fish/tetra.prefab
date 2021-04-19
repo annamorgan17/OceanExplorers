@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9056843204850993552}
-  - component: {fileID: 5340164688733259485}
+  - component: {fileID: 8638306202522150591}
   m_Layer: 0
   m_Name: tetra
-  m_TagString: Untagged
+  m_TagString: Tetra
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5340164688733259485
+--- !u!114 &8638306202522150591
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6979909836846858113}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53dd042e79b81df40b36280e620eeb52, type: 3}
+  m_Script: {fileID: 11500000, guid: 98479c46017acb6438a498d909eb0f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fishManager: {fileID: 0}

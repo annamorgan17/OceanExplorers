@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6121827067305868066}
   m_Layer: 0
   m_Name: StingRay
-  m_TagString: Untagged
+  m_TagString: Stingray
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,82 +27,88 @@ Transform:
   m_LocalPosition: {x: -1.0039062, y: 27.86914, z: 8.251648}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2521780390299690510}
+  - {fileID: 202721683572442379}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &7459541161200471316
+--- !u!1001 &5164083420007198225
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 6121827067305868066}
     m_Modifications:
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 25a4325582380984abbc54ceddf7c0c5,
+    - target: {fileID: -1504981713932161579, guid: a7847db1bad3e7d42aa6801845eda481,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 8322859929795680784, guid: a7847db1bad3e7d42aa6801845eda481,
+        type: 3}
+    - target: {fileID: -927199367670048503, guid: a7847db1bad3e7d42aa6801845eda481,
         type: 3}
       propertyPath: m_Name
       value: StingRayUVWs
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 25a4325582380984abbc54ceddf7c0c5, type: 3}
---- !u!4 &2521780390299690510 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: a7847db1bad3e7d42aa6801845eda481, type: 3}
+--- !u!4 &202721683572442379 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 25a4325582380984abbc54ceddf7c0c5,
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: a7847db1bad3e7d42aa6801845eda481,
     type: 3}
-  m_PrefabInstance: {fileID: 7459541161200471316}
+  m_PrefabInstance: {fileID: 5164083420007198225}
   m_PrefabAsset: {fileID: 0}

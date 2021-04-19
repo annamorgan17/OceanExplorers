@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8852201050328874549}
   m_Layer: 0
   m_Name: angelfish
-  m_TagString: Untagged
+  m_TagString: Marine Angelfish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -9,12 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1220447257712330158}
-  - component: {fileID: 1220447257712330145}
   - component: {fileID: 1220447257712330159}
-  - component: {fileID: 1509676696793788850}
-  - component: {fileID: 8206960669514566529}
-  - component: {fileID: -2582664064610922520}
-  - component: {fileID: -4339186115256109917}
+  - component: {fileID: 3256243987876589664}
+  - component: {fileID: -5011602337881676906}
+  - component: {fileID: -5954592751539917597}
   m_Layer: 0
   m_Name: FlockManager
   m_TagString: Untagged
@@ -36,24 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1220447257712330145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220447257712330144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 697f31e8fa875e549aa9fef2f69182c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: aaf37916b4567d2449be65e93e4a4bb3, type: 2}
-  allFish: []
-  goalPos: {x: 0, y: 0, z: 0}
-  sound: {fileID: 8950728663041885064, guid: ea89c8c65c3de2743a71763c994a864c, type: 3}
-  bubbleClip: {fileID: 8300000, guid: 31ce28146fbaa2642b52f021c4464284, type: 3}
-  swishClip: {fileID: 8300000, guid: c1522db60d8aa614b9cd91906cd4ecce, type: 3}
 --- !u!65 &1220447257712330159
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -67,7 +47,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1509676696793788850
+--- !u!114 &3256243987876589664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,16 +56,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1220447257712330144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 247a5a59d7768ac49b965cb65042286b, type: 3}
+  m_Script: {fileID: 11500000, guid: 664b4c7ca5493a6499cff56eff420dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: aaf37916b4567d2449be65e93e4a4bb3, type: 2}
-  allFish: []
-  goalPos: {x: 0, y: 0, z: 0}
+  fishScript: {fileID: -5011602337881676906}
+  predatorsPrefab:
+  - {fileID: 657455435367103198, guid: 2aa922e85474ec742bf3be1ecb9185bb, type: 3}
+  - {fileID: 4299710657911612205, guid: 297e8cae0bbe82e47aac45d8cf65bafc, type: 3}
+  remoraPrefab: {fileID: 6668158862101531720, guid: de9abe9e2761b4545a5da7d737e0bdc0,
+    type: 3}
   sound: {fileID: 8950728663041885064, guid: ea89c8c65c3de2743a71763c994a864c, type: 3}
-  bubbleClip: {fileID: 8300000, guid: 31ce28146fbaa2642b52f021c4464284, type: 3}
   swishClip: {fileID: 8300000, guid: c1522db60d8aa614b9cd91906cd4ecce, type: 3}
---- !u!114 &8206960669514566529
+  bubbleClip: {fileID: 8300000, guid: 31ce28146fbaa2642b52f021c4464284, type: 3}
+  eatClip: {fileID: 8300000, guid: 1317c63d64423094aae989470843df6f, type: 3}
+  boneFish: {fileID: 8759011358877293390, guid: c7c4aba9757ee1648b06d90dc7ea5240,
+    type: 3}
+--- !u!114 &-5011602337881676906
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,16 +81,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1220447257712330144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd332b3511dbd1f4c9015bf085233876, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b0bf8815dfe86f41a08600afc9711af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: aaf37916b4567d2449be65e93e4a4bb3, type: 2}
-  allFish: []
-  goalPos: {x: 0, y: 0, z: 0}
+  fish: []
   sound: {fileID: 8950728663041885064, guid: ea89c8c65c3de2743a71763c994a864c, type: 3}
-  bubbleClip: {fileID: 8300000, guid: 31ce28146fbaa2642b52f021c4464284, type: 3}
   swishClip: {fileID: 8300000, guid: c1522db60d8aa614b9cd91906cd4ecce, type: 3}
---- !u!114 &-2582664064610922520
+  bubbleClip: {fileID: 8300000, guid: 31ce28146fbaa2642b52f021c4464284, type: 3}
+  goalPos: {x: 0, y: 0, z: 0}
+--- !u!114 &-5954592751539917597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,25 +99,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1220447257712330144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7024b2fade0fbb24c8a84fb4f39d0dac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: aaf37916b4567d2449be65e93e4a4bb3, type: 2}
-  allFish: []
-  goalPos: {x: 0, y: 0, z: 0}
-  sound: {fileID: 8950728663041885064, guid: ea89c8c65c3de2743a71763c994a864c, type: 3}
-  bubbleClip: {fileID: 8300000, guid: 31ce28146fbaa2642b52f021c4464284, type: 3}
-  swishClip: {fileID: 8300000, guid: c1522db60d8aa614b9cd91906cd4ecce, type: 3}
---- !u!114 &-4339186115256109917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220447257712330144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1afb20b3a0e3904b82c3347b3832fa5, type: 3}
+  m_Script: {fileID: 11500000, guid: 26ac2a1e2c9bcb246b1974f3ef30f537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: aaf37916b4567d2449be65e93e4a4bb3, type: 2}

@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2152677348101267792}
-  - component: {fileID: -5671746282919730822}
+  - component: {fileID: 1081865367475545591}
   m_Layer: 0
   m_Name: anchovy(1)
-  m_TagString: Untagged
+  m_TagString: Anchovy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-5671746282919730822
+--- !u!114 &1081865367475545591
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5557591586562329315}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 737578b375a5022498c530364e82cdf9, type: 3}
+  m_Script: {fileID: 11500000, guid: 98479c46017acb6438a498d909eb0f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fishManager: {fileID: 0}
