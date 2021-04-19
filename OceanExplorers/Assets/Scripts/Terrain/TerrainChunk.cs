@@ -95,29 +95,27 @@ public class TerrainChunk {
 		if (points != null) {
 			//Loop through
 			foreach (Vector2 point in points) {
-				//Get a random object
-				TerrainObject to = terrainObjectData.getRandomObject();
-				 
+				//Get a random object 
 				float sampleHeight;
-
-				//If its a flock manager give it a set height
-				if (to.objectPrefab == terrainObjectData.flockManager) {
-					sampleHeight = 40.0f;
-				} else {
-					sampleHeight = heightMap.values[(int)point.x, (int)point.y];
-				}
-							
-				//If it wants to spawn on the surface, spawn it there
 				float surfaceHeight = 58.5f;
-				if (to.surfaceSpawn == true) {
-					sampleHeight = surfaceHeight; 
-				}
+				TerrainObject to;
 
+				//get a default sample height
+				sampleHeight = heightMap.values[(int)point.x, (int)point.y];
+									
 				//Handle above water
 				if (sampleHeight > surfaceHeight) {
-					to = terrainObjectData.getAboveWaterObject();
+					to = terrainObjectData.getType(SpawnType.Above);
+				} else { //else get a normal one
+					to = terrainObjectData.getRandomObjectNoAbove();
 				}
 
+				//overwritting the height if its a fish
+				if (to.objectPrefab == terrainObjectData.flockManager) {
+					sampleHeight = 40.0f;
+				}else if (to.spawntype == SpawnType.Surface) {
+					sampleHeight = surfaceHeight;
+				} 
 				//Calculate it pos
 				Vector3 pos = new Vector3(
 										bounds.center.x + point.x - (bounds.size.x / 2), 
@@ -128,6 +126,8 @@ public class TerrainChunk {
 				GameObject gm = Object.Instantiate(to.objectPrefab);
 				gm.transform.position = pos;
 				gm.transform.SetParent(SpawnParent.transform);
+
+				gm.AddComponent<NormalObjects>();
 			}
 		} else {
 			Debug.LogError("points was null");

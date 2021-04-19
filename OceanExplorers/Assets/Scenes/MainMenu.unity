@@ -2517,6 +2517,11 @@ PrefabInstance:
       propertyPath: m_Spring
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 1256539863182441763, guid: cb5bcf4b0acf88048b2d67829fe09b10,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1256539863208940178, guid: cb5bcf4b0acf88048b2d67829fe09b10,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2774,7 +2779,12 @@ PrefabInstance:
     - target: {fileID: 1256539862720515391, guid: cb5bcf4b0acf88048b2d67829fe09b10,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1256539862749109187, guid: cb5bcf4b0acf88048b2d67829fe09b10,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1256539862749109189, guid: cb5bcf4b0acf88048b2d67829fe09b10,
         type: 3}
@@ -2785,6 +2795,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Spring
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1256539863182441763, guid: cb5bcf4b0acf88048b2d67829fe09b10,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1256539863208940178, guid: cb5bcf4b0acf88048b2d67829fe09b10,
         type: 3}
@@ -3195,7 +3210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AimButton: 67108864
-  TeleportButton: 67108864
+  TeleportButton: 1
   FastTeleport: 0
   LeftHand: {fileID: 599265528}
   RightHand: {fileID: 614242080}

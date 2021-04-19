@@ -13,50 +13,38 @@ MonoBehaviour:
   m_Name: Terrain Object Data
   m_EditorClassIdentifier: 
   terrainList:
-  - objectPrefab: {fileID: 8291014576230624971, guid: 318340909f9a67848815d73a112e490d,
+  - objectPrefab: {fileID: 483003163392868185, guid: b5857abe1fc811f448f252b19f6195b6,
       type: 3}
-    surfaceSpawn: 1
-    randomRotation: 1
-    AboveWaterLevel: 0
-  - objectPrefab: {fileID: 7831945124778820215, guid: 7996e139b54a34b44a031c3dc56c1c91,
+    spawntype: 0
+  - objectPrefab: {fileID: 93643352097162715, guid: 643271bf36ea26249a2a365028a45aea,
       type: 3}
-    surfaceSpawn: 1
-    randomRotation: 1
-    AboveWaterLevel: 0
-  - objectPrefab: {fileID: 7079417371022926780, guid: 8fd931b26cead04409da04a3d450be67,
+    spawntype: 0
+  - objectPrefab: {fileID: 5593353449797040728, guid: cdc0e09fffa55c3419113e9b4f482a4a,
       type: 3}
-    surfaceSpawn: 1
-    randomRotation: 1
-    AboveWaterLevel: 0
+    spawntype: 0
   - objectPrefab: {fileID: 5246949175308696559, guid: 27f04a4d2752779419f5adf1fb8c0fe2,
       type: 3}
-    surfaceSpawn: 1
-    randomRotation: 1
-    AboveWaterLevel: 0
+    spawntype: 0
   - objectPrefab: {fileID: 1162110893941569963, guid: 9b1ed948c9dd36c43935be586befec12,
       type: 3}
-    surfaceSpawn: 0
-    randomRotation: 1
-    AboveWaterLevel: 0
+    spawntype: 1
   - objectPrefab: {fileID: 7659046253477484943, guid: 2765c3c42a725e64c97742bfb6843869,
       type: 3}
-    surfaceSpawn: 0
-    randomRotation: 1
-    AboveWaterLevel: 0
+    spawntype: 1
   - objectPrefab: {fileID: 1220447257712330144, guid: 0def0b71dddb8294ea0bce574a55516e,
       type: 3}
-    surfaceSpawn: 0
-    randomRotation: 1
-    AboveWaterLevel: 0
-  - objectPrefab: {fileID: 9037170102818685557, guid: b3f65dd63b947eb41a271518a0035795,
+    spawntype: 1
+  - objectPrefab: {fileID: 6324346245955409473, guid: 7f5c25420350eba40811a0e91a9c0186,
       type: 3}
-    surfaceSpawn: 0
-    randomRotation: 1
-    AboveWaterLevel: 1
+    spawntype: 1
   - objectPrefab: {fileID: 7776191042877583195, guid: fb0770ff16ee3cb4d84bec242851de99,
       type: 3}
-    surfaceSpawn: 1
-    randomRotation: 1
-    AboveWaterLevel: 0
+    spawntype: 1
+  - objectPrefab: {fileID: 709412205992639894, guid: bc30352a7019e9f48a47b00cc7e12684,
+      type: 3}
+    spawntype: 1
+  - objectPrefab: {fileID: 1305337142220829007, guid: 21c2a3f58245e51448a7edb2e2d32f04,
+      type: 3}
+    spawntype: 2
   flockManager: {fileID: 1220447257712330144, guid: 0def0b71dddb8294ea0bce574a55516e,
     type: 3}

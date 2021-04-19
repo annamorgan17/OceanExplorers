@@ -9,24 +9,23 @@ public class ButtonLimit : MonoBehaviour {
     private float minDistance;
     private float maxDistance;
 
-    private void Awake() {
+    private void Awake() { 
         //calculate the min and max distance
-        minDistance = Vector3.Distance(buttonTrigger.transform.position, transform.position);
+        minDistance = Vector3.Distance(buttonTrigger.transform.position, 
+            transform.position);
         maxDistance = buttonTrigger.transform.position.y;
         orgionalPosition = transform.position;
     }
 
     private void Update() {
         //if the button is bellow the min distance set it back to the min
-        bool BellowMinDistance = Vector3.Distance(buttonTrigger.transform.position, transform.position) >= minDistance;
-        if (BellowMinDistance) {
+        if (Vector3.Distance(buttonTrigger.transform.position, transform.position) >= minDistance) {
             transform.position = orgionalPosition;
 
         }
 
-        //if the button is above the max distance, set it back to the max
-        bool AboveMaxDistance = transform.position.y <= maxDistance;
-        if (AboveMaxDistance) {
+        //if the button is above the max distance, set it back to the max 
+        if (transform.position.y < maxDistance) {
             transform.position = new Vector3(transform.position.x, maxDistance, transform.position.z);
         }
     }

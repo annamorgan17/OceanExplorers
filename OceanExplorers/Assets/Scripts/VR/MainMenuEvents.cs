@@ -23,8 +23,8 @@ public class MainMenuEvents : MonoBehaviour
     }
     //show the help screen 
     public void ShowHelp() {
-        Help.SetActive(!Help.activeInHierarchy);
-        sound.PlayOneShot(button, 0.5f);
         Debug.LogError("Show the help");
+        Help.SetActive(!Help.activeInHierarchy);
+        sound.PlayOneShot(button, 0.5f); 
     }
 }
