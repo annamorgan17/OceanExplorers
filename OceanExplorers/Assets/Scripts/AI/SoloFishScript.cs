@@ -20,27 +20,51 @@ public class SoloFishScript : MonoBehaviour
     void Start()
     {
         speed = Random.Range(1, data.maxSpeed); //sets speed to random number from 0 to the set max speed
-        foreach (GameObject f in data.soloFishprefab) //loops through fish prefabs
-        {
-            fish = new GameObject[data.soloFishAmount[counter]]; //set array size to the amount of fish of that prefab
+        //foreach (GameObject f in data.soloFishprefab) //loops through fish prefabs
+        //{
+            fish = new GameObject[20]; //set array size to the amount of fish of that prefab
             goalPos = data.setPoint;//sets goal pos to set point
-            for (int i = 0; i < data.soloFishAmount[counter]; i++)//loops through all the prefabs of current fish
+            for (int i = 0; i < 5; i++)//loops through all the prefabs of current fish
             {
                 Vector3 position = new Vector3(//creates a random vector within bounds
                                         Random.Range((data.setPoint.x - data.swimLimits.x), (data.setPoint.x + data.swimLimits.x)),
                                         Random.Range((data.setPoint.y - data.swimLimits.y), (data.setPoint.y + data.swimLimits.y)),
                                         Random.Range((data.setPoint.z - data.swimLimits.z), (data.setPoint.z + data.swimLimits.z)));
-                fish[i] = (GameObject)Instantiate(f, position, Quaternion.identity); //creates an instance of current solo fish
+                fish[i] = (GameObject)Instantiate(data.soloFishprefab[0], position, Quaternion.identity); //creates an instance of current solo fish
             }
-            counter++;//increases counter
-        }
+            for (int i = 5; i < 10; i++)//loops through all the prefabs of current fish
+            {
+                Vector3 position = new Vector3(//creates a random vector within bounds
+                                        Random.Range((data.setPoint.x - data.swimLimits.x), (data.setPoint.x + data.swimLimits.x)),
+                                        Random.Range((data.setPoint.y - data.swimLimits.y), (data.setPoint.y + data.swimLimits.y)),
+                                        Random.Range((data.setPoint.z - data.swimLimits.z), (data.setPoint.z + data.swimLimits.z)));
+                fish[i] = (GameObject)Instantiate(data.soloFishprefab[1], position, Quaternion.identity); //creates an instance of current solo fish
+            }
+            for (int i = 10; i < 15; i++)//loops through all the prefabs of current fish
+            {
+                Vector3 position = new Vector3(//creates a random vector within bounds
+                                        Random.Range((data.setPoint.x - data.swimLimits.x), (data.setPoint.x + data.swimLimits.x)),
+                                        Random.Range((data.setPoint.y - data.swimLimits.y), (data.setPoint.y + data.swimLimits.y)),
+                                        Random.Range((data.setPoint.z - data.swimLimits.z), (data.setPoint.z + data.swimLimits.z)));
+                fish[i] = (GameObject)Instantiate(data.soloFishprefab[2], position, Quaternion.identity); //creates an instance of current solo fish
+            }
+            for (int i = 15; i < 20; i++)//loops through all the prefabs of current fish
+            {
+                Vector3 position = new Vector3(//creates a random vector within bounds
+                                        Random.Range((data.setPoint.x - data.swimLimits.x), (data.setPoint.x + data.swimLimits.x)),
+                                        Random.Range((data.setPoint.y - data.swimLimits.y), (data.setPoint.y + data.swimLimits.y)),
+                                        Random.Range((data.setPoint.z - data.swimLimits.z), (data.setPoint.z + data.swimLimits.z)));
+                fish[i] = (GameObject)Instantiate(data.soloFishprefab[3], position, Quaternion.identity); //creates an instance of current solo fish
+            }
+        //counter++;//increases counter
+        // }
     }
 
     void Update()
     {
         data.setPoint = transform.position;//sets set point to this scripts pos
         GoalPosRandom();
-        Bounds b = new Bounds(data.setPoint, data.swimLimits * 2);//creates a new bound the size of the swim limit
+        Bounds b = new Bounds(data.setPoint, data.swimLimits * 4);//creates a new bound the size of the swim limit
         foreach (GameObject f in fish)//loops through game objects
         {
             if (!b.Contains(f.transform.position))
@@ -67,7 +91,7 @@ public class SoloFishScript : MonoBehaviour
             if (Random.Range(0, data.randomAmount) < 10)
             {// randomly create bubble and play sound effect
                 Bubbles(data.bubblePrefab, f.transform);
-                bubble.transform.parent = f.transform; //creates the solo fish as the bubble parent
+              //  bubble.transform.parent = f.transform; //creates the solo fish as the bubble parent
                 sound.PlayOneShot(bubbleClip, 0.5f);
             }
             f.transform.Translate(0, 0, Time.deltaTime * speed);//move the solo fish at its speed
@@ -94,7 +118,7 @@ public class SoloFishScript : MonoBehaviour
     //at random intervaules will create a random vector within bounds and set the goal pos to it
     private void GoalPosRandom()
     {
-        if (Random.Range(0, data.randomAmount) < 50)
+        if (Random.Range(0, 10) < 8)
         {
             goalPos = new Vector3(
                                     Random.Range(data.setPoint.x - data.swimLimits.x, data.setPoint.x + data.swimLimits.x),

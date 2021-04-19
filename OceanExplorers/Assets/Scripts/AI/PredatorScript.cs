@@ -171,7 +171,7 @@ public class PredatorScript : MonoBehaviour
                 if (Random.Range(0, data.randomAmount) < 10)
                 {// randomly create bubble and play sound effect
                     Bubbles(data.bubblePrefab, p.transform);
-                    bubble.transform.parent = p.transform; //creates the predator as the bubble parent
+                   // bubble.transform.parent = p.transform; //creates the predator as the bubble parent
                     sound.PlayOneShot(bubbleClip, 0.5f);
                 }
                 p.transform.Translate(0, 0, Time.deltaTime * speed);//move the predator at its speed
@@ -200,7 +200,7 @@ public class PredatorScript : MonoBehaviour
                 }
                 if (Random.Range(0, data.randomAmount) < 10) {
                     Bubbles(data.bubblePrefab, p.transform);
-                    bubble.transform.parent = p.transform; //creates the predator as the bubble parent
+                   // bubble.transform.parent = p.transform; //creates the predator as the bubble parent
                 }
                 p.transform.Translate(0, 0, Time.deltaTime * (speed + 2.0f));
             }

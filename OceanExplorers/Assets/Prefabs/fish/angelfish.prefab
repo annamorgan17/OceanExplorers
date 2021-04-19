@@ -38,6 +38,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8852201050328874549}
     m_Modifications:
+    - target: {fileID: -4226112616260087013, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.14
+      objectReference: {fileID: 0}
+    - target: {fileID: -4226112616260087013, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4226112616260087013, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.19
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -97,6 +112,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MarineAngelFish
+      objectReference: {fileID: 0}
+    - target: {fileID: 2117170807102890797, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2117170807102890797, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2117170807102890797, guid: 6d0eb54f544ce624a898fd242f7a0cfc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d0eb54f544ce624a898fd242f7a0cfc, type: 3}
