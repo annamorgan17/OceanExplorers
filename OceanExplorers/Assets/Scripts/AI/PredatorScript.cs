@@ -206,8 +206,15 @@ public class PredatorScript : MonoBehaviour
             }
         }
     }
-    //swicthes the material of the solo fish defore destorying and plays sound effect
+    //swicthes the material of the solo fish defore destorying after slowing changing its material and plays sound effect
     private void Eat() {
+        float materialCount = 0;
+        for(int i = 0; i < 1;  i++)
+        {
+            targetedFish.GetComponent<Material>().SetFloat("Progress", materialCount);
+            materialCount = materialCount + 0.1f;
+        }
+       
         skellyFish = (GameObject)Instantiate(boneFish, targetedFish.transform.position, Quaternion.identity);
         fishScript.DestroyFish(targetedFish);
         sound.PlayOneShot(eatClip, 0.5f);
