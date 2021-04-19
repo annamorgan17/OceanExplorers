@@ -25,7 +25,7 @@ MonoBehaviour:
   - objectPrefab: {fileID: 5246949175308696559, guid: 27f04a4d2752779419f5adf1fb8c0fe2,
       type: 3}
     spawntype: 0
-  - objectPrefab: {fileID: 1162110893941569963, guid: 9b1ed948c9dd36c43935be586befec12,
+  - objectPrefab: {fileID: 709412205992639894, guid: bc30352a7019e9f48a47b00cc7e12684,
       type: 3}
     spawntype: 1
   - objectPrefab: {fileID: 7659046253477484943, guid: 2765c3c42a725e64c97742bfb6843869,

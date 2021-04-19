@@ -104,7 +104,7 @@ public class Generation : MonoBehaviour {
             for (int i = 0; i < item.mesh.vertices.Length; i++) { 
                 float index = item.mesh.vertices[i].y / maxY;
                 Color col = lSystemVisualData.Colour.Evaluate(index);
-                Debug.Log(index + " : " + col);
+                //Debug.Log(index + " : " + col);
                 colours.Add(col); 
             }
             item.mesh.colors = colours.ToArray();

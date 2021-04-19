@@ -31,7 +31,7 @@ public class RadialUI : MonoBehaviour {
     bool Pressed = false;
     float StartX = 0; 
     void Start() { 
-        CurrentValue = 0f; 
+        CurrentValue = maxValue; 
     }
     public void OnClick() { 
         pressValue = currentValue;
